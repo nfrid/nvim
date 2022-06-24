@@ -1,0 +1,11 @@
+local hop = require('hop')
+hop.setup({})
+
+local mx = require('mapx')
+mx.nnoremap('s', '<NOP>')
+mx.nnoremap('sl', function() hop.hint_words() end)
+mx.nnoremap('sh', function() hop.hint_words() end)
+mx.nnoremap('sj', function() hop.hint_lines() end)
+mx.nnoremap('sk', function() hop.hint_lines() end)
+mx.nnoremap('sf', function() hop.hint_char1() end)
+mx.nnoremap('ss', function() hop.hint_char2() end)
