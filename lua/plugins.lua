@@ -167,6 +167,18 @@ return packer.startup({
       config = function() require('gitlinker').setup() end
     }
 
+    use {
+      'pwntester/octo.nvim',
+      requires = {
+        'nvim-lua/plenary.nvim',
+        'nvim-telescope/telescope.nvim',
+        'kyazdani42/nvim-web-devicons',
+      },
+      config = function ()
+        require"octo".setup()
+      end
+    }
+
     use { 'kevinhwang91/nvim-bqf', ft = 'qf' }
 
     use { 'L3MON4D3/LuaSnip' }
