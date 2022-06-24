@@ -79,7 +79,10 @@ local servers = {
 
 local configs = {}
 
-configs.ccls = { init_options = { highlight = { lsRanges = true } } }
+configs.ccls = {
+  init_options = { highlight = { lsRanges = true } },
+  offset_encoding = 'utf-16'
+}
 
 configs.texlab = {
   settings = {
