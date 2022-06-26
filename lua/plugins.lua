@@ -77,7 +77,11 @@ return packer.startup({
       }
     }
 
-    use 'tpope/vim-commentary'
+    -- use 'tpope/vim-commentary'
+    use {
+      'numToStr/Comment.nvim',
+      config = function() require('Comment').setup() end
+    }
     use 'tpope/vim-surround'
     use 'kana/vim-repeat'
     -- use 'jiangmiao/auto-pairs'
@@ -85,6 +89,11 @@ return packer.startup({
       'windwp/nvim-autopairs',
       requires = 'hrsh7th/nvim-cmp',
       config = function() require('plugins.autopairs') end
+    }
+
+    use {
+      'junegunn/vim-easy-align',
+      config = function() require('plugins.align') end
     }
 
     use {
@@ -151,6 +160,11 @@ return packer.startup({
     use 'iloginow/vim-stylus'
 
     use {
+      'kevinhwang91/rnvimr',
+      config = function() require('plugins.rnvimr') end
+    }
+
+    use {
       'kdheepak/lazygit.nvim',
       config = function() require('plugins.lazygit') end
     }
@@ -170,13 +184,10 @@ return packer.startup({
     use {
       'pwntester/octo.nvim',
       requires = {
-        'nvim-lua/plenary.nvim',
-        'nvim-telescope/telescope.nvim',
-        'kyazdani42/nvim-web-devicons',
+        'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim',
+        'kyazdani42/nvim-web-devicons'
       },
-      config = function ()
-        require"octo".setup()
-      end
+      config = function() require'octo'.setup() end
     }
 
     use { 'kevinhwang91/nvim-bqf', ft = 'qf' }
@@ -240,10 +251,14 @@ return packer.startup({
     use 'jackguo380/vim-lsp-cxx-highlight'
 
     use {
+      'vuki656/package-info.nvim',
+      requires = 'MunifTanjim/nui.nvim',
+      config = function() require('plugins.package-info') end
+    }
+
+    use {
       'simrat39/symbols-outline.nvim',
-      config = function()
-        -- mx.nnoremap('<leader>;', ':SymbolsOutline<CR>', 'Show Symbols Outline')
-      end
+      config = function() require('plugins.symbols-outline') end
     }
 
     use {
@@ -270,10 +285,12 @@ return packer.startup({
       config = function() require('plugins.todo') end
     }
 
-    -- use {
-    --   'andweeb/presence.nvim',
-    --   config = function() require('presence'):setup({}) end
-    -- }
+    use {
+      'andweeb/presence.nvim',
+      config = function()
+        require('plugins.presence')
+      end
+    }
 
     use 'rafcamlet/nvim-luapad'
   end
