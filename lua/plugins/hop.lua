@@ -15,12 +15,11 @@ local function map(key, action, description)
 end
 
 local dir = require('hop.hint').HintDirection
-local pos = require('hop.hint').HintPosition
 
 map('w', hop.hint_words, 'words')
-map('l', function() hop.hint_words({ direction = dir.AFTER_CURSOR, hint_position = pos.MIDDLE }) end,
+map('l', function() hop.hint_words({ direction = dir.AFTER_CURSOR }) end,
   'words forward')
-map('h', function() hop.hint_words({ direction = dir.BEFORE_CURSOR, hint_position = pos.MIDDLE }) end,
+map('h', function() hop.hint_words({ direction = dir.BEFORE_CURSOR }) end,
   'words backward')
 map('g', hop.hint_lines, 'lines')
 map('j', function() hop.hint_lines({ direction = dir.AFTER_CURSOR }) end,

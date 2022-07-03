@@ -83,6 +83,12 @@ return packer.startup({
       config = function() require('Comment').setup() end
     }
     use 'tpope/vim-surround'
+    -- use {
+    --   'kylechui/nvim-surround',
+    --   config = function()
+    --     require('nvim-surround').setup()
+    --   end
+    -- }
     use 'kana/vim-repeat'
     -- use 'jiangmiao/auto-pairs'
     use {
@@ -187,12 +193,16 @@ return packer.startup({
         'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim',
         'kyazdani42/nvim-web-devicons'
       },
-      config = function() require'octo'.setup() end
+      config = function() require('octo').setup() end
     }
 
     use { 'kevinhwang91/nvim-bqf', ft = 'qf' }
 
-    use { 'L3MON4D3/LuaSnip' }
+    use {
+      'L3MON4D3/LuaSnip',
+      requires = 'honza/vim-snippets',
+      config = function() require('plugins.luasnip') end
+    }
     use {
       'hrsh7th/nvim-cmp',
       requires = {
@@ -287,9 +297,7 @@ return packer.startup({
 
     use {
       'andweeb/presence.nvim',
-      config = function()
-        require('plugins.presence')
-      end
+      config = function() require('plugins.presence') end
     }
 
     use 'rafcamlet/nvim-luapad'
