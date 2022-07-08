@@ -82,13 +82,13 @@ return packer.startup({
       'numToStr/Comment.nvim',
       config = function() require('Comment').setup() end
     }
-    use 'tpope/vim-surround'
-    -- use {
-    --   'kylechui/nvim-surround',
-    --   config = function()
-    --     require('nvim-surround').setup()
-    --   end
-    -- }
+    -- use 'tpope/vim-surround'
+    use {
+      'kylechui/nvim-surround',
+      config = function()
+        require('nvim-surround').setup()
+      end
+    }
     use 'kana/vim-repeat'
     -- use 'jiangmiao/auto-pairs'
     use {
@@ -168,6 +168,11 @@ return packer.startup({
     use {
       'kevinhwang91/rnvimr',
       config = function() require('plugins.rnvimr') end
+    }
+
+    use {
+      'rktjmp/paperplanes.nvim',
+      config = function() require('plugins.paperplanes') end
     }
 
     use {

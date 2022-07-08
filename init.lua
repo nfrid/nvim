@@ -111,8 +111,8 @@ ToggleKeyMap = function()
   end
 end
 
-mx.nnoremap('<A-l>', ToggleKeyMap)
-mx.inoremap('<A-l>', '<C-^>')
+mx.nnoremap('<A-Space>', ToggleKeyMap)
+mx.inoremap('<A-Space>', '<C-^>')
 
 ToggleRelNums = function()
   if vim.wo.relativenumber then
