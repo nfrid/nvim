@@ -98,6 +98,11 @@ return packer.startup({
     }
 
     use {
+      'monaqa/dial.nvim',
+      config = function() require('plugins.dial') end
+    }
+
+    use {
       'junegunn/vim-easy-align',
       config = function() require('plugins.align') end
     }
