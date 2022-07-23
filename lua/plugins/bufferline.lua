@@ -2,7 +2,7 @@ local b = require("bufferline")
 
 b.setup {
   options = {
-    diagnostics = "nvim_lsp",
+    diagnostics = true,
     show_buffer_close_icons = false,
     always_show_bufferline = false
   },
@@ -13,8 +13,7 @@ b.setup {
 }
 
 local mx = require('mapx')
-mx.nnoremap('<C-h>', function() require("bufferline").cycle(-1) end)
-mx.nnoremap('<C-l>', function() require("bufferline").cycle(1) end)
-mx.nnoremap('H', function() require("bufferline").move(-1) end)
-mx.nnoremap('L', function() require("bufferline").move(1) end)
-mx.nnoremap('gb', require("bufferline").pick_buffer, "Pick Buffer")
+mx.nnoremap('<C-h>', function() b.cycle(-1) end, 'Prev buffertab')
+mx.nnoremap('<C-l>', function() b.cycle(1) end, 'Next buffertab')
+mx.nnoremap('gh', function() b.move(-1) end, 'Move buffertab to the left')
+mx.nnoremap('gl', function() b.move(1) end, 'Move buffertab to the right')

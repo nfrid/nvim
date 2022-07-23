@@ -74,7 +74,7 @@ end
 local servers = {
   'bashls', 'vimls', 'pyright', 'tsserver', 'vuels', 'yamlls', 'jsonls',
   'cmake', 'gopls', 'intelephense', 'cssls', 'html', 'hls', 'emmet_ls',
-  'eslint', 'ccls', 'texlab', 'sumneko_lua'
+  'eslint', 'ccls', 'texlab', 'sumneko_lua', 'marksman'
 }
 
 local configs = {}

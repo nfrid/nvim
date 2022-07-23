@@ -1,5 +1,3 @@
-local cmd = vim.api.nvim_command
-
 vim.opt.hidden = true
 vim.opt.swapfile = false
 vim.opt.foldenable = false
@@ -9,7 +7,7 @@ vim.opt.expandtab = true
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
-cmd('au BufRead,BufNewFile *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4')
+vim.cmd('au BufRead,BufNewFile *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4')
 
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
@@ -44,7 +42,7 @@ require('plugins')
 local mx = require('mapx')
 
 Format = function()
-  cmd(':w')
+  vim.cmd(':w')
 
   local formatCmds = {
     lua = 'lua-format -i',
@@ -71,10 +69,10 @@ Format = function()
 
   print(f:read('*all'))
   f:close()
-  cmd('let tmp = winsaveview()')
-  cmd('e!')
-  cmd('call winrestview(tmp)')
-  cmd('IndentBlanklineRefresh')
+  vim.cmd('let tmp = winsaveview()')
+  vim.cmd('e!')
+  vim.cmd('call winrestview(tmp)')
+  vim.cmd('IndentBlanklineRefresh')
 end
 
 mx.nnoremap('<leader>F', Format)
@@ -111,8 +109,10 @@ ToggleKeyMap = function()
   end
 end
 
-mx.nnoremap('<A-Space>', ToggleKeyMap)
-mx.inoremap('<A-Space>', '<C-^>')
+mx.noremap('<C-^>', ToggleKeyMap)
+mx.noremap('<A-Space>', ToggleKeyMap)
+mx.noremapbang('<A-Space>', '<C-^>')
+mx.tnoremap('<A-Space>', '<C-^>')
 
 ToggleRelNums = function()
   if vim.wo.relativenumber then
@@ -124,13 +124,13 @@ end
 
 mx.nnoremap('<leader>pr', ToggleRelNums)
 
-cmd('au BufReadPost *.zsh,.zshrc set filetype=sh')
-cmd('au BufReadPost *.fish set filetype=fish')
-cmd('au BufReadPost *.conf set filetype=config')
+vim.cmd('au BufReadPost *.zsh,.zshrc set filetype=sh')
+vim.cmd('au BufReadPost *.fish set filetype=fish')
+vim.cmd('au BufReadPost *.conf set filetype=config')
 
-cmd('au BufReadPost *.kbd set filetype=lisp')
+vim.cmd('au BufReadPost *.kbd set filetype=lisp')
 
-cmd('command! W :w!')
+vim.cmd('command! W :w!')
 
 -- mappings
 
@@ -138,11 +138,6 @@ mx.nnoremap('<SPACE>', '<NOP>')
 
 mx.nnoremap('<tab>', '<CMD>bn<CR>')
 mx.nnoremap('<s-tab>', '<CMD>bp<CR>')
-
-mx.nnoremap('<C-h>', '<CMD>bp<CR>')
-mx.nnoremap('<C-l>', '<CMD>bn<CR>')
-mx.nnoremap('<C-j>', '<CMD>tabn<CR>')
-mx.nnoremap('<C-k>', '<CMD>tabp<CR>')
 
 mx.nnoremap('gF', ':e <cfile><CR>')
 
@@ -153,9 +148,6 @@ mx.nnoremap('<Leader>/', ':nohlsearch<CR>')
 mx.nnoremap('Q', ':bd<CR>')
 mx.nnoremap('<leader>cd', ':cd %:h<CR>')
 mx.nnoremap('<leader>cp', ':let @+ = expand("%:p:h")<CR>')
-
-mx.nnoremap('>', '>>')
-mx.nnoremap('<', '<<')
 
 mx.nnoremap('<leader>vv', ':e $MYVIMRC<CR>')
 

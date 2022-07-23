@@ -85,9 +85,7 @@ return packer.startup({
     -- use 'tpope/vim-surround'
     use {
       'kylechui/nvim-surround',
-      config = function()
-        require('nvim-surround').setup()
-      end
+      config = function() require('nvim-surround').setup() end
     }
     use 'kana/vim-repeat'
     -- use 'jiangmiao/auto-pairs'
@@ -97,10 +95,7 @@ return packer.startup({
       config = function() require('plugins.autopairs') end
     }
 
-    use {
-      'monaqa/dial.nvim',
-      config = function() require('plugins.dial') end
-    }
+    use { 'monaqa/dial.nvim', config = function() require('plugins.dial') end }
 
     use {
       'junegunn/vim-easy-align',
@@ -131,10 +126,12 @@ return packer.startup({
 
     use {
       'anuvyklack/pretty-fold.nvim',
-      requires = 'anuvyklack/nvim-keymap-amend',
+      requires = {
+        { 'anuvyklack/nvim-keymap-amend' }, { 'anuvyklack/fold-preview.nvim' }
+      },
       config = function()
         require('pretty-fold').setup({})
-        require('pretty-fold.preview').setup({})
+        require('fold-preview').setup({})
       end
     }
 
@@ -242,6 +239,12 @@ return packer.startup({
       -- },
       requires = { 'hrsh7th/nvim-cmp' },
       config = function() require('plugins.lsp') end
+    }
+    use {
+      "andrewferrier/textobj-diagnostic.nvim",
+      config = function()
+        require("textobj-diagnostic").setup()
+      end,
     }
     -- use 'github/copilot.vim'
     use {

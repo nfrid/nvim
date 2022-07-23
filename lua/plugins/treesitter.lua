@@ -9,8 +9,7 @@ treesitter.setup {
 
   rainbow = {
     enable = true,
-    disable = { "html" },
-    extended_mode = true,
+    extended_mode = { html = false, tsx = false },
     colors = { "#d900ff", "#00ffd9", "#ffd700" }
     -- "#00d7ff",
   },
