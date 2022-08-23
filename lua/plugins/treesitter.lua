@@ -7,14 +7,11 @@ treesitter.setup {
 
   playground = { enable = true },
 
-  rainbow = {
-    enable = true,
-    extended_mode = { html = false, tsx = false },
-    colors = { "#d900ff", "#00ffd9", "#ffd700" }
-    -- "#00d7ff",
-  },
+  rainbow = { enable = true, colors = { '#ee99ff', '#00ffd9', '#ffd700' } },
 
-  context_commentstring = { enable = true, config = { fish = "# %s" } },
+  endwise = { enable = true },
+
+  context_commentstring = { enable = true, config = { fish = '# %s' } },
 
   autotag = { enable = true },
 
@@ -22,31 +19,31 @@ treesitter.setup {
     select = {
       enable = true,
       keymaps = {
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-        ["al"] = "@loop.outer",
-        ["il"] = "@loop.inner",
-        ["ab"] = "@block.outer",
-        ["ib"] = "@block.inner"
+        ['af'] = '@function.outer',
+        ['if'] = '@function.inner',
+        ['ac'] = '@class.outer',
+        ['ic'] = '@class.inner',
+        ['al'] = '@loop.outer',
+        ['il'] = '@loop.inner',
+        ['ab'] = '@block.outer',
+        ['ib'] = '@block.inner'
       }
     },
     swap = {
       enable = true,
-      swap_next = { ["<leader>."] = "@parameter.inner" },
-      swap_previous = { ["<leader>,"] = "@parameter.inner" }
+      swap_next = { ['<leader>.'] = '@parameter.inner' },
+      swap_previous = { ['<leader>,'] = '@parameter.inner' }
     },
     move = {
       enable = true,
       set_jumps = true,
-      goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
-      goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
+      goto_next_start = { [']f'] = '@function.outer', [']c'] = '@class.outer' },
+      goto_next_end = { [']F'] = '@function.outer', [']C'] = '@class.outer' },
       goto_previous_start = {
-        ["[f"] = "@function.outer",
-        ["[c"] = "@class.outer"
+        ['[f'] = '@function.outer',
+        ['[c'] = '@class.outer'
       },
-      goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" }
+      goto_previous_end = { ['[F'] = '@function.outer', ['[C'] = '@class.outer' }
     }
   },
 

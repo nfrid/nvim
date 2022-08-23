@@ -23,3 +23,7 @@ require('Comment').setup({
     end
   end,
 })
+
+local ft = require('Comment.ft')
+
+ft.set('stylus', { '//%s', '/*%s*/' })

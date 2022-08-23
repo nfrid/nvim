@@ -7,8 +7,9 @@ b.setup {
     always_show_bufferline = false
   },
   highlights = {
-    fill = { guibg = '#21222C' },
-    buffer_selected = { gui = 'bold' }
+    fill = { bg = '#21222C' },
+    buffer_visible = { fg = '#44475A', bg = '#21222C' },
+    buffer_selected = { bold = true }
   }
 }
 

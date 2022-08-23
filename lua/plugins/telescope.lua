@@ -1,4 +1,5 @@
 require('telescope').setup({})
+require('telescope').load_extension('dap')
 
 local mx = require('mapx')
 local ts = require('telescope.builtin')
@@ -13,8 +14,8 @@ mx.nnoremap('<leader>R', function() ts.lsp_dynamic_workspace_symbols() end,
 mx.nnoremap('<C-f>', function() ts.current_buffer_fuzzy_find() end,
             'Fuzzy Find in Buffer')
 mx.nnoremap('<F1>', '<cmd>Cheatsheet<cr>', 'Find Commands')
-mx.nnoremap('<leader>d', function() ts.diagnostics() end,
-            'Find Diagnostic')
+mx.nnoremap('<leader>d', function() ts.diagnostics() end, 'Find Diagnostic')
 mx.nnoremap('<leader>o', function() ts.oldfiles() end, 'Find Recent Files')
+mx.nnoremap('<leader>s', function() ts.spell_suggest() end, 'Spell suggest')
 
 mx.nnoremap('<leader>u', ':TodoTelescope<CR>', 'Find Todo')

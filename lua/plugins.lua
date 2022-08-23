@@ -14,6 +14,8 @@ return packer.startup({
 
     use 'wbthomason/packer.nvim'
 
+    use 'RRethy/vim-illuminate'
+
     use 'folke/lsp-colors.nvim'
     use { 'dracula/vim', config = function() require('plugins.theme') end }
 
@@ -29,6 +31,11 @@ return packer.startup({
       config = function() require('plugins.bufferline') end
     }
 
+    -- use {
+    --   'b0o/incline.nvim',
+    --   config = function() require('incline').setup() end
+    -- }
+
     use {
       'lukas-reineke/indent-blankline.nvim',
       config = function() require('plugins.indent-blankline') end
@@ -42,9 +49,15 @@ return packer.startup({
       config = function() vim.g.highlightedyank_highlight_duration = 250 end
     }
     use 'kevinhwang91/nvim-hlslens'
+
     use {
-      'norcalli/nvim-colorizer.lua',
+      'NvChad/nvim-colorizer.lua',
       config = function() require('plugins.colorizer') end
+    }
+
+    use {
+      'mrshmllow/document-color.nvim',
+      config = function() require('document-color').setup({}) end
     }
 
     use {
@@ -58,6 +71,13 @@ return packer.startup({
 
     use { 'NFrid/due.nvim', config = function() require('due_nvim').setup {} end }
 
+    -- use {
+    --   'edluffy/hologram.nvim',
+    --   config = function()
+    --     require('hologram').setup({ auto_display = true })
+    --   end
+    -- }
+
     use {
       'plasticboy/vim-markdown',
       config = function() require('plugins.markdown') end
@@ -66,7 +86,10 @@ return packer.startup({
 
     use {
       'nvim-telescope/telescope.nvim',
-      requires = { { 'nvim-lua/popup.nvim' }, { 'nvim-lua/plenary.nvim' } },
+      requires = {
+        { 'nvim-lua/popup.nvim' }, { 'nvim-lua/plenary.nvim' },
+        { 'nvim-telescope/telescope-dap.nvim' }
+      },
       config = function() require('plugins.telescope') end
     }
     use {
@@ -189,6 +212,12 @@ return packer.startup({
     }
 
     use {
+      'akinsho/git-conflict.nvim',
+      tag = '*',
+      config = function() require('plugins.conflict') end
+    }
+
+    use {
       'ruifm/gitlinker.nvim',
       requires = 'nvim-lua/plenary.nvim',
       config = function() require('gitlinker').setup() end
@@ -213,14 +242,42 @@ return packer.startup({
     use {
       'hrsh7th/nvim-cmp',
       requires = {
-        { 'hrsh7th/cmp-nvim-lsp' }, { 'hrsh7th/cmp-buffer' },
-        { 'hrsh7th/cmp-path' }, { 'hrsh7th/cmp-cmdline' },
-        { 'petertriho/cmp-git' }, { 'L3MON4D3/LuaSnip' },
-        { 'saadparwaiz1/cmp_luasnip' }, { 'lukas-reineke/cmp-rg' },
-        { 'andersevenrud/cmp-tmux' }, { 'David-Kunz/cmp-npm' }
+        'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
+        'hrsh7th/cmp-cmdline', 'petertriho/cmp-git', 'L3MON4D3/LuaSnip',
+        'saadparwaiz1/cmp_luasnip', 'lukas-reineke/cmp-rg',
+        'andersevenrud/cmp-tmux', 'David-Kunz/cmp-npm', 'rcarriga/cmp-dap'
+        -- {
+        --   'tzachar/cmp-tabnine',
+        --   run = './install.sh',
+        --   requires = 'hrsh7th/nvim-cmp',
+        --   config = function() require('plugins.cmp-tabnine') end
+        -- }
       },
       config = function() require('plugins.cmp') end
     }
+
+    use {
+      'mfussenegger/nvim-dap',
+      requires = {
+        'rcarriga/nvim-dap-ui', -- 'Pocco81/dap-buddy.nvim'
+        { 'Pocco81/dap-buddy.nvim', branch = 'dev' },
+        'jbyuki/one-small-step-for-vimkind', {
+          'mxsdev/nvim-dap-vscode-js',
+          requires = {
+            {
+              'microsoft/vscode-js-debug',
+              opt = true,
+              run = 'npm install --legacy-peer-deps && npm run compile'
+            }
+          }
+          -- }, {
+          --   'theHamsta/nvim-dap-virtual-text',
+          --   config = function() require('nvim-dap-virtual-text').setup() end
+        }
+      },
+      config = function() require('plugins.dap') end
+    }
+
     use {
       'onsails/lspkind-nvim',
       config = function() require('lspkind').init() end
@@ -240,11 +297,22 @@ return packer.startup({
       requires = { 'hrsh7th/nvim-cmp' },
       config = function() require('plugins.lsp') end
     }
+
     use {
-      "andrewferrier/textobj-diagnostic.nvim",
-      config = function()
-        require("textobj-diagnostic").setup()
-      end,
+      'glepnir/lspsaga.nvim',
+      requires = { 'neovim/nvim-lspconfig' },
+      config = function() require('plugins.lspsaga') end
+    }
+
+    -- use {
+    --   'williamboman/mason.nvim',
+    --   requires = { 'williamboman/mason-lspconfig.nvim' },
+    --   config = function() require('plugins.mason') end
+    -- }
+
+    use {
+      'andrewferrier/textobj-diagnostic.nvim',
+      config = function() require('textobj-diagnostic').setup() end
     }
     -- use 'github/copilot.vim'
     use {
@@ -283,19 +351,29 @@ return packer.startup({
       'simrat39/symbols-outline.nvim',
       config = function() require('plugins.symbols-outline') end
     }
+    -- use {
+    --   'stevearc/aerial.nvim',
+    --   config = function() require('plugins.aerial') end
+    -- }
 
     use {
       'nvim-treesitter/nvim-treesitter',
+      requires = {
+        { 'nvim-treesitter/playground' }, { 'p00f/nvim-ts-rainbow' },
+        { 'JoosepAlviste/nvim-ts-context-commentstring' },
+        { 'windwp/nvim-ts-autotag' },
+        { 'nvim-treesitter/nvim-treesitter-textobjects' },
+        { 'RRethy/nvim-treesitter-textsubjects' },
+        { 'RRethy/nvim-treesitter-endwise' }
+      },
       run = function() cmd('TSUpdate') end,
       config = function() require('plugins.treesitter') end
     }
-    use 'nvim-treesitter/playground'
-    use 'p00f/nvim-ts-rainbow'
-    use 'JoosepAlviste/nvim-ts-context-commentstring'
-    use 'windwp/nvim-ts-autotag'
-    use 'nvim-treesitter/nvim-treesitter-textobjects'
-    use 'RRethy/nvim-treesitter-textsubjects'
-    -- use 'romgrk/nvim-treesitter-context'
+    use {
+      'lewis6991/spellsitter.nvim',
+      config = function() require('spellsitter').setup() end
+    }
+
     use {
       'm-demare/hlargs.nvim',
       requires = { 'nvim-treesitter/nvim-treesitter' },

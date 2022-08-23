@@ -1,3 +1,5 @@
+require('debug')
+
 vim.opt.hidden = true
 vim.opt.swapfile = false
 vim.opt.foldenable = false
@@ -14,7 +16,7 @@ vim.opt.smartcase = true
 vim.opt.mouse = 'a'
 vim.opt.clipboard = 'unnamed'
 
-vim.opt.spell = false
+vim.opt.spell = true
 vim.opt.spelllang = 'en_us,ru_yo'
 vim.opt.keymap = 'russian-jcukenwin'
 vim.opt.iminsert = 0
@@ -161,7 +163,7 @@ mx.nnoremap('\\\\', '<Esc>/<++><Enter>"_c4l')
 
 mx.nnoremap('cd', ':cd ')
 
-mx.inoremap('<C-j>', [[pumvisible() ? "\\<C-n>" : "\\<C-j>"]], 'expr')
-mx.inoremap('<C-k>', [[pumvisible() ? "\\<C-p>" : "\\<C-k>"]], 'expr')
-mx.inoremap('<Tab>', [[pumvisible() ? "\\<C-n>" : "\\<Tab>"]], 'expr')
-mx.inoremap('<S-Tab>', [[pumvisible() ? "\\<C-p>" : "\\<S-Tab>"]], 'expr')
+-- mx.inoremap('<C-j>', [[pumvisible() ? "\\<C-n>" : "\\<C-j>"]], 'expr')
+-- mx.inoremap('<C-k>', [[pumvisible() ? "\\<C-p>" : "\\<C-k>"]], 'expr')
+-- mx.inoremap('<Tab>', [[pumvisible() ? "\\<C-n>" : "\\<Tab>"]], 'expr')
+-- mx.inoremap('<S-Tab>', [[pumvisible() ? "\\<C-p>" : "\\<S-Tab>"]], 'expr')
