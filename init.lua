@@ -9,7 +9,9 @@ vim.opt.expandtab = true
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
-vim.cmd('au BufRead,BufNewFile *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4')
+vim.cmd(
+  'au BufRead,BufNewFile *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4'
+)
 
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
@@ -47,7 +49,9 @@ Format = function()
   vim.cmd(':w')
 
   local formatCmds = {
-    lua = 'lua-format -i',
+    lua = 'stylua -s',
+    sh = 'shfmt -s -i 2 -w',
+    bash = 'shfmt -s -i 2 -w',
     go = 'gofmt -w',
     javascript = 'prettier -w --loglevel error',
     typescript = 'prettier -w --loglevel error',
@@ -61,13 +65,15 @@ Format = function()
     cpp = 'clang-format -style=file -i',
     markdown = 'prettier -w --prose-wrap always --loglevel error',
     python = 'black -q',
-    haskell = 'stylish-haskell -i'
+    haskell = 'stylish-haskell -i',
   }
 
   local formatCmd = formatCmds[vim.bo.filetype] or 'sed -i -e "s/\\s\\+$//"'
-  local f = io.popen(formatCmd .. ' "' .. vim.api.nvim_buf_get_name(0) ..
-                         '" 2>&1')
-  if not f then return end
+  local f =
+    io.popen(formatCmd .. ' "' .. vim.api.nvim_buf_get_name(0) .. '" 2>&1')
+  if not f then
+    return
+  end
 
   print(f:read('*all'))
   f:close()
@@ -77,7 +83,7 @@ Format = function()
   vim.cmd('IndentBlanklineRefresh')
 end
 
-mx.nnoremap('<leader>F', Format)
+mx.nnoremap('<leader>F', Format, 'Format')
 
 ToggleConceal = function()
   if vim.wo.conceallevel == 2 then
@@ -87,7 +93,8 @@ ToggleConceal = function()
   end
 end
 
-mx.nnoremap('<leader>pc', ToggleConceal)
+mx.nname('<leader>p', 'visuals')
+mx.nnoremap('<leader>pc', ToggleConceal, 'Conceal')
 
 ToggleWrap = function()
   if vim.wo.wrap then
@@ -101,7 +108,7 @@ ToggleWrap = function()
   end
 end
 
-mx.nnoremap('<leader>pw', ToggleWrap)
+mx.nnoremap('<leader>pw', ToggleWrap, 'Wrap')
 
 ToggleKeyMap = function()
   if vim.bo.iminsert == 0 then
@@ -111,10 +118,10 @@ ToggleKeyMap = function()
   end
 end
 
-mx.noremap('<C-^>', ToggleKeyMap)
-mx.noremap('<A-Space>', ToggleKeyMap)
-mx.noremapbang('<A-Space>', '<C-^>')
-mx.tnoremap('<A-Space>', '<C-^>')
+mx.noremap('<C-^>', ToggleKeyMap, 'Keymap')
+mx.noremap('<A-Space>', ToggleKeyMap, 'Keymap')
+mx.noremapbang('<A-Space>', '<C-^>', 'Keymap')
+mx.tnoremap('<A-Space>', '<C-^>', 'Keymap')
 
 ToggleRelNums = function()
   if vim.wo.relativenumber then
@@ -124,7 +131,7 @@ ToggleRelNums = function()
   end
 end
 
-mx.nnoremap('<leader>pr', ToggleRelNums)
+mx.nnoremap('<leader>pr', ToggleRelNums, 'Relative numbers')
 
 vim.cmd('au BufReadPost *.zsh,.zshrc set filetype=sh')
 vim.cmd('au BufReadPost *.fish set filetype=fish')
@@ -141,25 +148,31 @@ mx.nnoremap('<SPACE>', '<NOP>')
 mx.nnoremap('<tab>', '<CMD>bn<CR>')
 mx.nnoremap('<s-tab>', '<CMD>bp<CR>')
 
-mx.nnoremap('gF', ':e <cfile><CR>')
+mx.nnoremap('gF', ':e <cfile><CR>', 'Go to file (FORCE)')
 
 mx.nnoremap('<leader>w', '<C-w>')
-mx.nnoremap('<leader>fs', ':w!<CR>')
-mx.nnoremap('<Leader>?', '<CMD>lua vim.opt.hls = not vim.opt.hls<CR>')
-mx.nnoremap('<Leader>/', ':nohlsearch<CR>')
+mx.nnoremap('<leader>fs', ':w!<CR>', 'Save buffer')
+mx.nnoremap(
+  '<Leader>p/',
+  '<CMD>lua vim.opt.hls = not vim.api.nvim_get_option(\'hls\')<CR>',
+  'Search highlighting'
+)
+mx.nnoremap('<Leader>/', ':nohlsearch<CR>', 'Clear search highlighting')
 mx.nnoremap('Q', ':bd<CR>')
-mx.nnoremap('<leader>cd', ':cd %:h<CR>')
-mx.nnoremap('<leader>cp', ':let @+ = expand("%:p:h")<CR>')
+mx.nnoremap('<leader>cd', ':cd %:h<CR>', 'cd to the buffer')
+mx.nnoremap('<leader>cp', ':let @+ = expand("%:p:h")<CR>', 'Copy buffer path')
 
-mx.nnoremap('<leader>vv', ':e $MYVIMRC<CR>')
+mx.nnoremap('<leader>vv', ':e $MYVIMRC<CR>', 'Go to vimrc')
 
-mx.nnoremap('<leader>ps', ':set spell!<CR>')
+mx.nnoremap('<leader>ps', ':set spell!<CR>', 'Spell')
 
-if vim.env.TMUX == nil then mx.nnoremap('<A-a>', ':silent !$TERM & disown<CR>') end
+if vim.env.TMUX == nil then
+  mx.nnoremap('<A-a>', ':silent !$TERM & disown<CR>')
+end
 
 mx.tnoremap('<A-a>', '<C-\\><C-n>')
 
-mx.nnoremap('\\\\', '<Esc>/<++><Enter>"_c4l')
+mx.nnoremap('\\\\', '<Esc>/<++><Enter>"_c4l', 'Replace next <++>')
 
 mx.nnoremap('cd', ':cd ')
 

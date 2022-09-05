@@ -1,2 +1,1 @@
-require('colorizer').setup({ '*', css = { css = true }, scss = { scc = true } },
-                           { names = false })
+require("colorizer").setup({ filetypes = { "*" }, css = { css = true }, scss = { scc = true } }, { names = false })

@@ -1,10 +1,21 @@
 local navic = require('nvim-navic')
 
+local function diff()
+  local gitsigns = vim.b.gitsigns_status_dict
+  if gitsigns then
+    return {
+      added = gitsigns.added,
+      modified = gitsigns.changed,
+      removed = gitsigns.removed,
+    }
+  end
+end
+
 local function get_context()
   if navic and navic.is_available() then
     local loc = navic.get_location()
     if loc ~= '' then
-      return '> ' .. loc
+      return loc
     end
   end
   return ''
@@ -24,41 +35,80 @@ end
 
 local function mode_to_symbol(mode)
   local mode_sym_map = {
-    normal = "α",
-    insert = "Ɣ",
-    visual = "Σ",
-    ["v-block"] = "Θ",
-    select = "Ϸ",
-    ["v-select"] = "Ϸ",
-    command = "Ψ",
-    replace = "Δ"
+    normal = 'α',
+    insert = 'Ɣ',
+    visual = 'Σ',
+    ['v-block'] = 'Θ',
+    select = 'Ϸ',
+    ['v-select'] = 'Ϸ',
+    command = 'Ψ',
+    replace = 'Δ',
   }
 
   return mode_sym_map[string.lower(mode)] or mode
 end
 
-require('lualine').setup {
+local filename = {
+  'filename',
+  symbols = {
+    modified = ' ●',
+    readonly = ' ',
+    unnamed = ' ',
+    newfile = ' ',
+  },
+}
+
+local filename3 = filename
+table.insert(filename3, { path = 3 })
+
+require('lualine').setup({
   options = {
     theme = 'dracula',
     section_separators = { '', '' },
     component_separators = { '|', '|' },
     icons_enabled = true,
-    fmt = mode_to_symbol
+    fmt = mode_to_symbol,
+    globalstatus = true,
   },
+  extensions = { 'symbols-outline', 'man', 'nvim-dap-ui', 'quickfix' },
   sections = {
     lualine_a = { 'mode', keymap },
-    lualine_b = { 'branch', 'diff' },
+    lualine_b = { filename },
     lualine_c = {
-      'filename',
       get_context,
+      action_available,
+    },
+    lualine_x = {
       {
         'diagnostics',
         sources = { 'nvim_diagnostic' },
-        symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' }
-      }, action_available
+        symbols = {
+          error = ' ',
+          warn = ' ',
+          info = '',
+          hint = ' ',
+        },
+      },
+      { 'diff', source = diff },
+      { 'b:gitsigns_head', icon = '' },
     },
+    lualine_y = {},
+    lualine_z = {},
+  },
+  winbar = {
+    lualine_a = { filename3 },
+    lualine_b = {},
+    lualine_c = {},
     lualine_x = { 'filetype' },
     lualine_y = { 'progress' },
-    lualine_z = { 'location' }
-  }
-}
+    lualine_z = { 'location' },
+  },
+  inactive_winbar = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = { filename3 },
+    lualine_x = { 'filetype', 'progress', 'location' },
+    lualine_y = {},
+    lualine_z = {},
+  },
+})

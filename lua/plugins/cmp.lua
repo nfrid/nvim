@@ -12,6 +12,9 @@ end
 vim.o.pumheight = 10
 
 cmp.setup({
+  experimental = {
+    ghost_text = true,
+  },
   enabled = function()
     return vim.api.nvim_buf_get_option(0, 'buftype') ~= 'prompt' or
         require('cmp_dap').is_dap_buffer()
@@ -49,16 +52,25 @@ cmp.setup({
     ['<PageDown>'] = cmp.mapping.scroll_docs(-4),
     ['<PageUp>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.abort(),
+    ['<C-a>'] = cmp.mapping.abort(),
+    ['<C-e>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    }),
     ['<CR>'] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
-      select = false
+      select = false,
     })
   }),
   sources = cmp.config.sources({
-    { name = 'copilot' }, -- { name = 'cmp_tabnine' },
-    { name = 'nvim_lsp' }, { name = 'luasnip' }, { name = 'path' },
-    { name = 'tmux' }, -- { name = 'rg' },
+    { name = 'copilot' },
+    -- { name = 'cmp_tabnine' },
+    { name = 'nvim_lsp' },
+    { name = 'neorg' },
+    { name = 'luasnip' },
+    { name = 'path' },
+    { name = 'tmux' },
+    -- { name = 'rg' },
     { name = 'npm', keyword_length = 4 }
   }, { { name = 'buffer' } }),
   formatting = {

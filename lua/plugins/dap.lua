@@ -1,5 +1,4 @@
 local dap = require('dap')
-local widgets = require('dap.ui.widgets')
 
 local mx = require('mapx')
 local p = '<M-d>'
@@ -33,7 +32,7 @@ local dapui = require('dapui')
 dapui.setup()
 
 nm('e', dapui.eval, 'Eval')
-nm(p, dapui.toggle)
+nm(p, dapui.toggle, 'Toggle UI')
 
 dap.listeners.after.event_initialized['dapui_config'] = function()
   ---@diagnostic disable-next-line: missing-parameter

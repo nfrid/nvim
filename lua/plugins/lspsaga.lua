@@ -2,6 +2,7 @@ local saga = require('lspsaga')
 -- local mx = require('mapx')
 --
 -- mx.nnoremap('<leader>;', '<cmd>LSoutlineToggle<cr>', 'Outline (Saga)')
+
 saga.init_lsp_saga({
   show_outline = {
     auto_refresh = true,
@@ -13,5 +14,8 @@ saga.init_lsp_saga({
     -- enable = true,
     separator = ' > ',
     -- in_custom = true
-  }
+  },
+  code_action_lightbulb = {
+    virtual_text = false,
+  },
 })
