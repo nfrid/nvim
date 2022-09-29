@@ -13,7 +13,7 @@ p.setup({
 mx.nnoremap(']x', '<Plug>(git-conflict-next-conflict)', 'Next conflict')
 mx.nnoremap('[x', '<Plug>(git-conflict-prev-conflict)', 'Previous conflict')
 
-local s = '<leader>gs'
+local s = '<leader>g'
 mx.nname(s, 'select')
 mx.nnoremap(s .. 'h', '<Plug>(git-conflict-ours)', 'Select ours')
 mx.nnoremap(s .. 'l', '<Plug>(git-conflict-theirs)', 'Select theirs')

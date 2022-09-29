@@ -61,6 +61,23 @@ local filename = {
 local filename3 = filename
 table.insert(filename3, { path = 3 })
 
+local no_winbar_ext = {
+  winbar = {},
+  inactive_winbar = {},
+  filetypes = {
+    'man',
+    'qf',
+    'Outline',
+    'dap-repl',
+    'dapui_console',
+    'dapui_watches',
+    'dapui_stacks',
+    'dapui_breakpoints',
+    'dapui_scopes',
+    'toggleterm',
+  },
+}
+
 require('lualine').setup({
   options = {
     theme = 'dracula',
@@ -70,7 +87,7 @@ require('lualine').setup({
     fmt = mode_to_symbol,
     globalstatus = true,
   },
-  extensions = { 'symbols-outline', 'man', 'nvim-dap-ui', 'quickfix' },
+  extensions = { no_winbar_ext },
   sections = {
     lualine_a = { 'mode', keymap },
     lualine_b = { filename },

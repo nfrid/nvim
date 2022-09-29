@@ -1,0 +1,3 @@
+; inherits: perl
+
+(comments) @spell

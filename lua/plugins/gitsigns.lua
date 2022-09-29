@@ -8,6 +8,8 @@ mx.nnoremap('<C-k>', '[c')
 
 gs.setup({
   on_attach = function(bufnr)
+    vim.cmd('hi! link GitSignsDelete Error')
+
     local p = '<leader>g'
     mx.name(p, 'git', { buffer = bufnr })
 

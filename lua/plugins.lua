@@ -21,6 +21,33 @@ return packer.startup({
       end,
     })
 
+    use({
+      'AckslD/nvim-FeMaco.lua',
+      config = function()
+        require('femaco').setup()
+      end,
+    })
+
+    use({
+      'mrjones2014/legendary.nvim',
+      config = function()
+        require('legendary').setup()
+      end,
+    })
+
+    -- use({
+    --   'anuvyklack/windows.nvim',
+    --   requires = {
+    --     'anuvyklack/middleclass',
+    --     'anuvyklack/animation.nvim',
+    --   },
+    --   config = function()
+    --     vim.o.winwidth = 10
+    --     vim.o.winminwidth = 10
+    --     require('windows').setup()
+    --   end,
+    -- })
+
     -- use('mbpowers/nvimager')
 
     use('RRethy/vim-illuminate')
@@ -32,6 +59,23 @@ return packer.startup({
         require('plugins.theme')
       end,
     })
+
+    use('superhawk610/ascii-blocks.nvim')
+
+    use({
+      'phaazon/mind.nvim',
+      requires = { 'nvim-lua/plenary.nvim' },
+      config = function()
+        require('mind').setup()
+      end,
+    })
+
+    -- use({
+    --   'levouh/tint.nvim',
+    --   config = function()
+    --     require('tint').setup({})
+    --   end,
+    -- })
 
     use({
       'hoob3rt/lualine.nvim',
@@ -109,6 +153,13 @@ return packer.startup({
       end,
     })
 
+    use({
+      'gaoDean/autolist.nvim',
+      config = function()
+        require('plugins.autolist')
+      end,
+    })
+
     -- use {
     --   'edluffy/hologram.nvim',
     --   config = function()
@@ -116,12 +167,12 @@ return packer.startup({
     --   end
     -- }
 
-    use({
-      'plasticboy/vim-markdown',
-      config = function()
-        require('plugins.markdown')
-      end,
-    })
+    -- use({
+    --   'plasticboy/vim-markdown',
+    --   config = function()
+    --     require('plugins.markdown')
+    --   end,
+    -- })
     use('lervag/vimtex')
 
     use({
@@ -133,12 +184,20 @@ return packer.startup({
       requires = 'nvim-lua/plenary.nvim',
     })
 
+    use('stevearc/dressing.nvim')
+
+    use({
+      'krady21/compiler-explorer.nvim',
+      requires = { 'nvim-lua/plenary.nvim' },
+    })
+
     use({
       'nvim-telescope/telescope.nvim',
       requires = {
-        { 'nvim-lua/popup.nvim' },
-        { 'nvim-lua/plenary.nvim' },
-        { 'nvim-telescope/telescope-dap.nvim' },
+        'nvim-lua/popup.nvim',
+        'nvim-lua/plenary.nvim',
+        'nvim-telescope/telescope-dap.nvim',
+        'smartpde/telescope-recent-files',
       },
       config = function()
         require('plugins.telescope')
@@ -192,31 +251,6 @@ return packer.startup({
     })
 
     use({
-      'abecodes/tabout.nvim',
-      config = function()
-        require('tabout').setup({
-          tabkey = '<C-f>',
-          backwards_tabkey = '<M-f>',
-          act_as_tab = false,
-          act_as_shift_tab = false,
-          enable_backwards = true, -- well ...
-          completion = true, -- if the tabkey is used in a completion pum
-          tabouts = {
-            { open = '\'', close = '\'' },
-            { open = '"', close = '"' },
-            { open = '`', close = '`' },
-            { open = '(', close = ')' },
-            { open = '[', close = ']' },
-            { open = '{', close = '}' },
-          },
-          ignore_beginning = true, --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]]
-          exclude = {}, -- tabout will ignore these filetypes
-        })
-      end,
-      wants = { 'nvim-treesitter' }, -- or require if not used so far
-    })
-
-    use({
       'anuvyklack/pretty-fold.nvim',
       requires = {
         { 'anuvyklack/nvim-keymap-amend' },
@@ -245,22 +279,9 @@ return packer.startup({
 
     use('fedorenchik/qt-support.vim')
 
-    use('zah/nim.vim')
+    use('ron-rs/ron.vim')
 
-    -- use {
-    --   'mattn/emmet-vim',
-    --   config = function()
-    --     vim.g.user_emmet_mode = 'i'
-    --     vim.g.user_emmet_leader_key = '<A-m>'
-    --   end
-    -- }
-    -- that not workie 😔
-    -- use {
-    --   'RishabhRD/nvim-lsputils',
-    --   requires = { 'RishabhRD/popfix', opt = true },
-    --   config = function() require('plugins.lsputils') end
-    -- }
-    --
+    use('zah/nim.vim')
 
     use('iloginow/vim-stylus')
 
@@ -279,9 +300,10 @@ return packer.startup({
     })
 
     use({
-      'kdheepak/lazygit.nvim',
+      'akinsho/toggleterm.nvim',
+      tag = '*',
       config = function()
-        require('plugins.lazygit')
+        require('plugins.toggleterm')
       end,
     })
 
@@ -291,14 +313,6 @@ return packer.startup({
         require('plugins.gitsigns')
       end,
     })
-
-    -- use({
-    --   'tanvirtin/vgit.nvim',
-    --   requires = 'nvim-lua/plenary.nvim',
-    --   config = function()
-    --     require('plugins.vgit')
-    --   end,
-    -- })
 
     use({
       'akinsho/git-conflict.nvim',
@@ -337,6 +351,7 @@ return packer.startup({
         require('plugins.luasnip')
       end,
     })
+
     use({
       'hrsh7th/nvim-cmp',
       requires = {
@@ -378,10 +393,13 @@ return packer.startup({
               run = 'npm install --legacy-peer-deps && npm run compile',
             },
           },
-          -- }, {
-          --   'theHamsta/nvim-dap-virtual-text',
-          --   config = function() require('nvim-dap-virtual-text').setup() end
         },
+        -- {
+        --   'theHamsta/nvim-dap-virtual-text',
+        --   config = function()
+        --     require('nvim-dap-virtual-text').setup()
+        --   end,
+        -- },
       },
       config = function()
         require('plugins.dap')
@@ -394,26 +412,31 @@ return packer.startup({
         require('lspkind').init()
       end,
     })
+
     use({
       'j-hui/fidget.nvim',
       config = function()
         require('fidget').setup()
       end,
     })
-    -- use 'ray-x/lsp_signature.nvim'
+
     use('folke/lua-dev.nvim')
+
     use({ 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' })
+
     use({
       'neovim/nvim-lspconfig',
-      -- requires = { 'nvim-lua/completion-nvim', opt = true },
-      -- requires = {
-      --   { 'ms-jpq/coq_nvim', branch = 'coq' },
-      --   { 'ms-jpq/coq.artifacts', branch = 'artifacts' },
-      --   { 'ms-jpq/coq.thirdparty', branch = '3p' }, { 'hrsh7th/nvim-cmp' }
-      -- },
       requires = { 'hrsh7th/nvim-cmp' },
       config = function()
         require('plugins.lsp')
+      end,
+    })
+
+    use({
+      'theHamsta/nvim-semantic-tokens',
+      requires = { 'neovim/nvim-lspconfig' },
+      config = function()
+        require('plugins.semantic-tokens')
       end,
     })
 
@@ -445,7 +468,7 @@ return packer.startup({
         require('textobj-diagnostic').setup()
       end,
     })
-    -- use 'github/copilot.vim'
+
     use({
       'zbirenbaum/copilot.lua',
       after = 'nvim-bufferline.lua',
@@ -459,7 +482,16 @@ return packer.startup({
       'zbirenbaum/copilot-cmp',
       requires = 'zbirenbaum/copilot.lua',
       module = 'copilot_cmp',
+      after = { 'copilot.lua' },
+      config = function()
+        require('copilot_cmp').setup({
+          formatters = {
+            insert_text = require('copilot_cmp.format').remove_existing,
+          },
+        })
+      end,
     })
+
     use({ 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig' })
 
     use({
@@ -470,9 +502,9 @@ return packer.startup({
     })
 
     use({
-      'ahmedkhalf/lsp-rooter.nvim',
+      'ahmedkhalf/project.nvim',
       config = function()
-        require('lsp-rooter').setup({})
+        require('plugins.project')
       end,
     })
 
@@ -492,10 +524,6 @@ return packer.startup({
         require('plugins.symbols-outline')
       end,
     })
-    -- use {
-    --   'stevearc/aerial.nvim',
-    --   config = function() require('plugins.aerial') end
-    -- }
 
     use({
       'nvim-treesitter/nvim-treesitter',
@@ -513,12 +541,6 @@ return packer.startup({
       end,
       config = function()
         require('plugins.treesitter')
-      end,
-    })
-    use({
-      'lewis6991/spellsitter.nvim',
-      config = function()
-        require('spellsitter').setup()
       end,
     })
 

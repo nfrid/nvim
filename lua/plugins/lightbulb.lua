@@ -1,5 +1,5 @@
-require('mapx').cmd("LightBulbUpdate", function()
-  require('nvim-lightbulb').update_lightbulb {
+require('mapx').cmd('LightBulbUpdate', function()
+  require('nvim-lightbulb').update_lightbulb({
     -- Language servers to ignore
     ignore = {},
 
@@ -7,7 +7,7 @@ require('mapx').cmd("LightBulbUpdate", function()
 
     float = {
       enabled = false,
-      text = "",
+      text = '',
       -- Available keys for window options:
       -- - height     of floating window
       -- - width      of floating window
@@ -22,26 +22,25 @@ require('mapx').cmd("LightBulbUpdate", function()
       -- - offset_y   y-axis offset of the floating window
       -- - anchor     corner of float to place at the cursor (NW, NE, SW, SE)
       -- - winblend   transparency of the window (0-100)
-      win_opts = {}
+      win_opts = {},
     },
 
     virtual_text = {
       enabled = false,
       -- Text to show at virtual text
-      text = "",
+      text = '',
       -- highlight mode to use for virtual text (replace, combine, blend), see :help nvim_buf_set_extmark() for reference
-      hl_mode = "replace"
+      hl_mode = 'replace',
     },
 
     status_text = {
       enabled = true,
       -- Text to provide when code actions are available
-      text = "✨",
+      text = '✨',
       -- Text to provide when no actions are available
-      text_unavailable = ""
-    }
-  }
+      text_unavailable = '',
+    },
+  })
 end)
 
-vim.cmd [[autocmd CursorMoved,CursorMovedI * LightBulbUpdate]]
-
+vim.cmd([[autocmd CursorMoved,CursorMovedI * LightBulbUpdate]])

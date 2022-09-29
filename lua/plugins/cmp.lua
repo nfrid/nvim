@@ -51,6 +51,7 @@ cmp.setup({
 
     ['<PageDown>'] = cmp.mapping.scroll_docs(-4),
     ['<PageUp>'] = cmp.mapping.scroll_docs(4),
+    ---@diagnostic disable-next-line: missing-parameter
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-a>'] = cmp.mapping.abort(),
     ['<C-e>'] = cmp.mapping.confirm({
@@ -122,3 +123,5 @@ cmp.setup.cmdline(':', {
 
 cmp.setup.filetype({ 'dap-repl', 'dapui_watches' },
   { sources = { { name = 'dap' } } })
+
+cmp.event:on('confirm_done', vim.lsp.buf.semantic_tokens_full)

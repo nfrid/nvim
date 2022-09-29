@@ -1,7 +1,46 @@
-vim.cmd('colorscheme dracula')
-vim.cmd('hi CursorLine guibg=#21222C')
-vim.cmd('hi CursorLineNr guifg=#F1FA8C guibg=#21222C gui=none')
-vim.cmd('hi IndentLine guifg=#44475a')
-vim.cmd('hi DraculaErrorLine guifg=NONE guibg=NONE')
-vim.cmd('hi DraculaWarnLine guifg=NONE guibg=NONE')
-vim.cmd('hi DraculaInfoLine guifg=NONE guibg=NONE')
+vim.cmd([[
+colorscheme dracula
+hi CursorLine guibg=#21222C
+hi CursorLineNr guifg=#F1FA8C guibg=#21222C gui=none
+
+hi IndentLine guifg=#44475a
+
+hi DraculaErrorLine guifg=NONE guibg=NONE
+hi DraculaWarnLine guifg=NONE guibg=NONE
+hi DraculaInfoLine guifg=NONE guibg=NONE
+
+hi link LspNamespace @namespace
+hi link LspType @type
+hi link LspClass Class
+" hi link LspEnum LspCxxHlGroupEnumConstant
+" hi link LspInterface
+" hi link LspStruct
+" hi link LspTypeParameter DraculaOrangeItalic
+" hi link LspParameter DraculaOrange
+" hi link LspVariable
+hi LspProperty guifg=#e8d7ff
+hi link LspEnumMember DraculaPurple
+" hi link LspEvent
+hi link LspFunction Function
+hi link LspMethod Function
+" hi link LspMacro
+" hi link LspKeyword
+" hi link LspModifier
+" hi link LspComment
+" hi link LspString
+" hi link LspNumber
+" hi link LspRegexp
+" hi link LspOperator
+" hi LspMember guifg=#f092dd
+"
+" hi LspDeclaration gui=bold
+" hi LspDefinition gui=bold
+hi link LspReadonly DraculaPurple
+" hi link LspStatic
+hi LspDeprecated gui=strikethrough
+" hi link LspAbstract
+hi LspAsync gui=italic
+" hi link LspModification
+" hi link LspDocumentation DraculaOrange
+hi LspDefaultLibrary guifg=#ff9999
+]])

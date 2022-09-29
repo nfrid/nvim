@@ -3,12 +3,27 @@ local navic = require('nvim-navic')
 local mx = require('mapx')
 
 local on_attach = function(client, bufnr)
-  if client.server_capabilities.documentSymbolProvider then
+  local caps = client.server_capabilities
+  if caps.documentSymbolProvider then
     navic.attach(client, bufnr)
   end
 
-  if client.server_capabilities.colorProvider and require('document-color') then
+  if caps.colorProvider and require('document-color') then
     require('document-color').buf_attach(bufnr)
+  end
+
+  if vim.g.semantic_tokens then
+    if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
+      local augroup = vim.api.nvim_create_augroup('SemanticTokens', {})
+      vim.api.nvim_create_autocmd({ 'TextChanged', 'CompleteDone', 'InsertLeave' }, {
+        group = augroup,
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.buf.semantic_tokens_full()
+        end,
+      })
+      vim.lsp.buf.semantic_tokens_full()
+    end
   end
 
   -- require('aerial').on_attach(client, bufnr)
@@ -95,13 +110,17 @@ local on_attach = function(client, bufnr)
   end, 'buffer', 'Format')
 
   if client.name == 'eslint' then
-    client.server_capabilities.documentFormattingProvider = true
-    client.server_capabilities.documentRangeFormattingProvider = true
+    caps.documentFormattingProvider = true
+    caps.documentRangeFormattingProvider = true
   end
 
   if client.name == 'tsserver' then
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.documentRangeFormattingProvider = false
+    caps.documentFormattingProvider = false
+    caps.documentRangeFormattingProvider = false
+  end
+
+  if client.name == 'ccls' then
+    client.offset_encoding = 'utf-16'
   end
 end
 
@@ -132,7 +151,6 @@ local configs = {}
 
 configs.ccls = {
   init_options = { highlight = { lsRanges = true } },
-  offset_encoding = 'utf-16',
 }
 
 configs.texlab = {
