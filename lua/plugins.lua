@@ -8,17 +8,48 @@ local mx = require('mapx')
 mx.nnoremap('<leader>P', '<cmd>PackerCompile<cr>', 'Recompile Plugins')
 mx.nnoremap('<leader>pp', '<cmd>PackerSync<cr>', 'Sync Plugins')
 
+local package_root =
+  require('packer.util').join_paths(vim.fn.stdpath('data'), 'site', 'pack')
+vim.g.packroot = package_root
+
 return packer.startup({
   function()
     local use = packer.use
 
     use('wbthomason/packer.nvim')
 
+    -- use('samjwill/nvim-unception')
+
+    use('martinda/Jenkinsfile-vim-syntax')
+
     use({
       'NFrid/media.nvim',
       config = function()
         require('media-nvim').setup()
       end,
+    })
+
+    use({
+      'smjonas/live-command.nvim',
+      config = function()
+        require('live-command').setup({
+          commands = {
+            Norm = { cmd = 'norm' },
+          },
+        })
+      end,
+    })
+
+    use({
+      'folke/noice.nvim',
+      event = 'VimEnter',
+      config = function()
+        require('plugins.noice')
+      end,
+      requires = {
+        'MunifTanjim/nui.nvim',
+        'rcarriga/nvim-notify',
+      },
     })
 
     use({
@@ -50,13 +81,20 @@ return packer.startup({
 
     -- use('mbpowers/nvimager')
 
-    use('RRethy/vim-illuminate')
+    use({
+      'RRethy/vim-illuminate',
+      config = function()
+        require('plugins.illuminate')
+      end,
+    })
 
     use('folke/lsp-colors.nvim')
     use({
       'dracula/vim',
+      as = 'dracula',
       config = function()
-        require('plugins.theme')
+        vim.cmd('colorscheme dracula')
+        source_after('plugin/dracula.vim')
       end,
     })
 
@@ -79,6 +117,7 @@ return packer.startup({
 
     use({
       'hoob3rt/lualine.nvim',
+      after = 'noice.nvim',
       requires = 'kyazdani42/nvim-web-devicons',
       config = function()
         require('plugins.lualine')
@@ -314,6 +353,29 @@ return packer.startup({
       end,
     })
 
+    -- use({
+    --   'lewis6991/hover.nvim',
+    --   config = function()
+    --     require('hover').setup({
+    --       init = function()
+    --         -- Require providers
+    --         require('hover.providers.lsp')
+    --         -- require('hover.providers.gh')
+    --         -- require('hover.providers.jira')
+    --         -- require('hover.providers.man')
+    --         -- require('hover.providers.dictionary')
+    --       end,
+    --       preview_opts = {
+    --         border = nil,
+    --       },
+    --       -- Whether the contents of a currently open hover window should be moved
+    --       -- to a :h preview-window when pressing the hover keymap.
+    --       preview_window = false,
+    --       title = true,
+    --     })
+    --   end,
+    -- })
+
     use({
       'akinsho/git-conflict.nvim',
       tag = '*',
@@ -413,12 +475,12 @@ return packer.startup({
       end,
     })
 
-    use({
-      'j-hui/fidget.nvim',
-      config = function()
-        require('fidget').setup()
-      end,
-    })
+    -- use({
+    --   'j-hui/fidget.nvim',
+    --   config = function()
+    --     require('fidget').setup()
+    --   end,
+    -- })
 
     use('folke/lua-dev.nvim')
 
@@ -429,6 +491,14 @@ return packer.startup({
       requires = { 'hrsh7th/nvim-cmp' },
       config = function()
         require('plugins.lsp')
+      end,
+    })
+
+    use({
+      'narutoxy/dim.lua',
+      requires = { 'nvim-treesitter/nvim-treesitter', 'neovim/nvim-lspconfig' },
+      config = function()
+        require('dim').setup({})
       end,
     })
 
@@ -473,8 +543,10 @@ return packer.startup({
       'zbirenbaum/copilot.lua',
       after = 'nvim-bufferline.lua',
       config = function()
+        ---@diagnostic disable-next-line: param-type-mismatch
         vim.defer_fn(function()
           require('copilot').setup()
+          ---@diagnostic disable-next-line: param-type-mismatch
         end, 100)
       end,
     })
@@ -518,12 +590,12 @@ return packer.startup({
       end,
     })
 
-    use({
-      'simrat39/symbols-outline.nvim',
-      config = function()
-        require('plugins.symbols-outline')
-      end,
-    })
+    -- use({
+    --   'simrat39/symbols-outline.nvim',
+    --   config = function()
+    --     require('plugins.symbols-outline')
+    --   end,
+    -- })
 
     use({
       'nvim-treesitter/nvim-treesitter',

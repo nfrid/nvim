@@ -15,13 +15,16 @@ local on_attach = function(client, bufnr)
   if vim.g.semantic_tokens then
     if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
       local augroup = vim.api.nvim_create_augroup('SemanticTokens', {})
-      vim.api.nvim_create_autocmd({ 'TextChanged', 'CompleteDone', 'InsertLeave' }, {
-        group = augroup,
-        buffer = bufnr,
-        callback = function()
-          vim.lsp.buf.semantic_tokens_full()
-        end,
-      })
+      vim.api.nvim_create_autocmd(
+        { 'TextChanged', 'CompleteDone', 'InsertLeave' },
+        {
+          group = augroup,
+          buffer = bufnr,
+          callback = function()
+            vim.lsp.buf.semantic_tokens_full()
+          end,
+        }
+      )
       vim.lsp.buf.semantic_tokens_full()
     end
   end
@@ -50,7 +53,11 @@ local on_attach = function(client, bufnr)
   mx.nnoremap('gd', function()
     buf.definition()
   end, 'buffer', 'To Definition')
-  mx.nnoremap('K', buf.hover, 'buffer', 'Describe on Point')
+  -- mx.nnoremap('K', buf.hover, 'buffer', 'Describe on Point')
+  mx.nnoremap('K', '<cmd>Lspsaga hover_doc<cr>', 'buffer', 'Describe on Point')
+  -- local hover = require('hover')
+  -- mx.nnoremap('K', require('hover').hover, 'buffer', 'Describe on Point')
+  -- mx.nnoremap('gK', hover.hover_select, 'buffer', 'Describe on Point (Select)')
   mx.nnoremap('gi', function()
     buf.implementation()
   end, 'buffer', 'To Implementation')
@@ -84,7 +91,7 @@ local on_attach = function(client, bufnr)
   mx.nnoremap('gj', '<cmd>Lspsaga lsp_finder<cr>', 'buffer', 'References')
   mx.nnoremap(
     'gp',
-    '<cmd>Lspsaga preview_definition<cr>',
+    '<cmd>Lspsaga peek_definition<cr>',
     'buffer',
     'References'
   )
@@ -145,6 +152,7 @@ local servers = {
   'sumneko_lua',
   'marksman',
   'tailwindcss',
+  'cssmodules_ls',
 }
 
 local configs = {}
@@ -172,12 +180,14 @@ configs.texlab = {
   },
 }
 
-configs.sumneko_lua = require('lua-dev').setup({
-  lspconfig = {
-    cmd = { '/usr/bin/lua-language-server' },
-    telemetry = { enable = false },
-  },
-})
+-- configs.sumneko_lua = require('neodev').setup({
+--   lspconfig = {
+--     cmd = { '/usr/bin/lua-language-server' },
+--     telemetry = { enable = false },
+--   },
+-- })
+
+require('neodev').setup({})
 
 configs.tsserver = {
   settings = {
@@ -211,7 +221,7 @@ local colorCapabilities = vim.lsp.protocol.make_client_capabilities()
 colorCapabilities.textDocument.colorProvider = { dynamicRegistration = true }
 
 local capabilities =
-  require('cmp_nvim_lsp').update_capabilities(colorCapabilities)
+  require('cmp_nvim_lsp').default_capabilities(colorCapabilities)
 
 for _, lsp in ipairs(servers) do
   local config = {}

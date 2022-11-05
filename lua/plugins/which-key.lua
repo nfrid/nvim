@@ -5,5 +5,6 @@ wk.setup({
     spelling = {
       enabled = true,
     }
-  }
+  },
+  show_help = false,
 })

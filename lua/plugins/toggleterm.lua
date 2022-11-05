@@ -18,17 +18,13 @@ mx.nnoremap('<leader>tv', '<cmd>3ToggleTerm direction=vertical<cr>')
 local Terminal = require('toggleterm.terminal').Terminal
 
 local lazygit = Terminal:new({
-  cmd = 'lazygit',
+  cmd = 'GIT_EDITOR="nvr -l" lazygit',
   hidden = true,
   dir = 'git_dir',
   direction = 'float',
   float_opts = {
     border = 'none',
   },
-  -- on_open = function(term)
-  --   vim.cmd('startinsert!')
-  --   mx.nnoremap('n', 'q', '<cmd>close<CR>', { buffer = term.bufnr })
-  -- end,
 })
 
 local function lazygit_toggle()

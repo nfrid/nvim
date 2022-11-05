@@ -1,13 +1,26 @@
-vim.cmd([[
-colorscheme dracula
-hi CursorLine guibg=#21222C
-hi CursorLineNr guifg=#F1FA8C guibg=#21222C gui=none
+execute 'source' g:packroot . '/packer/start/dracula/after/plugin/dracula.vim'
+
+hi Normal guibg=NONE
+hi NormalBg guibg=#282A36
+
+hi! CursorLine guibg=#21222C
+hi! CursorLineNr guifg=#F1FA8C guibg=#21222C gui=none
 
 hi IndentLine guifg=#44475a
 
 hi DraculaErrorLine guifg=NONE guibg=NONE
 hi DraculaWarnLine guifg=NONE guibg=NONE
 hi DraculaInfoLine guifg=NONE guibg=NONE
+
+hi! link @text.strong DraculaOrangeBold
+hi! @text.strike gui=strikethrough
+hi! link @text.emphasis DraculaYellowItalic
+hi! link @text.title DraculaPurpleBold
+hi! link @text.literal DraculaYellow
+hi! link @text.reference DraculaPurple
+hi! link @text.uri DraculaCyan
+
+" Semantic tokens
 
 hi link LspNamespace @namespace
 hi link LspType @type
@@ -43,4 +56,4 @@ hi LspAsync gui=italic
 " hi link LspModification
 " hi link LspDocumentation DraculaOrange
 hi LspDefaultLibrary guifg=#ff9999
-]])
+

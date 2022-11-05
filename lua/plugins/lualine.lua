@@ -78,6 +78,8 @@ local no_winbar_ext = {
   },
 }
 
+local noice = require('noice').api.status
+
 require('lualine').setup({
   options = {
     theme = 'dracula',
@@ -109,7 +111,12 @@ require('lualine').setup({
       { 'diff', source = diff },
       { 'b:gitsigns_head', icon = '' },
     },
-    lualine_y = {},
+    lualine_y = {
+      {
+        noice.search.get,
+        cond = noice.search.has,
+      },
+    },
     lualine_z = {},
   },
   winbar = {

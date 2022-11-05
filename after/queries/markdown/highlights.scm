@@ -1,3 +1,0 @@
-; inherits: markdown
-
-(inline) @spell

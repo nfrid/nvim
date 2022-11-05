@@ -1,6 +1,6 @@
 local treesitter = require('nvim-treesitter.configs')
 
-treesitter.setup {
+treesitter.setup({
   highlight = { enable = true },
 
   indent = { enable = true },
@@ -11,7 +11,11 @@ treesitter.setup {
 
   endwise = { enable = true },
 
-  context_commentstring = { enable = true, config = { fish = '# %s' } },
+  context_commentstring = {
+    enable = true,
+    enable_autocmd = false,
+    config = { fish = '# %s' },
+  },
 
   autotag = { enable = true },
 
@@ -21,18 +25,19 @@ treesitter.setup {
       keymaps = {
         ['af'] = '@function.outer',
         ['if'] = '@function.inner',
-        ['ac'] = '@class.outer',
-        ['ic'] = '@class.inner',
+        ['aC'] = '@class.outer',
+        ['iC'] = '@class.inner',
         ['al'] = '@loop.outer',
         ['il'] = '@loop.inner',
         ['ab'] = '@block.outer',
-        ['ib'] = '@block.inner'
-      }
+        ['ib'] = '@block.inner',
+        ['ic'] = '@comment.outer',
+      },
     },
     swap = {
       enable = true,
       swap_next = { ['<leader>.'] = '@parameter.inner' },
-      swap_previous = { ['<leader>,'] = '@parameter.inner' }
+      swap_previous = { ['<leader>,'] = '@parameter.inner' },
     },
     move = {
       enable = true,
@@ -41,10 +46,13 @@ treesitter.setup {
       goto_next_end = { [']F'] = '@function.outer', [']C'] = '@class.outer' },
       goto_previous_start = {
         ['[f'] = '@function.outer',
-        ['[c'] = '@class.outer'
+        ['[c'] = '@class.outer',
       },
-      goto_previous_end = { ['[F'] = '@function.outer', ['[C'] = '@class.outer' }
-    }
+      goto_previous_end = {
+        ['[F'] = '@function.outer',
+        ['[C'] = '@class.outer',
+      },
+    },
   },
 
   textsubjects = {
@@ -53,10 +61,10 @@ treesitter.setup {
     keymaps = {
       ['.'] = 'textsubjects-smart',
       [';'] = 'textsubjects-container-outer',
-      ['i;'] = 'textsubjects-container-inner'
-    }
-  }
-}
+      ['i;'] = 'textsubjects-container-inner',
+    },
+  },
+})
 
 vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
