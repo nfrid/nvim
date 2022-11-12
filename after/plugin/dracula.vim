@@ -12,6 +12,9 @@ hi DraculaErrorLine guifg=NONE guibg=NONE
 hi DraculaWarnLine guifg=NONE guibg=NONE
 hi DraculaInfoLine guifg=NONE guibg=NONE
 
+hi DraculaWinSeparator guibg=#282A36
+hi NvimSeparator guifg=#ff79c6
+
 hi! link @text.strong DraculaOrangeBold
 hi! @text.strike gui=strikethrough
 hi! link @text.emphasis DraculaYellowItalic

@@ -7,7 +7,9 @@ local mx = require('mapx')
 local ts = require('telescope.builtin')
 local tsx = require('telescope').extensions
 
-mx.nnoremap('<leader>T', '<cmd>Telescope<CR>')
+mx.nnoremap('<leader>T', function()
+  ts.live_grep()
+end, 'Live Grep')
 
 mx.nnoremap('<leader>ff', function()
   ts.fd({ hidden = true })

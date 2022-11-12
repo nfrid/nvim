@@ -1,4 +1,5 @@
 require('vutils')
+
 local cmd = vim.api.nvim_command
 
 local packer = require('packer')
@@ -26,6 +27,21 @@ return packer.startup({
       'NFrid/media.nvim',
       config = function()
         require('media-nvim').setup()
+      end,
+    })
+
+    use('NFrid/treesitter-utils')
+    use({
+      'NFrid/markdown-togglecheck',
+      config = function()
+        require('plugins.markdown-togglecheck')
+      end,
+    })
+
+    use({
+      'nvim-zh/colorful-winsep.nvim',
+      config = function()
+        require('plugins.colorful-winsep')
       end,
     })
 
@@ -301,7 +317,7 @@ return packer.startup({
       end,
     })
 
-    use('tversteeg/registers.nvim')
+    -- use('tversteeg/registers.nvim')
     use({
       'phaazon/hop.nvim',
       as = 'hop',

@@ -65,3 +65,7 @@ enum
 coreutils
 Api
 TODO
+treesitter
+neovim
+virtualize
+dotfiles
