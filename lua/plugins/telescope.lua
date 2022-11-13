@@ -7,50 +7,46 @@ local mx = require('mapx')
 local ts = require('telescope.builtin')
 local tsx = require('telescope').extensions
 
-mx.nnoremap('<leader>T', function()
-  ts.live_grep()
-end, 'Live Grep')
+-- get currently selected text
+local function get_visual_selection()
+  vim.cmd('noau normal! "vy"')
+  return vim.fn.getreg('v')
+end
 
-mx.nnoremap('<leader>ff', function()
-  ts.fd({ hidden = true })
-end, 'Find File')
+local function map(key, fn, label, opts)
+  if type(fn) == 'string' then
+    ---@diagnostic disable-next-line: unused-vararg
+    fn = function(...)
+      vim.cmd(fn)
+    end
+  end
 
-mx.nnoremap('<leader>fg', function()
-  ts.git_files()
-end, 'Git Files')
+  mx.nnoremap('<leader>' .. key, function()
+    fn(opts)
+  end, label)
 
-mx.nnoremap('<leader>b', function()
-  ts.buffers()
-end, 'Find Buffer')
+  mx.vnoremap('<leader>' .. key, function()
+    local selected = get_visual_selection()
+    local def_text = selected or opts.default_text
+    fn({ opts, default_text = def_text })
+  end, label)
+end
 
-mx.nnoremap('<leader>m', function()
-  ts.marks()
-end, 'Find Mark')
-
-mx.nnoremap('<leader>r', function()
-  ts.lsp_document_symbols()
-end, 'Find Symbol')
-
-mx.nnoremap('<leader>R', function()
-  ts.lsp_dynamic_workspace_symbols()
-end, 'Find Workspace Symbol')
-
-mx.nnoremap('<C-f>', function()
-  ts.current_buffer_fuzzy_find()
-end, 'Fuzzy Find in Buffer')
+map('T', ts.live_grep, 'Live Grep')
+map('ff', ts.fd, 'Find File')
+map('fg', ts.git_files, 'Git Files')
+map('b', ts.buffers, 'Find Buffer')
+map('m', ts.marks, 'Find Mark')
+map('r', ts.lsp_document_symbols, 'Find Symbol')
+map('R', ts.lsp_dynamic_workspace_symbols, 'Find Workspace Symbol')
+map('', ts.current_buffer_fuzzy_find, 'Fuzzy Find in Buffer')
+map('d', ts.diagnostics, 'Find Diagnostic')
+map('o', tsx.recent_files.pick, 'Find Recent Files')
+map('s', ts.spell_suggest, 'Spell suggest')
+map('u', ':TodoTelescope<CR>', 'Find Todo')
 
 mx.nnoremap('<F1>', '<cmd>Cheatsheet<cr>', 'Find Commands')
 
-mx.nnoremap('<leader>d', function()
-  ts.diagnostics()
-end, 'Find Diagnostic')
-
-mx.nnoremap('<leader>o', function()
-  tsx.recent_files.pick()
-end, 'Find Recent Files')
-
-mx.nnoremap('<leader>s', function()
-  ts.spell_suggest()
-end, 'Spell suggest')
-
-mx.nnoremap('<leader>u', ':TodoTelescope<CR>', 'Find Todo')
+mx.nnoremap('<leader>yr', function()
+  ts.lsp_workspace_symbols({ query = vim.fn.getreg('*') })
+end, 'Find Yanked Workspace Symbol')
