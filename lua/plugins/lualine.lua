@@ -58,8 +58,8 @@ local filename = {
   },
 }
 
-local filename3 = filename
-table.insert(filename3, { path = 3 })
+local filename_path = table.shallow_copy(filename)
+filename_path.path = 1
 
 local no_winbar_ext = {
   winbar = {},
@@ -120,7 +120,7 @@ require('lualine').setup({
     lualine_z = {},
   },
   winbar = {
-    lualine_a = { filename3 },
+    lualine_a = { filename_path },
     lualine_b = {},
     lualine_c = {},
     lualine_x = { 'filetype' },
@@ -130,7 +130,7 @@ require('lualine').setup({
   inactive_winbar = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = { filename3 },
+    lualine_c = { filename_path },
     lualine_x = { 'filetype', 'progress', 'location' },
     lualine_y = {},
     lualine_z = {},

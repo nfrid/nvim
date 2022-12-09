@@ -1,5 +1,6 @@
 vim.opt.hidden = true
 vim.opt.swapfile = false
+vim.opt.undofile = true
 vim.opt.foldenable = false
 
 vim.opt.smartindent = true
@@ -12,6 +13,18 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.mouse = 'a'
 vim.opt.clipboard = 'unnamed'
+vim.g.clipboard = {
+  name = 'xclip',
+  copy = {
+    ['+'] = 'xclip -i -selection clipboard',
+    ['*'] = 'xclip -i -selection primary',
+  },
+  paste = {
+    ['+'] = 'xclip -o -selection clipboard',
+    ['*'] = 'xclip -o -selection primary',
+  },
+  cache_enabled = 0,
+}
 
 vim.opt.spell = true
 vim.opt.spelllang = 'en_us,ru_yo'

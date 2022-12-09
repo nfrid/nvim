@@ -31,4 +31,4 @@ local function lazygit_toggle()
   lazygit:toggle()
 end
 
-mx.nmap('<leader>gg', lazygit_toggle)
+mx.nmap('<leader>gg', lazygit_toggle, 'Lazygit')

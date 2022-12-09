@@ -49,6 +49,28 @@ cmp.setup({
       end
     end, { 'i', 's' }),
 
+    ['<C-n>'] = cmp.mapping(function(fallback)
+      if luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      elseif cmp.visible() then
+        cmp.select_next_item()
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+
+    ['<C-p>'] = cmp.mapping(function(fallback)
+      if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      elseif cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+
     ['<PageDown>'] = cmp.mapping.scroll_docs(-4),
     ['<PageUp>'] = cmp.mapping.scroll_docs(4),
     ---@diagnostic disable-next-line: missing-parameter

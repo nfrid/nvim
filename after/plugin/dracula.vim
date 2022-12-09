@@ -52,6 +52,7 @@ hi link LspMethod Function
 " hi LspDeclaration gui=bold
 " hi LspDefinition gui=bold
 hi link LspReadonly DraculaPurple
+hi link @readonly LspReadonly
 " hi link LspStatic
 hi LspDeprecated gui=strikethrough
 " hi link LspAbstract

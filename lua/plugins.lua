@@ -6,11 +6,12 @@ local packer = require('packer')
 
 local mx = require('mapx')
 
-mx.nnoremap('<leader>P', '<cmd>PackerCompile<cr>', 'Recompile Plugins')
-mx.nnoremap('<leader>pp', '<cmd>PackerSync<cr>', 'Sync Plugins')
+mx.name('<leader>P', 'packer')
+mx.nnoremap('<leader>Pc', '<cmd>PackerCompile<cr>', 'Recompile Plugins')
+mx.nnoremap('<leader>PP', '<cmd>PackerSync<cr>', 'Sync Plugins')
 
 local package_root =
-  require('packer.util').join_paths(vim.fn.stdpath('data'), 'site', 'pack')
+require('packer.util').join_paths(vim.fn.stdpath('data'), 'site', 'pack')
 vim.g.packroot = package_root
 
 return packer.startup({
@@ -19,22 +20,74 @@ return packer.startup({
 
     use('wbthomason/packer.nvim')
 
+    use('lewis6991/impatient.nvim')
+
+    use({
+      'folke/which-key.nvim',
+      config = function()
+        require('plugins.which-key')
+      end,
+    })
+    use({
+      'b0o/mapx.nvim',
+      config = function()
+        require('plugins.mapx')
+      end,
+      requires = { 'folke/which-key.nvim' },
+    })
+
+    use({
+      'mbbill/undotree',
+      config = function()
+        require('plugins.undotree')
+      end,
+    })
+
     -- use('samjwill/nvim-unception')
 
     use('martinda/Jenkinsfile-vim-syntax')
 
     use({
-      'NFrid/media.nvim',
+      'nfrid/media.nvim',
       config = function()
         require('media-nvim').setup()
       end,
     })
 
-    use('NFrid/treesitter-utils')
+    use('nfrid/treesitter-utils')
     use({
-      'NFrid/markdown-togglecheck',
+      'nfrid/markdown-togglecheck',
+      after = 'mapx.nvim',
       config = function()
         require('plugins.markdown-togglecheck')
+      end,
+    })
+
+    use({
+      'iamcco/markdown-preview.nvim',
+      run = function()
+        vim.fn['mkdp#util#install']()
+      end,
+    })
+
+    use({
+      'folke/zen-mode.nvim',
+      requires = { 'andrewferrier/wrapping.nvim' },
+      config = function()
+        require('zen-mode').setup({
+          window = {
+            width = 80,
+          },
+          on_open = function()
+            require('wrapping').soft_wrap_mode()
+          end,
+        })
+      end,
+    })
+    use({
+      'andrewferrier/wrapping.nvim',
+      config = function()
+        require('wrapping').setup()
       end,
     })
 
@@ -57,6 +110,13 @@ return packer.startup({
     })
 
     use({
+      'nat-418/scamp.nvim',
+      config = function()
+        require('plugins.scamp')
+      end,
+    })
+
+    use({
       'folke/noice.nvim',
       event = 'VimEnter',
       config = function()
@@ -72,13 +132,6 @@ return packer.startup({
       'AckslD/nvim-FeMaco.lua',
       config = function()
         require('femaco').setup()
-      end,
-    })
-
-    use({
-      'mrjones2014/legendary.nvim',
-      config = function()
-        require('legendary').setup()
       end,
     })
 
@@ -99,6 +152,7 @@ return packer.startup({
 
     use({
       'RRethy/vim-illuminate',
+
       config = function()
         require('plugins.illuminate')
       end,
@@ -134,7 +188,7 @@ return packer.startup({
     use({
       'hoob3rt/lualine.nvim',
       after = 'noice.nvim',
-      requires = 'kyazdani42/nvim-web-devicons',
+      requires = 'nvim-tree/nvim-web-devicons',
       config = function()
         require('plugins.lualine')
       end,
@@ -142,7 +196,8 @@ return packer.startup({
     use({
       'akinsho/nvim-bufferline.lua',
       branch = 'main',
-      requires = 'kyazdani42/nvim-web-devicons',
+      requires = 'nvim-tree/nvim-web-devicons',
+
       config = function()
         require('plugins.bufferline')
       end,
@@ -159,10 +214,18 @@ return packer.startup({
         require('plugins.indent-blankline')
       end,
     })
+    -- use({
+    --   'petertriho/nvim-scrollbar',
+    --   config = function()
+    --     require('plugins.scrollbar')
+    --   end,
+    -- })
     use({
-      'petertriho/nvim-scrollbar',
+      'lewis6991/satellite.nvim',
       config = function()
-        require('plugins.scrollbar')
+        require('satellite').setup({
+          winblend = 0,
+        })
       end,
     })
     use({
@@ -171,7 +234,12 @@ return packer.startup({
         vim.g.highlightedyank_highlight_duration = 250
       end,
     })
-    use('kevinhwang91/nvim-hlslens')
+    use({
+      'kevinhwang91/nvim-hlslens',
+      config = function()
+        require('hlslens').setup()
+      end,
+    })
 
     use({
       'NvChad/nvim-colorizer.lua',
@@ -188,21 +256,20 @@ return packer.startup({
     })
 
     use({
-      'folke/which-key.nvim',
+      'mrjones2014/legendary.nvim',
+      requires = 'folke/which-key.nvim',
+      after = { 'which-key.nvim' },
       config = function()
-        require('plugins.which-key')
+        require('legendary').setup({
+          which_key = {
+            auto_register = true,
+          },
+        })
       end,
-    })
-    use({
-      'b0o/mapx.nvim',
-      config = function()
-        require('plugins.mapx')
-      end,
-      requires = { 'folke/which-key.nvim' },
     })
 
     use({
-      'NFrid/due.nvim',
+      'nfrid/due.nvim',
       config = function()
         require('due_nvim').setup({})
       end,
@@ -230,14 +297,14 @@ return packer.startup({
     -- })
     use('lervag/vimtex')
 
-    use({
-      'nvim-neorg/neorg',
-      tag = '*',
-      config = function()
-        require('plugins.neorg')
-      end,
-      requires = 'nvim-lua/plenary.nvim',
-    })
+    -- use({
+    --   'nvim-neorg/neorg',
+    --   tag = '*',
+    --   config = function()
+    --     require('plugins.neorg')
+    --   end,
+    --   requires = 'nvim-lua/plenary.nvim',
+    -- })
 
     use('stevearc/dressing.nvim')
 
@@ -254,6 +321,7 @@ return packer.startup({
         'nvim-telescope/telescope-dap.nvim',
         'smartpde/telescope-recent-files',
       },
+      after = 'mapx.nvim',
       config = function()
         require('plugins.telescope')
       end,
@@ -266,6 +334,20 @@ return packer.startup({
         { 'nvim-lua/plenary.nvim' },
       },
     })
+
+    use({
+      'ThePrimeagen/harpoon',
+      config = function()
+        require('plugins.harpoon')
+      end,
+    })
+
+    -- use({
+    --   'toppair/reach.nvim',
+    --   config = function()
+    --     require('plugins.reach')
+    --   end,
+    -- })
 
     -- use 'tpope/vim-commentary'
     use({
@@ -395,6 +477,7 @@ return packer.startup({
     use({
       'akinsho/git-conflict.nvim',
       tag = '*',
+      after = 'mapx.nvim',
       config = function()
         require('plugins.conflict')
       end,
@@ -408,17 +491,17 @@ return packer.startup({
       end,
     })
 
-    use({
-      'pwntester/octo.nvim',
-      requires = {
-        'nvim-lua/plenary.nvim',
-        'nvim-telescope/telescope.nvim',
-        'kyazdani42/nvim-web-devicons',
-      },
-      config = function()
-        require('octo').setup()
-      end,
-    })
+    -- use({
+    --   'pwntester/octo.nvim',
+    --   requires = {
+    --     'nvim-lua/plenary.nvim',
+    --     'nvim-telescope/telescope.nvim',
+    --     'nvim-tree/nvim-web-devicons',
+    --   },
+    --   config = function()
+    --     require('octo').setup()
+    --   end,
+    -- })
 
     use({ 'kevinhwang91/nvim-bqf', ft = 'qf' })
 
@@ -468,7 +551,7 @@ return packer.startup({
             {
               'microsoft/vscode-js-debug',
               opt = true,
-              run = 'npm install --legacy-peer-deps && npm run compile',
+              run = 'pnpm i && pnpm run compile',
             },
           },
         },
@@ -505,6 +588,7 @@ return packer.startup({
     use({
       'neovim/nvim-lspconfig',
       requires = { 'hrsh7th/nvim-cmp' },
+      after = 'mapx.nvim',
       config = function()
         require('plugins.lsp')
       end,
@@ -561,6 +645,12 @@ return packer.startup({
       config = function()
         ---@diagnostic disable-next-line: param-type-mismatch
         vim.defer_fn(function()
+          local active_clients = vim.lsp.get_active_clients()
+          for _, client in ipairs(active_clients) do
+            if client.name == 'copilot' then
+              return
+            end
+          end
           require('copilot').setup()
           ---@diagnostic disable-next-line: param-type-mismatch
         end, 100)
@@ -629,6 +719,14 @@ return packer.startup({
       end,
       config = function()
         require('plugins.treesitter')
+      end,
+    })
+
+    use({
+      'cshuaimin/ssr.nvim',
+      after = 'mapx.nvim',
+      config = function()
+        require('plugins.ssr')
       end,
     })
 

@@ -17,10 +17,11 @@ Format = function()
     json = 'prettier -w --loglevel error',
     css = 'prettier -w --loglevel error',
     scss = 'prettier -w --loglevel error',
+    html = 'prettier -w --loglevel error',
     cmake = 'cmake-format -i',
     c = 'clang-format -style=file -i',
     cpp = 'clang-format -style=file -i',
-    markdown = 'prettier -w --prose-wrap always --loglevel error',
+    markdown = 'prettier -w --loglevel error',
     python = 'black -q',
     haskell = 'stylish-haskell -i',
   }
@@ -50,8 +51,8 @@ ToggleConceal = function()
   end
 end
 
-mx.nname('<leader>p', 'visuals')
-mx.nnoremap('<leader>pc', ToggleConceal, 'Conceal')
+mx.nname('<leader>v', 'visuals')
+mx.nnoremap('<leader>vc', ToggleConceal, 'Conceal')
 
 ToggleWrap = function()
   if vim.wo.wrap then
@@ -65,7 +66,7 @@ ToggleWrap = function()
   end
 end
 
-mx.nnoremap('<leader>pw', ToggleWrap, 'Wrap')
+mx.nnoremap('<leader>vw', ToggleWrap, 'Wrap')
 
 ToggleKeyMap = function()
   if vim.bo.iminsert == 0 then
@@ -89,7 +90,7 @@ ToggleRelNums = function()
   end
 end
 
-mx.nnoremap('<leader>pr', ToggleRelNums, 'Relative numbers')
+mx.nnoremap('<leader>vr', ToggleRelNums, 'Relative numbers')
 
 -- mappings
 
@@ -103,7 +104,7 @@ mx.nnoremap('gF', ':e <cfile><CR>', 'Go to file (FORCE)')
 mx.nnoremap('<leader>w', '<C-w>')
 mx.nnoremap('<leader>fs', ':w!<CR>', 'Save buffer')
 mx.nnoremap(
-  '<Leader>p/',
+  '<Leader>v/',
   '<CMD>lua vim.opt.hls = not vim.api.nvim_get_option(\'hls\')<CR>',
   'Search highlighting'
 )
@@ -112,9 +113,9 @@ mx.nnoremap('Q', ':bd<CR>')
 mx.nnoremap('<leader>cd', ':cd %:h<CR>', 'cd to the buffer')
 mx.nnoremap('<leader>cp', ':let @+ = expand("%:p:h")<CR>', 'Copy buffer path')
 
-mx.nnoremap('<leader>vv', ':e $MYVIMRC<CR>', 'Go to vimrc')
+mx.nnoremap('<leader>V', ':e $MYVIMRC<CR>', 'Go to vimrc')
 
-mx.nnoremap('<leader>ps', ':set spell!<CR>', 'Spell')
+mx.nnoremap('<leader>vs', ':set spell!<CR>', 'Spell')
 
 if vim.env.TMUX == nil then
   mx.nnoremap('<A-a>', ':silent !$TERM & disown<CR>')

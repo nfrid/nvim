@@ -50,6 +50,16 @@ _G.source_after = function(path)
   vim.cmd('source ' .. afterdir .. path)
 end
 
+--- @param t table
+function table.shallow_copy(t)
+  local t2 = {}
+  for k, v in pairs(t) do
+    t2[k] = v
+  end
+  return t2
+end
+
 require('opts')
 require('cmds')
 require('plugins')
+require('impatient')

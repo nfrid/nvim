@@ -14,6 +14,3 @@ todo.setup {
     NOTE = { icon = ' ', color = 'hint', alt = { 'INFO' } }
   }
 }
-
-local mx = require('mapx')
-mx.nnoremap('<leader>pt', '<cmd>TodoTelescope<cr>', 'Todos')

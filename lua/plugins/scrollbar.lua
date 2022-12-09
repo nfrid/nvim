@@ -1,6 +1,30 @@
-require('scrollbar').setup({
-  handlers = {
-    diagnostic = true,
-    search = true,
-  },
-})
+-- require('scrollbar').setup({
+--   handlers = {
+--     diagnostic = true,
+--     search = true,
+--   },
+--   marks = {
+--     GitAdd = {
+--       text = '│',
+--       priority = 5,
+--       color = nil,
+--       cterm = nil,
+--       highlight = 'GitSignsAdd',
+--     },
+--     GitChange = {
+--       text = '│',
+--       priority = 5,
+--       color = nil,
+--       cterm = nil,
+--       highlight = 'GitSignsChange',
+--     },
+--     GitDelete = {
+--       text = '⥊',
+--       priority = 5,
+--       color = nil,
+--       cterm = nil,
+--       highlight = 'GitSignsDelete',
+--     },
+--   },
+-- })
+-- require('scrollbar.handlers.gitsigns').setup()

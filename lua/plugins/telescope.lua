@@ -13,7 +13,21 @@ local function get_visual_selection()
   return vim.fn.getreg('v')
 end
 
+---@param key string|table
+---@param fn function|string
+---@param label string
+---@param opts table|nil
 local function map(key, fn, label, opts)
+  if not opts then
+    opts = {}
+  end
+
+  if type(key) == 'string' then
+    key = '<leader>' .. key
+  else
+    key = key[0]
+  end
+
   if type(fn) == 'string' then
     ---@diagnostic disable-next-line: unused-vararg
     fn = function(...)
@@ -21,11 +35,11 @@ local function map(key, fn, label, opts)
     end
   end
 
-  mx.nnoremap('<leader>' .. key, function()
+  mx.nnoremap(key, function()
     fn(opts)
   end, label)
 
-  mx.vnoremap('<leader>' .. key, function()
+  mx.vnoremap(key, function()
     local selected = get_visual_selection()
     local def_text = selected or opts.default_text
     fn({ opts, default_text = def_text })
@@ -39,11 +53,12 @@ map('b', ts.buffers, 'Find Buffer')
 map('m', ts.marks, 'Find Mark')
 map('r', ts.lsp_document_symbols, 'Find Symbol')
 map('R', ts.lsp_dynamic_workspace_symbols, 'Find Workspace Symbol')
-map('', ts.current_buffer_fuzzy_find, 'Fuzzy Find in Buffer')
+map({ '<C-f>' }, ts.current_buffer_fuzzy_find, 'Fuzzy Find in Buffer')
 map('d', ts.diagnostics, 'Find Diagnostic')
 map('o', tsx.recent_files.pick, 'Find Recent Files')
-map('s', ts.spell_suggest, 'Spell suggest')
-map('u', ':TodoTelescope<CR>', 'Find Todo')
+map({ 'gs' }, ts.spell_suggest, 'Spell suggest')
+map('pp', tsx.projects.projects, 'Project')
+map('pt', '<cmd>TodoTelescope<cr>', 'Todos')
 
 mx.nnoremap('<F1>', '<cmd>Cheatsheet<cr>', 'Find Commands')
 

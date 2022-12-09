@@ -48,4 +48,4 @@ hl.modifiers_map.defaultLibrary = {
   property = 'LspDefaultLibrary',
 }
 
-vim.g.semantic_tokens = true
+vim.lsp.handlers['textDocument/semanticTokens/refresh'] = require('nvim-semantic-tokens.semantic_tokens').on_refresh

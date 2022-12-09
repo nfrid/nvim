@@ -12,21 +12,19 @@ local on_attach = function(client, bufnr)
     require('document-color').buf_attach(bufnr)
   end
 
-  if vim.g.semantic_tokens then
-    if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
-      local augroup = vim.api.nvim_create_augroup('SemanticTokens', {})
-      vim.api.nvim_create_autocmd(
-        { 'TextChanged', 'CompleteDone', 'InsertLeave' },
-        {
-          group = augroup,
-          buffer = bufnr,
-          callback = function()
-            vim.lsp.buf.semantic_tokens_full()
-          end,
-        }
-      )
-      vim.lsp.buf.semantic_tokens_full()
-    end
+  if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
+    local augroup = vim.api.nvim_create_augroup('SemanticTokens', {})
+    vim.api.nvim_create_autocmd(
+      { 'TextChanged', 'CompleteDone', 'InsertLeave' },
+      {
+        group = augroup,
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.buf.semantic_tokens_full()
+        end,
+      }
+    )
+    vim.lsp.buf.semantic_tokens_full()
   end
 
   -- require('aerial').on_attach(client, bufnr)
@@ -89,12 +87,7 @@ local on_attach = function(client, bufnr)
   mx.nnoremap('<F2>', '<cmd>Lspsaga rename<cr>', 'buffer', 'Rename')
   mx.nnoremap('<leader>cr', '<cmd>Lspsaga rename<cr>', 'buffer', 'Rename')
   mx.nnoremap('gj', '<cmd>Lspsaga lsp_finder<cr>', 'buffer', 'References')
-  mx.nnoremap(
-    'gp',
-    '<cmd>Lspsaga peek_definition<cr>',
-    'buffer',
-    'References'
-  )
+  mx.nnoremap('gp', '<cmd>Lspsaga peek_definition<cr>', 'buffer', 'References')
   -- mx.nnoremap('<leader>a', function() buf.code_action() end, 'buffer',
   --             'Code Actions')
   mx.nnoremap('<leader>a', '<cmd>CodeActionMenu<cr>', 'buffer', 'Code Actions')
@@ -129,6 +122,18 @@ local on_attach = function(client, bufnr)
   if client.name == 'ccls' then
     client.offset_encoding = 'utf-16'
   end
+
+  if caps.documentFormattingProvider then
+    local au_format =
+    vim.api.nvim_create_augroup('format_on_save', { clear = true })
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      pattern = '*',
+      callback = function()
+        buf.format({ async = false })
+      end,
+      group = au_format,
+    })
+  end
 end
 
 local servers = {
@@ -153,9 +158,19 @@ local servers = {
   'marksman',
   'tailwindcss',
   'cssmodules_ls',
+  'rust_analyzer',
 }
 
 local configs = {}
+
+configs.eslint = {
+  settings = {
+    coneActionOnSave = {
+      enable = true,
+    },
+    -- run = 'onSave',
+  },
+}
 
 configs.ccls = {
   init_options = { highlight = { lsRanges = true } },
@@ -221,7 +236,7 @@ local colorCapabilities = vim.lsp.protocol.make_client_capabilities()
 colorCapabilities.textDocument.colorProvider = { dynamicRegistration = true }
 
 local capabilities =
-  require('cmp_nvim_lsp').default_capabilities(colorCapabilities)
+require('cmp_nvim_lsp').default_capabilities(colorCapabilities)
 
 for _, lsp in ipairs(servers) do
   local config = {}
