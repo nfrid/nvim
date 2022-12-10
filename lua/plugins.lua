@@ -445,6 +445,13 @@ return packer.startup({
     })
 
     use({
+      'kdheepak/lazygit.nvim',
+      config = function()
+        require('plugins.lazygit')
+      end,
+    })
+
+    use({
       'lewis6991/gitsigns.nvim',
       config = function()
         require('plugins.gitsigns')

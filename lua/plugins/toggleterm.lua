@@ -15,20 +15,20 @@ mx.nnoremap('<leader>tt', '<cmd>ToggleTerm<cr>')
 mx.nnoremap('<leader>ts', '<cmd>2ToggleTerm direction=horizontal<cr>')
 mx.nnoremap('<leader>tv', '<cmd>3ToggleTerm direction=vertical<cr>')
 
-local Terminal = require('toggleterm.terminal').Terminal
-
-local lazygit = Terminal:new({
-  cmd = 'GIT_EDITOR="nvr -l" lazygit',
-  hidden = true,
-  dir = 'git_dir',
-  direction = 'float',
-  float_opts = {
-    border = 'none',
-  },
-})
-
-local function lazygit_toggle()
-  lazygit:toggle()
-end
-
-mx.nmap('<leader>gg', lazygit_toggle, 'Lazygit')
+-- local Terminal = require('toggleterm.terminal').Terminal
+--
+-- local lazygit = Terminal:new({
+--   cmd = 'GIT_EDITOR="nvr -l" lazygit',
+--   hidden = true,
+--   dir = 'git_dir',
+--   direction = 'float',
+--   float_opts = {
+--     border = 'none',
+--   },
+-- })
+--
+-- local function lazygit_toggle()
+--   lazygit:toggle()
+-- end
+--
+-- mx.nmap('<leader>gg', lazygit_toggle, 'Lazygit')
