@@ -64,6 +64,13 @@ return packer.startup({
     })
 
     use({
+      'Wansmer/treesj',
+      config = function()
+        require('plugins.treesj')
+      end,
+    })
+
+    use({
       'iamcco/markdown-preview.nvim',
       run = function()
         vim.fn['mkdp#util#install']()
