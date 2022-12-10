@@ -92,6 +92,32 @@ end
 
 mx.nnoremap('<leader>vr', ToggleRelNums, 'Relative numbers')
 
+ListExtHighlightsAtCursor = function()
+  local function getExtmarkDetailsAt(bufnr, ns_id, pos)
+    local row = pos[1] - 1
+    local col = pos[2]
+    return vim.api.nvim_buf_get_extmarks(bufnr, ns_id,
+      { row, col }, { row, col }, { details = 1 })
+  end
+
+  local namespaces = vim.api.nvim_get_namespaces()
+  local hl_groups = {}
+  local pos = vim.api.nvim_win_get_cursor(0)
+  for _, ns_id in pairs(namespaces) do
+    local extmarks = getExtmarkDetailsAt(0, ns_id, pos)
+    for _, extmark in pairs(extmarks) do
+      if extmark[4]['hl_group'] then
+        hl_groups[#hl_groups + 1] = extmark[4]['hl_group']
+      end
+    end
+  end
+  return hl_groups
+end
+
+mx.nnoremap('<leader>x', function()
+  print(vim.inspect(ListExtHighlightsAtCursor()))
+end, 'Get Extmarks At Cursor')
+
 -- mappings
 
 mx.nnoremap('<SPACE>', '<NOP>')
