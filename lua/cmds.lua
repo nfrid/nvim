@@ -11,5 +11,3 @@ au BufReadPost .env,.env.* set filetype=config
 
 command! W :w!
 ]])
-
--- vi: nospell
