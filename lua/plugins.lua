@@ -653,36 +653,36 @@ return packer.startup({
       end,
     })
 
-    use({
-      'zbirenbaum/copilot.lua',
-      after = 'nvim-bufferline.lua',
-      config = function()
-        ---@diagnostic disable-next-line: param-type-mismatch
-        vim.defer_fn(function()
-          local active_clients = vim.lsp.get_active_clients()
-          for _, client in ipairs(active_clients) do
-            if client.name == 'copilot' then
-              return
-            end
-          end
-          require('copilot').setup()
-          ---@diagnostic disable-next-line: param-type-mismatch
-        end, 100)
-      end,
-    })
-    use({
-      'zbirenbaum/copilot-cmp',
-      requires = 'zbirenbaum/copilot.lua',
-      module = 'copilot_cmp',
-      after = { 'copilot.lua' },
-      config = function()
-        require('copilot_cmp').setup({
-          formatters = {
-            insert_text = require('copilot_cmp.format').remove_existing,
-          },
-        })
-      end,
-    })
+    -- use({
+    --   'zbirenbaum/copilot.lua',
+    --   after = 'nvim-bufferline.lua',
+    --   config = function()
+    --     ---@diagnostic disable-next-line: param-type-mismatch
+    --     vim.defer_fn(function()
+    --       local active_clients = vim.lsp.get_active_clients()
+    --       for _, client in ipairs(active_clients) do
+    --         if client.name == 'copilot' then
+    --           return
+    --         end
+    --       end
+    --       require('copilot').setup()
+    --       ---@diagnostic disable-next-line: param-type-mismatch
+    --     end, 100)
+    --   end,
+    -- })
+    -- use({
+    --   'zbirenbaum/copilot-cmp',
+    --   requires = 'zbirenbaum/copilot.lua',
+    --   module = 'copilot_cmp',
+    --   after = { 'copilot.lua' },
+    --   config = function()
+    --     require('copilot_cmp').setup({
+    --       formatters = {
+    --         insert_text = require('copilot_cmp.format').remove_existing,
+    --       },
+    --     })
+    --   end,
+    -- })
 
     use({ 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig' })
 

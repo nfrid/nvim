@@ -86,7 +86,7 @@ cmp.setup({
     })
   }),
   sources = cmp.config.sources({
-    { name = 'copilot' },
+    -- { name = 'copilot' },
     -- { name = 'cmp_tabnine' },
     { name = 'nvim_lsp' },
     { name = 'neorg' },
@@ -98,11 +98,11 @@ cmp.setup({
   }, { { name = 'buffer' } }),
   formatting = {
     format = function(entry, vim_item)
-      if entry.source.name == 'copilot' then
-        vim_item.kind = ''
-        vim_item.kind_hl_group = 'Title'
-        return vim_item
-      end
+      -- if entry.source.name == 'copilot' then
+      --   vim_item.kind = ''
+      --   vim_item.kind_hl_group = 'Title'
+      --   return vim_item
+      -- end
       return lspkind.cmp_format({ with_text = false, maxwidth = 50 })(entry,
         vim_item)
     end
@@ -110,8 +110,8 @@ cmp.setup({
   sorting = {
     priority_weight = 2,
     comparators = {
-      require('copilot_cmp.comparators').prioritize,
-      require('copilot_cmp.comparators').score,
+      -- require('copilot_cmp.comparators').prioritize,
+      -- require('copilot_cmp.comparators').score,
 
       -- Below is the default comparitor list and order for nvim-cmp
       cmp.config.compare.offset,
