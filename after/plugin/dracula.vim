@@ -52,7 +52,6 @@ hi link LspMethod Function
 " hi LspDeclaration gui=bold
 " hi LspDefinition gui=bold
 hi link LspReadonly DraculaPurple
-hi link @readonly LspReadonly
 " hi link LspStatic
 hi LspDeprecated gui=strikethrough
 " hi link LspAbstract
@@ -61,3 +60,16 @@ hi LspAsync gui=italic
 " hi link LspDocumentation DraculaOrange
 hi LspDefaultLibrary guifg=#ff9999
 
+hi link @member @function
+hi link @method @function
+hi link @interface @type
+hi @property guifg=#e8d7ff
+hi link @enumMember DraculaPurple
+
+hi link @readonly DraculaPurple
+" hi @readonly gui=bold
+hi @deprecated gui=strikethrough
+hi @async gui=underdotted
+" hi @defaultLibrary guifg=#ff9999
+hi @defaultLibrary gui=italic
+" hi @declaration gui=underdotted

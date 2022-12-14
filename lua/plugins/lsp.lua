@@ -12,20 +12,20 @@ local on_attach = function(client, bufnr)
     require('document-color').buf_attach(bufnr)
   end
 
-  if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
-    local augroup = vim.api.nvim_create_augroup('SemanticTokens', {})
-    vim.api.nvim_create_autocmd(
-      { 'TextChanged', 'CompleteDone', 'InsertLeave' },
-      {
-        group = augroup,
-        buffer = bufnr,
-        callback = function()
-          vim.lsp.buf.semantic_tokens_full()
-        end,
-      }
-    )
-    vim.lsp.buf.semantic_tokens_full()
-  end
+  -- if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
+  --   local augroup = vim.api.nvim_create_augroup('SemanticTokens', {})
+  --   vim.api.nvim_create_autocmd(
+  --     { 'TextChanged', 'CompleteDone', 'InsertLeave' },
+  --     {
+  --       group = augroup,
+  --       buffer = bufnr,
+  --       callback = function()
+  --         vim.lsp.buf.semantic_tokens_full()
+  --       end,
+  --     }
+  --   )
+  --   vim.lsp.buf.semantic_tokens_full()
+  -- end
 
   -- require('aerial').on_attach(client, bufnr)
 
@@ -150,7 +150,7 @@ local servers = {
   'cssls',
   'html',
   'hls',
-  'emmet_ls',
+  -- 'emmet_ls',
   'eslint',
   'ccls',
   'texlab',

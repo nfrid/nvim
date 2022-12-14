@@ -616,13 +616,13 @@ return packer.startup({
       end,
     })
 
-    use({
-      'theHamsta/nvim-semantic-tokens',
-      requires = { 'neovim/nvim-lspconfig' },
-      config = function()
-        require('plugins.semantic-tokens')
-      end,
-    })
+    -- use({
+    --   'theHamsta/nvim-semantic-tokens',
+    --   requires = { 'neovim/nvim-lspconfig' },
+    --   config = function()
+    --     require('plugins.semantic-tokens')
+    --   end,
+    -- })
 
     use({
       'glepnir/lspsaga.nvim',
