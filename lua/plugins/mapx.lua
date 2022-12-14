@@ -122,12 +122,14 @@ end, 'Get Extmarks At Cursor')
 
 mx.nnoremap('<SPACE>', '<NOP>')
 
-mx.nnoremap('<tab>', '<CMD>bn<CR>')
-mx.nnoremap('<s-tab>', '<CMD>bp<CR>')
-
 mx.nnoremap('gF', ':e <cfile><CR>', 'Go to file (FORCE)')
 
-mx.nnoremap('<leader>w', '<C-w>')
+mx.nnoremap('<leader>w', '<CMD>WhichKey <C-w><CR>')
+mx.nnoremap('<C-w>t', '<CMD>tabnew<CR>', 'New Tab')
+mx.nnoremap('<C-w>o', '<CMD>only<CR>', 'Window Only')
+mx.nnoremap('<C-w>O', '<CMD>tabonly<CR>', 'Tab Only')
+mx.nnoremap('<C-w>Q', '<CMD>tabclose<CR>', 'Close Tab')
+
 mx.nnoremap('<leader>fs', ':w!<CR>', 'Save buffer')
 mx.nnoremap(
   '<Leader>v/',
