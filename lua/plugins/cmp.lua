@@ -93,7 +93,7 @@ cmp.setup({
     { name = 'luasnip' },
     { name = 'path' },
     { name = 'tmux' },
-    { name = 'rg' },
+    -- { name = 'rg' },
     { name = 'npm', keyword_length = 4 }
   }, { { name = 'buffer' } }),
   formatting = {

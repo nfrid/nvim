@@ -537,7 +537,7 @@ return packer.startup({
         'petertriho/cmp-git',
         'L3MON4D3/LuaSnip',
         'saadparwaiz1/cmp_luasnip',
-        'lukas-reineke/cmp-rg',
+        -- 'lukas-reineke/cmp-rg',
         'andersevenrud/cmp-tmux',
         'David-Kunz/cmp-npm',
         'rcarriga/cmp-dap',
