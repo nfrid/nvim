@@ -93,9 +93,13 @@ local on_attach = function(client, bufnr)
   mx.nnoremap('<leader>a', '<cmd>CodeActionMenu<cr>', 'buffer', 'Code Actions')
   vim.g.code_action_menu_show_details = false
 
-  local d = vim.diagnostic
+  -- local d = vim.diagnostic
+  local d = require('lspsaga.diagnostic')
   mx.nnoremap('<leader>e', function()
-    d.open_float()
+    d.show_line_diagnostics()
+  end, 'buffer', 'Diagnostics on Line')
+  mx.nnoremap('<leader>E', function()
+    d.show_cursor_diagnostics()
   end, 'buffer', 'Diagnostics on Point')
   mx.nnoremap(']d', function()
     d.goto_next()
