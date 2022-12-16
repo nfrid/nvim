@@ -63,6 +63,20 @@ return packer.startup({
       end,
     })
 
+    -- use({
+    --   'ldelossa/litee.nvim',
+    --   requires = {
+    --     'ldelossa/litee-calltree.nvim',
+    --     'ldelossa/litee-symboltree.nvim',
+    --     'nvim-tree/nvim-web-devicons',
+    --     'ldelossa/litee-filetree.nvim',
+    --     'ldelossa/litee-bookmarks.nvim',
+    --   },
+    --   config = function()
+    --     require('plugins.litee')
+    --   end,
+    -- })
+
     use({
       'Wansmer/treesj',
       config = function()
