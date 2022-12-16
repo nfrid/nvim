@@ -75,6 +75,7 @@ local no_winbar_ext = {
     'dapui_breakpoints',
     'dapui_scopes',
     'toggleterm',
+    'Trouble',
   },
 }
 

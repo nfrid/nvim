@@ -654,6 +654,13 @@ return packer.startup({
       end,
     })
 
+    use({
+      'folke/trouble.nvim',
+      config = function()
+        require('plugins.trouble')
+      end,
+    })
+
     -- use {
     --   'williamboman/mason.nvim',
     --   requires = { 'williamboman/mason-lspconfig.nvim' },
