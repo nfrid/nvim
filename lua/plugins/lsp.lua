@@ -91,10 +91,6 @@ local on_attach = function(client, bufnr)
     caps.documentRangeFormattingProvider = false
   end
 
-  if client.name == 'ccls' then
-    client.offset_encoding = 'utf-16'
-  end
-
   if caps.documentFormattingProvider then
     local au_format =
     vim.api.nvim_create_augroup('format_on_save', { clear = true })
