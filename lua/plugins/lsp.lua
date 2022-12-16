@@ -12,31 +12,6 @@ local on_attach = function(client, bufnr)
     require('document-color').buf_attach(bufnr)
   end
 
-  -- if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
-  --   local augroup = vim.api.nvim_create_augroup('SemanticTokens', {})
-  --   vim.api.nvim_create_autocmd(
-  --     { 'TextChanged', 'CompleteDone', 'InsertLeave' },
-  --     {
-  --       group = augroup,
-  --       buffer = bufnr,
-  --       callback = function()
-  --         vim.lsp.buf.semantic_tokens_full()
-  --       end,
-  --     }
-  --   )
-  --   vim.lsp.buf.semantic_tokens_full()
-  -- end
-
-  -- require('aerial').on_attach(client, bufnr)
-
-  -- require('lsp_signature').on_attach(
-  --     {
-  --       bind = true,
-  --       hint_enable = false,
-  --       hi_parameter = 'Todo',
-  --       handler_opts = { border = 'none' }
-  --     })
-
   local function buf_set(...)
     vim.api.nvim_buf_set_option(bufnr, ...)
   end
@@ -53,9 +28,6 @@ local on_attach = function(client, bufnr)
   end, 'buffer', 'To Definition')
   -- mx.nnoremap('K', buf.hover, 'buffer', 'Describe on Point')
   mx.nnoremap('K', '<cmd>Lspsaga hover_doc<cr>', 'buffer', 'Describe on Point')
-  -- local hover = require('hover')
-  -- mx.nnoremap('K', require('hover').hover, 'buffer', 'Describe on Point')
-  -- mx.nnoremap('gK', hover.hover_select, 'buffer', 'Describe on Point (Select)')
   mx.nnoremap('gi', function()
     buf.implementation()
   end, 'buffer', 'To Implementation')
@@ -76,12 +48,8 @@ local on_attach = function(client, bufnr)
   mx.nnoremap('<leader>D', function()
     buf.type_definition()
   end, 'buffer', 'Type Definition')
-  ---@diagnostic disable-next-line: missing-parameter
-  -- mx.nnoremap('<F2>', function() buf.rename() end, 'buffer', 'Rename')
-  ---@diagnostic disable-next-line: missing-parameter
-  -- mx.nnoremap('<leader>cr', function() buf.rename() end, 'buffer', 'Rename')
-  ---@diagnostic disable-next-line: missing-parameter
   mx.nnoremap('gr', function()
+    ---@diagnostic disable-next-line: missing-parameter
     buf.references()
   end, 'buffer', 'References')
   mx.nnoremap('<F2>', '<cmd>Lspsaga rename<cr>', 'buffer', 'Rename')
@@ -172,7 +140,6 @@ configs.eslint = {
     coneActionOnSave = {
       enable = true,
     },
-    -- run = 'onSave',
   },
 }
 
@@ -198,13 +165,6 @@ configs.texlab = {
     },
   },
 }
-
--- configs.sumneko_lua = require('neodev').setup({
---   lspconfig = {
---     cmd = { '/usr/bin/lua-language-server' },
---     telemetry = { enable = false },
---   },
--- })
 
 require('neodev').setup({})
 
@@ -254,7 +214,7 @@ end
 
 vim.diagnostic.config({
   virtual_text = { prefix = '●' },
-  -- update_in_insert = true,
+  update_in_insert = true,
   float = {
     source = 'always', -- Or "if_many"
   },
