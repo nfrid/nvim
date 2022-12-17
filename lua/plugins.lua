@@ -43,6 +43,18 @@ return packer.startup({
       end,
     })
 
+    use({
+      'smjonas/live-command.nvim',
+      config = function()
+        require('plugins.live-command')
+      end,
+    })
+
+    use({
+      'tpope/vim-abolish',
+      after = 'live-command.nvim',
+    })
+
     -- use('samjwill/nvim-unception')
 
     use('martinda/Jenkinsfile-vim-syntax')
@@ -116,17 +128,6 @@ return packer.startup({
       'nvim-zh/colorful-winsep.nvim',
       config = function()
         require('plugins.colorful-winsep')
-      end,
-    })
-
-    use({
-      'smjonas/live-command.nvim',
-      config = function()
-        require('live-command').setup({
-          commands = {
-            Norm = { cmd = 'norm' },
-          },
-        })
       end,
     })
 
