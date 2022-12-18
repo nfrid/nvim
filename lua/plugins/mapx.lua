@@ -2,6 +2,10 @@ local mx = require('mapx')
 
 mx.setup({ whichkey = true })
 
+mx.name('<leader>P', 'packer')
+mx.nnoremap('<leader>Pc', '<cmd>PackerCompile<cr>', 'Recompile Plugins')
+mx.nnoremap('<leader>PP', '<cmd>PackerSync<cr>', 'Sync Plugins')
+
 Format = function()
   vim.cmd(':w')
 

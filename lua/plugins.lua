@@ -4,12 +4,6 @@ local cmd = vim.api.nvim_command
 
 local packer = require('packer')
 
-local mx = require('mapx')
-
-mx.name('<leader>P', 'packer')
-mx.nnoremap('<leader>Pc', '<cmd>PackerCompile<cr>', 'Recompile Plugins')
-mx.nnoremap('<leader>PP', '<cmd>PackerSync<cr>', 'Sync Plugins')
-
 local package_root =
 require('packer.util').join_paths(vim.fn.stdpath('data'), 'site', 'pack')
 vim.g.packroot = package_root
@@ -55,8 +49,6 @@ return packer.startup({
       after = 'live-command.nvim',
     })
 
-    -- use('samjwill/nvim-unception')
-
     use('martinda/Jenkinsfile-vim-syntax')
 
     use({
@@ -74,20 +66,6 @@ return packer.startup({
         require('plugins.markdown-togglecheck')
       end,
     })
-
-    -- use({
-    --   'ldelossa/litee.nvim',
-    --   requires = {
-    --     'ldelossa/litee-calltree.nvim',
-    --     'ldelossa/litee-symboltree.nvim',
-    --     'nvim-tree/nvim-web-devicons',
-    --     'ldelossa/litee-filetree.nvim',
-    --     'ldelossa/litee-bookmarks.nvim',
-    --   },
-    --   config = function()
-    --     require('plugins.litee')
-    --   end,
-    -- })
 
     use({
       'Wansmer/treesj',
@@ -107,14 +85,7 @@ return packer.startup({
       'folke/zen-mode.nvim',
       requires = { 'andrewferrier/wrapping.nvim' },
       config = function()
-        require('zen-mode').setup({
-          window = {
-            width = 80,
-          },
-          on_open = function()
-            require('wrapping').soft_wrap_mode()
-          end,
-        })
+        require('plugins.zen')
       end,
     })
     use({
@@ -157,21 +128,6 @@ return packer.startup({
       end,
     })
 
-    -- use({
-    --   'anuvyklack/windows.nvim',
-    --   requires = {
-    --     'anuvyklack/middleclass',
-    --     'anuvyklack/animation.nvim',
-    --   },
-    --   config = function()
-    --     vim.o.winwidth = 10
-    --     vim.o.winminwidth = 10
-    --     require('windows').setup()
-    --   end,
-    -- })
-
-    -- use('mbpowers/nvimager')
-
     use({
       'RRethy/vim-illuminate',
 
@@ -200,13 +156,6 @@ return packer.startup({
       end,
     })
 
-    -- use({
-    --   'levouh/tint.nvim',
-    --   config = function()
-    --     require('tint').setup({})
-    --   end,
-    -- })
-
     use({
       'hoob3rt/lualine.nvim',
       after = 'noice.nvim',
@@ -215,20 +164,6 @@ return packer.startup({
         require('plugins.lualine')
       end,
     })
-    use({
-      'akinsho/nvim-bufferline.lua',
-      branch = 'main',
-      requires = 'nvim-tree/nvim-web-devicons',
-
-      config = function()
-        require('plugins.bufferline')
-      end,
-    })
-
-    -- use {
-    --   'b0o/incline.nvim',
-    --   config = function() require('incline').setup() end
-    -- }
 
     use({
       'lukas-reineke/indent-blankline.nvim',
@@ -236,12 +171,7 @@ return packer.startup({
         require('plugins.indent-blankline')
       end,
     })
-    -- use({
-    --   'petertriho/nvim-scrollbar',
-    --   config = function()
-    --     require('plugins.scrollbar')
-    --   end,
-    -- })
+
     use({
       'lewis6991/satellite.nvim',
       config = function()
@@ -311,22 +241,7 @@ return packer.startup({
     --   end
     -- }
 
-    -- use({
-    --   'plasticboy/vim-markdown',
-    --   config = function()
-    --     require('plugins.markdown')
-    --   end,
-    -- })
     use('lervag/vimtex')
-
-    -- use({
-    --   'nvim-neorg/neorg',
-    --   tag = '*',
-    --   config = function()
-    --     require('plugins.neorg')
-    --   end,
-    --   requires = 'nvim-lua/plenary.nvim',
-    -- })
 
     use('stevearc/dressing.nvim')
 
@@ -364,21 +279,12 @@ return packer.startup({
       end,
     })
 
-    -- use({
-    --   'toppair/reach.nvim',
-    --   config = function()
-    --     require('plugins.reach')
-    --   end,
-    -- })
-
-    -- use 'tpope/vim-commentary'
     use({
       'numToStr/Comment.nvim',
       config = function()
         require('plugins.comment')
       end,
     })
-    -- use 'tpope/vim-surround'
     use({
       'kylechui/nvim-surround',
       config = function()
@@ -386,7 +292,6 @@ return packer.startup({
       end,
     })
     use('kana/vim-repeat')
-    -- use 'jiangmiao/auto-pairs'
     use({
       'windwp/nvim-autopairs',
       requires = 'hrsh7th/nvim-cmp',
@@ -421,7 +326,6 @@ return packer.startup({
       end,
     })
 
-    -- use('tversteeg/registers.nvim')
     use({
       'phaazon/hop.nvim',
       as = 'hop',
@@ -480,29 +384,6 @@ return packer.startup({
       end,
     })
 
-    -- use({
-    --   'lewis6991/hover.nvim',
-    --   config = function()
-    --     require('hover').setup({
-    --       init = function()
-    --         -- Require providers
-    --         require('hover.providers.lsp')
-    --         -- require('hover.providers.gh')
-    --         -- require('hover.providers.jira')
-    --         -- require('hover.providers.man')
-    --         -- require('hover.providers.dictionary')
-    --       end,
-    --       preview_opts = {
-    --         border = nil,
-    --       },
-    --       -- Whether the contents of a currently open hover window should be moved
-    --       -- to a :h preview-window when pressing the hover keymap.
-    --       preview_window = false,
-    --       title = true,
-    --     })
-    --   end,
-    -- })
-
     use({
       'akinsho/git-conflict.nvim',
       tag = '*',
@@ -519,18 +400,6 @@ return packer.startup({
         require('gitlinker').setup()
       end,
     })
-
-    -- use({
-    --   'pwntester/octo.nvim',
-    --   requires = {
-    --     'nvim-lua/plenary.nvim',
-    --     'nvim-telescope/telescope.nvim',
-    --     'nvim-tree/nvim-web-devicons',
-    --   },
-    --   config = function()
-    --     require('octo').setup()
-    --   end,
-    -- })
 
     use({ 'kevinhwang91/nvim-bqf', ft = 'qf' })
 
@@ -603,13 +472,6 @@ return packer.startup({
       end,
     })
 
-    -- use({
-    --   'j-hui/fidget.nvim',
-    --   config = function()
-    --     require('fidget').setup()
-    --   end,
-    -- })
-
     use('folke/lua-dev.nvim')
 
     use({ 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' })
@@ -631,27 +493,11 @@ return packer.startup({
       end,
     })
 
-    -- use({
-    --   'theHamsta/nvim-semantic-tokens',
-    --   requires = { 'neovim/nvim-lspconfig' },
-    --   config = function()
-    --     require('plugins.semantic-tokens')
-    --   end,
-    -- })
-
     use({
       'glepnir/lspsaga.nvim',
       requires = { 'neovim/nvim-lspconfig' },
       config = function()
         require('plugins.lspsaga')
-      end,
-    })
-
-    use({
-      'lvimuser/lsp-inlayhints.nvim',
-      requires = { 'neovim/nvim-lspconfig' },
-      config = function()
-        require('plugins.inlayhints')
       end,
     })
 
@@ -662,12 +508,6 @@ return packer.startup({
       end,
     })
 
-    -- use {
-    --   'williamboman/mason.nvim',
-    --   requires = { 'williamboman/mason-lspconfig.nvim' },
-    --   config = function() require('plugins.mason') end
-    -- }
-
     use({
       'andrewferrier/textobj-diagnostic.nvim',
       config = function()
@@ -677,7 +517,6 @@ return packer.startup({
 
     -- use({
     --   'zbirenbaum/copilot.lua',
-    --   after = 'nvim-bufferline.lua',
     --   config = function()
     --     ---@diagnostic disable-next-line: param-type-mismatch
     --     vim.defer_fn(function()
@@ -731,13 +570,6 @@ return packer.startup({
         require('plugins.package-info')
       end,
     })
-
-    -- use({
-    --   'simrat39/symbols-outline.nvim',
-    --   config = function()
-    --     require('plugins.symbols-outline')
-    --   end,
-    -- })
 
     use({
       'nvim-treesitter/nvim-treesitter',
