@@ -1,3 +1,5 @@
+hot_reload(debug.getinfo(1).source:sub(2))
+
 vim.cmd([[
 au BufRead,BufNewFile *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4
 

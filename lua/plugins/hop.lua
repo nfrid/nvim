@@ -1,3 +1,5 @@
+hot_reload(debug.getinfo(1).source:sub(2))
+
 local hop = require('hop')
 hop.setup({ keys = 'fjdksla;gheiworuxvmc' })
 

@@ -1,3 +1,5 @@
+hot_reload(debug.getinfo(1).source:sub(2))
+
 local todo = require('todo-comments')
 todo.setup {
   signs = false,

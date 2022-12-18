@@ -1,3 +1,5 @@
+hot_reload(debug.getinfo(1).source:sub(2))
+
 local cmp = require('cmp')
 local lspkind = require('lspkind')
 local luasnip = require('luasnip')

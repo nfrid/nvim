@@ -1,3 +1,5 @@
+hot_reload(debug.getinfo(1).source:sub(2))
+
 local nvim_lsp = require('lspconfig')
 local navic = require('nvim-navic')
 local mx = require('mapx')

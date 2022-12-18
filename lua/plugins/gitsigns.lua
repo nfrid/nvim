@@ -1,3 +1,5 @@
+hot_reload(debug.getinfo(1).source:sub(2))
+
 local gs = require('gitsigns')
 local mx = require('mapx')
 

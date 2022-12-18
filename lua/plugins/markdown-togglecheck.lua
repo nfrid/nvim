@@ -1,3 +1,5 @@
+hot_reload(debug.getinfo(1).source:sub(2))
+
 local p = require('markdown-togglecheck')
 local mx = require('mapx')
 

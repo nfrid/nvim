@@ -1,3 +1,5 @@
+hot_reload(debug.getinfo(1).source:sub(2))
+
 require('mapx').cmd('LightBulbUpdate', function()
   require('nvim-lightbulb').update_lightbulb({
     -- Language servers to ignore

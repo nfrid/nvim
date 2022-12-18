@@ -1,3 +1,5 @@
+hot_reload(debug.getinfo(1).source:sub(2))
+
 vim.opt.hidden = true
 vim.opt.swapfile = false
 vim.opt.undofile = true

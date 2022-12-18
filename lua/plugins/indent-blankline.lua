@@ -1,3 +1,5 @@
+hot_reload(debug.getinfo(1).source:sub(2))
+
 require('indent_blankline').setup({
   char = '▏',
   char_highlight_list = { 'IndentLine' },

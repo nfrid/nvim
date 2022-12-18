@@ -1,3 +1,5 @@
+hot_reload(debug.getinfo(1).source:sub(2))
+
 require('telescope').setup({})
 require('telescope').load_extension('dap')
 require('telescope').load_extension('recent_files')

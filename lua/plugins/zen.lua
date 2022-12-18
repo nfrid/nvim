@@ -1,3 +1,5 @@
+hot_reload(debug.getinfo(1).source:sub(2))
+
 require('zen-mode').setup({
   window = {
     width = 80,

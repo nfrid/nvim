@@ -1,14 +1,19 @@
-require('vutils')
+hot_reload(debug.getinfo(1).source:sub(2), 'PackerCompile')
 
-local cmd = vim.api.nvim_command
+local package_root = vim.fn.stdpath('data') .. '/site/pack'
+vim.g.packroot = package_root
+
+local install_path = package_root .. '/packer/start/packer.nvim'
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+  vim.fn.execute(
+    '!git clone https://github.com/wbthomason/packer.nvim ' .. install_path
+  )
+  vim.cmd([[packadd packer.nvim]])
+end
 
 local packer = require('packer')
 
-local package_root =
-require('packer.util').join_paths(vim.fn.stdpath('data'), 'site', 'pack')
-vim.g.packroot = package_root
-
-return packer.startup({
+packer.startup({
   function()
     local use = packer.use
 
@@ -142,7 +147,7 @@ return packer.startup({
       as = 'dracula',
       config = function()
         vim.cmd('colorscheme dracula')
-        source_after('plugin/dracula.vim')
+        source('after/plugin/dracula.vim')
       end,
     })
 
@@ -583,7 +588,7 @@ return packer.startup({
         { 'RRethy/nvim-treesitter-endwise' },
       },
       run = function()
-        cmd('TSUpdate')
+        vim.cmd('TSUpdate')
       end,
       config = function()
         require('plugins.treesitter')

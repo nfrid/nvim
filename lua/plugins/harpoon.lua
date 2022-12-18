@@ -1,3 +1,5 @@
+hot_reload(debug.getinfo(1).source:sub(2))
+
 local mark = require('harpoon.mark')
 local ui = require('harpoon.ui')
 local mx = require('mapx')

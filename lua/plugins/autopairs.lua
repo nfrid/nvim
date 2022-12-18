@@ -1,3 +1,5 @@
+hot_reload(debug.getinfo(1).source:sub(2))
+
 require('nvim-autopairs').setup({
   fast_wrap = {},
   check_ts = true,
