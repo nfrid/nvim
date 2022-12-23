@@ -1,5 +1,3 @@
-execute 'source' g:packroot . '/packer/start/dracula/after/plugin/dracula.vim'
-
 hi! Cursor none
 
 hi Normal guibg=NONE

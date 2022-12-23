@@ -1,5 +1,12 @@
-hot_reload(debug.getinfo(1).source:sub(2))
+---@type LazySpec
+local M = {
+  'mbbill/undotree',
+  cmd = { 'UndotreeToggle' },
+}
 
-local mx = require('mapx')
+M.init = function()
+  local mx = require('mapx')
+  mx.nnoremap('<leader>u', '<cmd>UndotreeToggle<cr>')
+end
 
-mx.nnoremap('<leader>u', '<cmd>UndotreeToggle<cr>')
+return M

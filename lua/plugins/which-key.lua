@@ -1,12 +1,14 @@
-hot_reload(debug.getinfo(1).source:sub(2))
-
-local wk = require('which-key')
-
-wk.setup({
-  plugins = {
-    spelling = {
-      enabled = true,
-    }
+---@type LazySpec
+local M = {
+  'folke/which-key.nvim',
+  config = {
+    plugins = {
+      spelling = {
+        enabled = true,
+      }
+    },
+    show_help = false,
   },
-  show_help = false,
-})
+}
+
+return M

@@ -1,6 +1,14 @@
-hot_reload(debug.getinfo(1).source:sub(2))
+---@type LazySpec
+local M = {
+  'kevinhwang91/rnvimr',
+  cmd = { 'RnvimrToggle' },
+}
 
-local mx = require('mapx')
-mx.nnoremap('<leader>fd', '<cmd>RnvimrToggle<cr>', 'ranger')
-vim.g.rnvimr_enable_ex = 1
-vim.g.rnvimr_enable_picker = 1
+M.init = function()
+  local mx = require('mapx')
+  mx.nnoremap('<leader>fd', '<cmd>RnvimrToggle<cr>', 'ranger')
+  vim.g.rnvimr_enable_ex = 1
+  vim.g.rnvimr_enable_picker = 1
+end
+
+return M

@@ -1,6 +1,12 @@
-hot_reload(debug.getinfo(1).source:sub(2))
+---@type LazySpec
+local M = {
+  'junegunn/vim-easy-align',
+}
 
-local mx = require('mapx')
+M.init = function()
+  local mx = require('mapx')
+  mx.xnoremap('gA', '<Plug>(EasyAlign)', 'align')
+  mx.xnoremap('A', '<Plug>(EasyAlign)', 'align')
+end
 
-mx.xnoremap('gA', '<Plug>(EasyAlign)', 'align')
-mx.xnoremap('A', '<Plug>(EasyAlign)', 'align')
+return M

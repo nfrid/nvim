@@ -1,9 +1,19 @@
-hot_reload(debug.getinfo(1).source:sub(2))
+---@type LazySpec
+local M = {
+  'L3MON4D3/LuaSnip',
+  dependencies = { 'honza/vim-snippets' },
+}
 
-require('luasnip.loaders.from_snipmate').lazy_load()
-local snip = require('luasnip')
-snip.filetype_extend('javascriptreact', { 'javascript' })
-snip.filetype_extend('typescriptreact', { 'typescript' })
+M.init = function()
+  local mx = require('mapx')
+  mx.inoremap('<C-s>', function() require('luasnip').expand({}) end, 'Expand Snippet')
+end
 
-local mx = require('mapx')
-mx.inoremap('<C-s>', function() snip.expand() end, 'Expand Snippet')
+M.config = function()
+  require('luasnip.loaders.from_snipmate').lazy_load()
+  local snip = require('luasnip')
+  snip.filetype_extend('javascriptreact', { 'javascript' })
+  snip.filetype_extend('typescriptreact', { 'typescript' })
+end
+
+return M

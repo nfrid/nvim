@@ -1,23 +1,31 @@
-hot_reload(debug.getinfo(1).source:sub(2))
+---@type LazySpec
+local M = {
+  'akinsho/git-conflict.nvim',
+  lazy = false, -- figure out how to lazy do it
+}
 
-local p = require('git-conflict')
-local mx = require('mapx')
+M.config = function()
+  local p = require('git-conflict')
+  local mx = require('mapx')
 
-p.setup({
-  default_mappings = false,
-  disable_diagnostics = false,
-  highlights = {
-    incoming = 'DiffAdd',
-    current = 'DiffChange',
-  },
-})
+  p.setup({
+    default_mappings = false,
+    disable_diagnostics = false,
+    highlights = {
+      incoming = 'DiffAdd',
+      current = 'DiffChange',
+    },
+  })
 
-mx.nnoremap(']x', '<Plug>(git-conflict-next-conflict)', 'Next conflict')
-mx.nnoremap('[x', '<Plug>(git-conflict-prev-conflict)', 'Previous conflict')
+  mx.nnoremap(']x', '<Plug>(git-conflict-next-conflict)', 'Next conflict')
+  mx.nnoremap('[x', '<Plug>(git-conflict-prev-conflict)', 'Previous conflict')
 
-local s = '<leader>g'
-mx.nname(s, 'select')
-mx.nnoremap(s .. 'h', '<Plug>(git-conflict-ours)', 'Select ours')
-mx.nnoremap(s .. 'l', '<Plug>(git-conflict-theirs)', 'Select theirs')
-mx.nnoremap(s .. 'j', '<Plug>(git-conflict-both)', 'Select both')
-mx.nnoremap(s .. 'k', '<Plug>(git-conflict-none)', 'Select none')
+  local s = '<leader>g'
+  mx.nname(s, 'select')
+  mx.nnoremap(s .. 'h', '<Plug>(git-conflict-ours)', 'Select ours')
+  mx.nnoremap(s .. 'l', '<Plug>(git-conflict-theirs)', 'Select theirs')
+  mx.nnoremap(s .. 'j', '<Plug>(git-conflict-both)', 'Select both')
+  mx.nnoremap(s .. 'k', '<Plug>(git-conflict-none)', 'Select none')
+end
+
+return M

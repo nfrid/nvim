@@ -1,631 +1,313 @@
-hot_reload(debug.getinfo(1).source:sub(2), 'PackerCompile')
+---@type LazySpec[]
+local M = {
+  { 'tpope/vim-abolish', lazy = false },
 
-local package_root = vim.fn.stdpath('data') .. '/site/pack'
-vim.g.packroot = package_root
+  { 'martinda/Jenkinsfile-vim-syntax', ft = { 'Jenkinsfile' } },
 
-local install_path = package_root .. '/packer/start/packer.nvim'
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  vim.fn.execute(
-    '!git clone https://github.com/wbthomason/packer.nvim ' .. install_path
-  )
-  vim.cmd([[packadd packer.nvim]])
-end
+  {
+    'nfrid/media.nvim',
+    config = true,
+    ft = { 'png', 'jpg', 'gif', 'mp4', 'webm', 'pdf' },
+  },
 
-local packer = require('packer')
+  'nfrid/treesitter-utils',
 
-packer.startup({
-  function()
-    local use = packer.use
+  {
+    'iamcco/markdown-preview.nvim',
+    build = function()
+      vim.fn['mkdp#util#install']()
+    end,
+    ft = { 'markdown' },
+  },
 
-    use('wbthomason/packer.nvim')
+  { 'andrewferrier/wrapping.nvim', config = true, lazy = false },
 
-    use('lewis6991/impatient.nvim')
-
-    use({
-      'folke/which-key.nvim',
-      config = function()
-        require('plugins.which-key')
-      end,
-    })
-    use({
-      'b0o/mapx.nvim',
-      config = function()
-        require('plugins.mapx')
-      end,
-      requires = { 'folke/which-key.nvim' },
-    })
-
-    use({
-      'mbbill/undotree',
-      config = function()
-        require('plugins.undotree')
-      end,
-    })
-
-    use({
-      'smjonas/live-command.nvim',
-      config = function()
-        require('plugins.live-command')
-      end,
-    })
-
-    use({
-      'tpope/vim-abolish',
-      after = 'live-command.nvim',
-    })
-
-    use('martinda/Jenkinsfile-vim-syntax')
-
-    use({
-      'nfrid/media.nvim',
-      config = function()
-        require('media-nvim').setup()
-      end,
-    })
-
-    use('nfrid/treesitter-utils')
-    use({
-      'nfrid/markdown-togglecheck',
-      after = 'mapx.nvim',
-      config = function()
-        require('plugins.markdown-togglecheck')
-      end,
-    })
-
-    use({
-      'Wansmer/treesj',
-      config = function()
-        require('plugins.treesj')
-      end,
-    })
-
-    use({
-      'iamcco/markdown-preview.nvim',
-      run = function()
-        vim.fn['mkdp#util#install']()
-      end,
-    })
-
-    use({
-      'folke/zen-mode.nvim',
-      requires = { 'andrewferrier/wrapping.nvim' },
-      config = function()
-        require('plugins.zen')
-      end,
-    })
-    use({
-      'andrewferrier/wrapping.nvim',
-      config = function()
-        require('wrapping').setup()
-      end,
-    })
-
-    use({
-      'nvim-zh/colorful-winsep.nvim',
-      config = function()
-        require('plugins.colorful-winsep')
-      end,
-    })
-
-    use({
-      'nat-418/scamp.nvim',
-      config = function()
-        require('plugins.scamp')
-      end,
-    })
-
-    use({
-      'folke/noice.nvim',
-      event = 'VimEnter',
-      config = function()
-        require('plugins.noice')
-      end,
-      requires = {
-        'MunifTanjim/nui.nvim',
-        'rcarriga/nvim-notify',
+  {
+    'nvim-zh/colorful-winsep.nvim',
+    lazy = false,
+    config = {
+      highlight = {
+        fg = '#ff79c6',
       },
-    })
+    },
+  },
 
-    use({
-      'AckslD/nvim-FeMaco.lua',
-      config = function()
-        require('femaco').setup()
-      end,
-    })
+  {
+    'nat-418/scamp.nvim',
+    config = true,
+    disabled = true,
+  },
 
-    use({
-      'RRethy/vim-illuminate',
+  {
+    'AckslD/nvim-FeMaco.lua',
+    config = true,
+    ft = { 'markdown' },
+  },
 
-      config = function()
-        require('plugins.illuminate')
-      end,
-    })
+  {
+    'dracula/vim',
+    name = 'dracula',
+    lazy = false,
+    dependencies = {
+      'folke/lsp-colors.nvim',
+    },
+    config = function()
+      vim.cmd('colorscheme dracula')
+      source('after/plugin/dracula.vim')
+    end,
+  },
 
-    use('folke/lsp-colors.nvim')
-    use({
-      'dracula/vim',
-      as = 'dracula',
-      config = function()
-        vim.cmd('colorscheme dracula')
-        source('after/plugin/dracula.vim')
-      end,
-    })
+  { 'superhawk610/ascii-blocks.nvim', cmd = { 'AsciiBlockify' } },
 
-    use('superhawk610/ascii-blocks.nvim')
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    config = {
+      char = '▏',
+      char_highlight_list = { 'IndentLine' },
+      -- show_first_indent_level = false,
+      use_treesitter = true,
+      filetype_exclude = { 'markdown', 'tex', 'startify' },
+      show_current_context = true,
+    },
+    lazy = false,
+  },
 
-    use({
-      'phaazon/mind.nvim',
-      requires = { 'nvim-lua/plenary.nvim' },
-      config = function()
-        require('mind').setup()
-      end,
-    })
+  {
+    'lewis6991/satellite.nvim',
+    config = {
+      winblend = 0,
+    },
+    lazy = false,
+  },
 
-    use({
-      'hoob3rt/lualine.nvim',
-      after = 'noice.nvim',
-      requires = 'nvim-tree/nvim-web-devicons',
-      config = function()
-        require('plugins.lualine')
-      end,
-    })
+  {
+    'machakann/vim-highlightedyank',
+    config = function()
+      vim.g.highlightedyank_highlight_duration = 250
+    end,
+    lazy = false,
+  },
 
-    use({
-      'lukas-reineke/indent-blankline.nvim',
-      config = function()
-        require('plugins.indent-blankline')
-      end,
-    })
+  { 'kevinhwang91/nvim-hlslens', config = true, lazy = false },
 
-    use({
-      'lewis6991/satellite.nvim',
-      config = function()
-        require('satellite').setup({
-          winblend = 0,
-        })
-      end,
-    })
-    use({
-      'machakann/vim-highlightedyank',
-      config = function()
-        vim.g.highlightedyank_highlight_duration = 250
-      end,
-    })
-    use({
-      'kevinhwang91/nvim-hlslens',
-      config = function()
-        require('hlslens').setup()
-      end,
-    })
+  { 'NvChad/nvim-colorizer.lua', config = true, lazy = false },
 
-    use({
-      'NvChad/nvim-colorizer.lua',
-      config = function()
-        require('plugins.colorizer')
-      end,
-    })
+  { 'mrshmllow/document-color.nvim', config = true },
 
-    use({
-      'mrshmllow/document-color.nvim',
-      config = function()
-        require('document-color').setup({})
-      end,
-    })
-
-    use({
-      'mrjones2014/legendary.nvim',
-      requires = 'folke/which-key.nvim',
-      after = { 'which-key.nvim' },
-      config = function()
-        require('legendary').setup({
-          which_key = {
-            auto_register = true,
-          },
-        })
-      end,
-    })
-
-    use({
-      'nfrid/due.nvim',
-      config = function()
-        require('due_nvim').setup({})
-      end,
-    })
-
-    use({
-      'gaoDean/autolist.nvim',
-      config = function()
-        require('plugins.autolist')
-      end,
-    })
-
-    -- use {
-    --   'edluffy/hologram.nvim',
-    --   config = function()
-    --     require('hologram').setup({ auto_display = true })
-    --   end
-    -- }
-
-    use('lervag/vimtex')
-
-    use('stevearc/dressing.nvim')
-
-    use({
-      'krady21/compiler-explorer.nvim',
-      requires = { 'nvim-lua/plenary.nvim' },
-    })
-
-    use({
-      'nvim-telescope/telescope.nvim',
-      requires = {
-        'nvim-lua/popup.nvim',
-        'nvim-lua/plenary.nvim',
-        'nvim-telescope/telescope-dap.nvim',
-        'smartpde/telescope-recent-files',
+  {
+    'mrjones2014/legendary.nvim',
+    dependencies = { 'folke/which-key.nvim' },
+    cmd = { 'Legendary' },
+    disabled = true,
+    config = {
+      which_key = {
+        auto_register = true,
       },
-      after = 'mapx.nvim',
-      config = function()
-        require('plugins.telescope')
-      end,
-    })
-    use({
-      'sudormrfbin/cheatsheet.nvim',
-      requires = {
-        { 'nvim-telescope/telescope.nvim' },
-        { 'nvim-lua/popup.nvim' },
-        { 'nvim-lua/plenary.nvim' },
+    },
+  },
+
+  { 'nfrid/due.nvim', config = true, ft = { 'markdown' } },
+
+  {
+    'gaoDean/autolist.nvim',
+    ft = { 'markdown' },
+    config = {
+      invert = {
+        mapping = '<a-r>',
       },
-    })
+    },
+  },
 
-    use({
-      'ThePrimeagen/harpoon',
-      config = function()
-        require('plugins.harpoon')
-      end,
-    })
+  -- {
+  --   'edluffy/hologram.nvim',
+  --   config = { auto_display = true },
+  --   ft = { 'markdown' },
+  -- },
 
-    use({
-      'numToStr/Comment.nvim',
-      config = function()
-        require('plugins.comment')
-      end,
-    })
-    use({
-      'kylechui/nvim-surround',
-      config = function()
-        require('nvim-surround').setup()
-      end,
-    })
-    use('kana/vim-repeat')
-    use({
-      'windwp/nvim-autopairs',
-      requires = 'hrsh7th/nvim-cmp',
-      config = function()
-        require('plugins.autopairs')
-      end,
-    })
+  { 'lervag/vimtex', ft = { 'tex' } },
 
-    use({
-      'monaqa/dial.nvim',
-      config = function()
-        require('plugins.dial')
-      end,
-    })
+  { 'stevearc/dressing.nvim', lazy = false },
 
-    use({
-      'junegunn/vim-easy-align',
-      config = function()
-        require('plugins.align')
-      end,
-    })
+  {
+    'krady21/compiler-explorer.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    cmd = { 'CECompile', 'CECompileLive' },
+  },
 
-    use({
-      'anuvyklack/pretty-fold.nvim',
-      requires = {
-        { 'anuvyklack/nvim-keymap-amend' },
-        { 'anuvyklack/fold-preview.nvim' },
-      },
-      config = function()
-        require('pretty-fold').setup({})
-        require('fold-preview').setup({})
-      end,
-    })
+  {
+    'sudormrfbin/cheatsheet.nvim',
+    dependencies = { 'nvim-telescope/telescope.nvim' },
+    cmd = { 'Cheatsheet' },
+  },
 
-    use({
-      'phaazon/hop.nvim',
-      as = 'hop',
-      config = function()
-        require('plugins.hop')
-      end,
-    })
-    use({
-      'chentoast/marks.nvim',
-      config = function()
-        require('marks').setup({ mappings = { annotate = 'm<leader>' } })
-      end,
-    })
+  { 'kylechui/nvim-surround', config = true, lazy = false },
 
-    use('fedorenchik/qt-support.vim')
+  { 'kana/vim-repeat', lazy = false },
 
-    use('ron-rs/ron.vim')
+  {
+    'anuvyklack/pretty-fold.nvim',
+    dependencies = {
+      'anuvyklack/nvim-keymap-amend',
+      'anuvyklack/fold-preview.nvim',
+    },
+    config = function()
+      require('pretty-fold').setup({})
+      require('fold-preview').setup({})
+    end,
+    lazy = false,
+  },
 
-    use('zah/nim.vim')
+  {
+    'chentoast/marks.nvim',
+    config = { mappings = { annotate = 'm<leader>' } },
+    lazy = false,
+  },
 
-    use('iloginow/vim-stylus')
+  { 'ron-rs/ron.vim', ft = { 'ron' } },
 
-    use({
-      'kevinhwang91/rnvimr',
-      config = function()
-        require('plugins.rnvimr')
-      end,
-    })
+  { 'zah/nim.vim', ft = { 'nim' } },
 
-    use({
-      'rktjmp/paperplanes.nvim',
-      config = function()
-        require('plugins.paperplanes')
-      end,
-    })
+  { 'iloginow/vim-stylus', ft = { 'stylus' } },
 
-    use({
-      'akinsho/toggleterm.nvim',
-      tag = '*',
-      config = function()
-        require('plugins.toggleterm')
-      end,
-    })
+  {
+    'rktjmp/paperplanes.nvim',
+    config = {
+      register = '+',
+      provider = 'paste.rs',
+      provider_options = { insecure = true },
+      notifier = vim.notify or print,
+    },
+    cmd = { 'PP' },
+  },
 
-    use({
-      'kdheepak/lazygit.nvim',
-      config = function()
-        require('plugins.lazygit')
-      end,
-    })
+  {
+    'ruifm/gitlinker.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = true,
+    keys = { '<leader>gy' },
+  },
 
-    use({
-      'lewis6991/gitsigns.nvim',
-      config = function()
-        require('plugins.gitsigns')
-      end,
-    })
+  { 'kevinhwang91/nvim-bqf', ft = { 'qf' } },
 
-    use({
-      'akinsho/git-conflict.nvim',
-      tag = '*',
-      after = 'mapx.nvim',
-      config = function()
-        require('plugins.conflict')
-      end,
-    })
+  {
+    'onsails/lspkind-nvim',
+    config = function()
+      require('lspkind').init()
+    end,
+  },
 
-    use({
-      'ruifm/gitlinker.nvim',
-      requires = 'nvim-lua/plenary.nvim',
-      config = function()
-        require('gitlinker').setup()
-      end,
-    })
+  'folke/lua-dev.nvim',
 
-    use({ 'kevinhwang91/nvim-bqf', ft = 'qf' })
+  { 'weilbith/nvim-code-action-menu', cmd = { 'CodeActionMenu' } },
 
-    use({
-      'L3MON4D3/LuaSnip',
-      requires = 'honza/vim-snippets',
-      config = function()
-        require('plugins.luasnip')
-      end,
-    })
-
-    use({
-      'hrsh7th/nvim-cmp',
-      requires = {
-        'hrsh7th/cmp-nvim-lsp',
-        'hrsh7th/cmp-buffer',
-        'hrsh7th/cmp-path',
-        'hrsh7th/cmp-cmdline',
-        'petertriho/cmp-git',
-        'L3MON4D3/LuaSnip',
-        'saadparwaiz1/cmp_luasnip',
-        -- 'lukas-reineke/cmp-rg',
-        'andersevenrud/cmp-tmux',
-        'David-Kunz/cmp-npm',
-        'rcarriga/cmp-dap',
-        -- {
-        --   'tzachar/cmp-tabnine',
-        --   run = './install.sh',
-        --   requires = 'hrsh7th/nvim-cmp',
-        --   config = function() require('plugins.cmp-tabnine') end
-        -- }
-      },
-      config = function()
-        require('plugins.cmp')
-      end,
-    })
-
-    use({
-      'mfussenegger/nvim-dap',
-      requires = {
-        'rcarriga/nvim-dap-ui', -- 'Pocco81/dap-buddy.nvim'
-        { 'Pocco81/dap-buddy.nvim', branch = 'dev' },
-        'jbyuki/one-small-step-for-vimkind',
-        {
-          'mxsdev/nvim-dap-vscode-js',
-          requires = {
-            {
-              'microsoft/vscode-js-debug',
-              opt = true,
-              run = 'pnpm i && pnpm run compile',
-            },
-          },
-        },
-        -- {
-        --   'theHamsta/nvim-dap-virtual-text',
-        --   config = function()
-        --     require('nvim-dap-virtual-text').setup()
-        --   end,
-        -- },
-      },
-      config = function()
-        require('plugins.dap')
-      end,
-    })
-
-    use({
-      'onsails/lspkind-nvim',
-      config = function()
-        require('lspkind').init()
-      end,
-    })
-
-    use('folke/lua-dev.nvim')
-
-    use({ 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' })
-
-    use({
+  {
+    'narutoxy/dim.lua',
+    dependencies = {
       'neovim/nvim-lspconfig',
-      requires = { 'hrsh7th/nvim-cmp' },
-      after = 'mapx.nvim',
-      config = function()
-        require('plugins.lsp')
-      end,
-    })
+    },
+    config = true,
+    event = { 'LspAttach' },
+  },
 
-    use({
-      'narutoxy/dim.lua',
-      requires = { 'nvim-treesitter/nvim-treesitter', 'neovim/nvim-lspconfig' },
-      config = function()
-        require('dim').setup({})
-      end,
-    })
+  {
+    'folke/trouble.nvim',
+    config = true,
+    init = function()
+      local mx = require('mapx')
+      mx.nnoremap('<leader>d', '<cmd>TroubleToggle<cr>', 'Toggle Trouble')
+    end,
+    cmd = { 'Trouble', 'TroubleToggle' },
+  },
 
-    use({
-      'glepnir/lspsaga.nvim',
-      requires = { 'neovim/nvim-lspconfig' },
-      config = function()
-        require('plugins.lspsaga')
-      end,
-    })
+  {
+    'andrewferrier/textobj-diagnostic.nvim',
+    config = true,
+    ---@diagnostic disable-next-line: assign-type-mismatch
+    keys = { { 'ig', ']g', '[g', mode = { 'x', 'o' } } },
+  },
 
-    use({
-      'folke/trouble.nvim',
-      config = function()
-        require('plugins.trouble')
-      end,
-    })
+  -- {
+  --   'zbirenbaum/copilot.lua',
+  --   config = function()
+  --     ---@diagnostic disable-next-line: param-type-mismatch
+  --     vim.defer_fn(function()
+  --       local active_clients = vim.lsp.get_active_clients()
+  --       for _, client in ipairs(active_clients) do
+  --         if client.name == 'copilot' then
+  --           return
+  --         end
+  --       end
+  --       require('copilot').setup()
+  --       ---@diagnostic disable-next-line: param-type-mismatch
+  --     end, 100)
+  --   end,
+  -- },
+  -- {
+  --   'zbirenbaum/copilot-cmp',
+  --   dependencies = {'zbirenbaum/copilot.lua'},
+  --   module = 'copilot_cmp',
+  --   config = function()
+  --     require('copilot_cmp').setup({
+  --       formatters = {
+  --         insert_text = require('copilot_cmp.format').remove_existing,
+  --       },
+  --     })
+  --   end,
+  -- },
 
-    use({
-      'andrewferrier/textobj-diagnostic.nvim',
-      config = function()
-        require('textobj-diagnostic').setup()
-      end,
-    })
+  {
+    'ahmedkhalf/project.nvim',
+    name = 'project_nvim',
+    config = {
+      ignore_lsp = { 'copilot' },
+      show_hidden = true,
+    },
+    event = { 'LspAttach' },
+  },
 
-    -- use({
-    --   'zbirenbaum/copilot.lua',
-    --   config = function()
-    --     ---@diagnostic disable-next-line: param-type-mismatch
-    --     vim.defer_fn(function()
-    --       local active_clients = vim.lsp.get_active_clients()
-    --       for _, client in ipairs(active_clients) do
-    --         if client.name == 'copilot' then
-    --           return
-    --         end
-    --       end
-    --       require('copilot').setup()
-    --       ---@diagnostic disable-next-line: param-type-mismatch
-    --     end, 100)
-    --   end,
-    -- })
-    -- use({
-    --   'zbirenbaum/copilot-cmp',
-    --   requires = 'zbirenbaum/copilot.lua',
-    --   module = 'copilot_cmp',
-    --   after = { 'copilot.lua' },
-    --   config = function()
-    --     require('copilot_cmp').setup({
-    --       formatters = {
-    --         insert_text = require('copilot_cmp.format').remove_existing,
-    --       },
-    --     })
-    --   end,
-    -- })
+  { 'jackguo380/vim-lsp-cxx-highlight', ft = { 'c', 'cpp', 'h', 'hpp' } },
 
-    use({ 'SmiteshP/nvim-navic', requires = 'neovim/nvim-lspconfig' })
+  {
+    'cshuaimin/ssr.nvim',
+    init = function()
+      local mx = require('mapx')
+      mx.nnoremap('<leader>cc', function()
+        require('ssr').open()
+      end, 'Advanced Replace')
+      mx.vnoremap('<leader>cc', function()
+        require('ssr').open()
+      end, 'Advanced Replace')
+    end,
+  },
 
-    use({
-      'kosayoda/nvim-lightbulb',
-      config = function()
-        require('plugins.lightbulb')
-      end,
-    })
+  {
+    'm-demare/hlargs.nvim',
+    config = { color = '#ffb86c' },
+    event = { 'BufReadPost' },
+  },
 
-    use({
-      'ahmedkhalf/project.nvim',
-      config = function()
-        require('plugins.project')
-      end,
-    })
+  {
+    'folke/todo-comments.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = {
+      signs = false,
+      keywords = {
+        FIX = {
+          icon = ' ',
+          color = 'error',
+          alt = { 'FIXME', 'BUG', 'FIXIT', 'FIX', 'ISSUE' }
+        },
+        TODO = { icon = ' ', color = 'info' },
+        HACK = { icon = ' ', color = 'warning', alt = { 'FUCK', 'SHIT', 'BAD' } },
+        WARN = { icon = ' ', color = 'warning', alt = { 'WARNING', 'XXX' } },
+        PERF = { icon = ' ', alt = { 'OPTIM', 'PERFORMANCE', 'OPTIMIZE' } },
+        NOTE = { icon = ' ', color = 'hint', alt = { 'INFO' } }
+      }
+    },
+    cmd = { 'TodoTelescope', 'TodoTrouble', 'TodoQuickFix', 'TodoLocList' },
+  },
 
-    use('jackguo380/vim-lsp-cxx-highlight')
+  { 'rafcamlet/nvim-luapad', cmd = { 'Luapad', 'LuaRun' } },
+}
 
-    use({
-      'vuki656/package-info.nvim',
-      requires = 'MunifTanjim/nui.nvim',
-      config = function()
-        require('plugins.package-info')
-      end,
-    })
-
-    use({
-      'nvim-treesitter/nvim-treesitter',
-      requires = {
-        { 'nvim-treesitter/playground' },
-        { 'p00f/nvim-ts-rainbow' },
-        { 'JoosepAlviste/nvim-ts-context-commentstring' },
-        { 'windwp/nvim-ts-autotag' },
-        { 'nvim-treesitter/nvim-treesitter-textobjects' },
-        { 'RRethy/nvim-treesitter-textsubjects' },
-        { 'RRethy/nvim-treesitter-endwise' },
-      },
-      run = function()
-        vim.cmd('TSUpdate')
-      end,
-      config = function()
-        require('plugins.treesitter')
-      end,
-    })
-
-    use({
-      'cshuaimin/ssr.nvim',
-      after = 'mapx.nvim',
-      config = function()
-        require('plugins.ssr')
-      end,
-    })
-
-    use({
-      'm-demare/hlargs.nvim',
-      requires = { 'nvim-treesitter/nvim-treesitter' },
-      config = function()
-        require('hlargs').setup({ color = '#ffb86c' })
-      end,
-    })
-
-    use({
-      'folke/todo-comments.nvim',
-      requires = 'nvim-lua/plenary.nvim',
-      config = function()
-        require('plugins.todo')
-      end,
-    })
-
-    use({
-      'andweeb/presence.nvim',
-      config = function()
-        require('plugins.presence')
-      end,
-    })
-
-    use('rafcamlet/nvim-luapad')
-  end,
-})
+return M

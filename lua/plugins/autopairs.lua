@@ -1,10 +1,18 @@
-hot_reload(debug.getinfo(1).source:sub(2))
+---@type LazySpec
+local M = {
+  'windwp/nvim-autopairs',
+  lazy = false,
+}
 
-require('nvim-autopairs').setup({
-  fast_wrap = {},
-  check_ts = true,
-})
+M.config = function()
+  require('nvim-autopairs').setup({
+    fast_wrap = {},
+    check_ts = true,
+  })
 
-local cmp = require('cmp')
-local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+  local cmp = require('cmp')
+  local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+  cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+end
+
+return M

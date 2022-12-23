@@ -1,36 +1,28 @@
-hot_reload(debug.getinfo(1).source:sub(2))
+---@type LazySpec
+local M = {
+  'akinsho/toggleterm.nvim',
+  cmd = { 'ToggleTerm' },
+}
 
-local mx = require('mapx')
+M.init = function()
+  local mx = require('mapx')
+  mx.nnoremap('<leader>tt', '<cmd>ToggleTerm<cr>')
+  mx.nnoremap('<leader>ts', '<cmd>2ToggleTerm direction=horizontal<cr>')
+  mx.nnoremap('<leader>tv', '<cmd>3ToggleTerm direction=vertical<cr>')
+end
 
-require('toggleterm').setup({
-  -- shade_terminals = false,
-  on_open = function(term)
-    vim.wo.spell = false
-    if term.direction == 'float' then
-      mx.nnoremap('<A-Esc>', '<cmd>ToggleTerm<cr>', { buffer = term.bufnr })
-    end
-  end,
-  direction = 'float',
-})
+M.config = function()
+  require('toggleterm').setup({
+    -- shade_terminals = false,
+    on_open = function(term)
+      local mx = require('mapx')
+      vim.wo.spell = false
+      if term.direction == 'float' then
+        mx.nnoremap('<A-Esc>', '<cmd>ToggleTerm<cr>', { buffer = term.bufnr })
+      end
+    end,
+    direction = 'float',
+  })
+end
 
-mx.nnoremap('<leader>tt', '<cmd>ToggleTerm<cr>')
-mx.nnoremap('<leader>ts', '<cmd>2ToggleTerm direction=horizontal<cr>')
-mx.nnoremap('<leader>tv', '<cmd>3ToggleTerm direction=vertical<cr>')
-
--- local Terminal = require('toggleterm.terminal').Terminal
---
--- local lazygit = Terminal:new({
---   cmd = 'GIT_EDITOR="nvr -l" lazygit',
---   hidden = true,
---   dir = 'git_dir',
---   direction = 'float',
---   float_opts = {
---     border = 'none',
---   },
--- })
---
--- local function lazygit_toggle()
---   lazygit:toggle()
--- end
---
--- mx.nmap('<leader>gg', lazygit_toggle, 'Lazygit')
+return M

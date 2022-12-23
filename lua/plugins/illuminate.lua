@@ -1,5 +1,13 @@
-hot_reload(debug.getinfo(1).source:sub(2))
+---@type LazySpec
+local M = {
+  'RRethy/vim-illuminate',
+  lazy = false,
+}
 
-local mx = require('mapx')
-local illuminate = require('illuminate')
-mx.nnoremap('<leader>vi', illuminate.toggle, 'Illuminate')
+M.config = function()
+  local mx = require('mapx')
+  local illuminate = require('illuminate')
+  mx.nnoremap('<leader>vi', illuminate.toggle, 'Illuminate')
+end
+
+return M

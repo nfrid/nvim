@@ -1,18 +1,26 @@
-hot_reload(debug.getinfo(1).source:sub(2))
+---@type LazySpec
+local M = {
+  'smjonas/live-command.nvim',
+  lazy = false,
+}
 
-require('live-command').setup({
-  commands = {
-    S = { cmd = 'Subvert' },
-    R = {
-      cmd = "norm",
-      -- This will transform ":5R a" into ":norm 5@a"
-      args = function(opts)
-        return (opts.count == -1 and "" or opts.count) .. "@" .. opts.args
-      end,
-      range = "",
+M.config = function()
+  require('live-command').setup({
+    commands = {
+      S = { cmd = 'Subvert' },
+      R = {
+        cmd = 'norm',
+        -- This will transform ":5R a" into ":norm 5@a"
+        args = function(opts)
+          return (opts.count == -1 and '' or opts.count) .. '@' .. opts.args
+        end,
+        range = '',
+      },
+      Norm = { cmd = 'norm' },
     },
-    Norm = { cmd = 'norm' },
-  },
-})
+  })
 
-vim.cmd('cabbrev N Norm')
+  vim.cmd('cabbrev N Norm')
+end
+
+return M

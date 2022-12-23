@@ -1,7 +1,15 @@
-hot_reload(debug.getinfo(1).source:sub(2))
+---@type LazySpec
+local M = {
+  'nfrid/markdown-togglecheck',
+  ft = { 'markdown' },
+}
 
-local p = require('markdown-togglecheck')
-local mx = require('mapx')
+M.config = function()
+  local p = require('markdown-togglecheck')
+  local mx = require('mapx')
 
-mx.nnoremap('<leader>nn', p.toggle, 'Toggle Checkmark')
-mx.nnoremap('<leader>nN', p.toggle_box, 'Toggle Checkmark')
+  mx.nnoremap('<leader>nn', p.toggle, 'Toggle Checkmark')
+  mx.nnoremap('<leader>nN', p.toggle_box, 'Toggle Checkmark')
+end
+
+return M

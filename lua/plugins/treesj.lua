@@ -1,14 +1,21 @@
-hot_reload(debug.getinfo(1).source:sub(2))
+local keymap = '<leader>j'
+---@type LazySpec
+local M = {
+  'Wansmer/treesj',
+  keys = { keymap },
+}
 
-local tsj = require('treesj')
+M.config = function()
+  local tsj = require('treesj')
 
-local langs = { --[[ configuration for languages ]] }
+  tsj.setup({
+    use_default_keymaps = false,
+  })
 
-tsj.setup({
-  use_default_keymaps = false,
-})
+  local mx = require('mapx')
+  mx.nnoremap(keymap, function()
+    tsj.toggle()
+  end)
+end
 
-local mx = require('mapx')
-mx.nnoremap('<leader>j', function()
-  tsj.toggle()
-end)
+return M
