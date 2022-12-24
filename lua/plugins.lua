@@ -53,7 +53,13 @@ local M = {
     },
     config = function()
       vim.cmd('colorscheme dracula')
-      source('after/plugin/dracula.vim')
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'LazyDone',
+        once = true,
+        callback = function()
+          source('after/plugin/dracula.vim')
+        end,
+      })
     end,
   },
 
