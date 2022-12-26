@@ -19,6 +19,7 @@ require('lazy').setup('plugins', {
   concurrency = 16,
   install = { colorscheme = { 'dracula', 'habamax' } },
   defaults = { lazy = true },
+  dev = { path = '~/github', patterns = { 'nfrid' } },
   -- checker = { enabled = true, concurrency = 4 },
 })
 
