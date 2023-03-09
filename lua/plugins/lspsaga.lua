@@ -15,22 +15,50 @@ M.config = function()
 
   mx.nnoremap('<leader>;', '<cmd>Lspsaga outline<cr>', 'Outline (Saga)')
 
-  saga.init_lsp_saga({
-    show_outline = {
-      auto_refresh = true,
+  saga.setup({
+    ui = {
+      winblend = 0,
+      colors = {
+        normal_bg = '#21222c',
+        title_bg = '#6272a4',
+        red = '#ff5555',
+        magenta = '#ff79c6',
+        orange = '#ff6e67',
+        yellow = '#f1fa8c',
+        green = '#50fa7b',
+        cyan = '#9aedfe',
+        blue = '#8be9fd',
+        purple = '#BD93F9',
+        white = '#f8f8f8',
+        black = '#21222c',
+      },
+      code_action = '✨',
     },
-    finder_action_keys = {
+    code_action = {
+      keys = {
+        exec = { '<cr>', 'l' },
+        quit = { 'h', 'q', '<Esc>' },
+      },
+    },
+    outline = {
+      auto_refresh = true,
+      keys = {
+        quit = { 'q', '<Esc>' },
+      }
+    },
+    finder = {
       quit = { 'q', '<Esc>', '<Tab>' },
       open = { 'o', '<CR>' },
     },
     symbol_in_winbar = {
-      -- enable = true,
-      separator = ' > ',
+      -- enable = false,
+      -- separator = ' > ',
       -- in_custom = true
     },
-    code_action_lightbulb = {
+    lightbulb = {
       enable = false,
-      -- virtual_text = false,
+      sign = false,
+      virtual_text = false,
     },
   })
 
