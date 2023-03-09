@@ -1,4 +1,4 @@
-hi! Cursor none
+hi! Cursor gui=reverse
 
 hi Normal guibg=NONE
 hi NormalBg guibg=#282A36
@@ -25,51 +25,17 @@ hi! link @text.uri DraculaCyan
 
 " Semantic tokens
 
-hi link LspNamespace @namespace
-hi link LspType @type
-hi link LspClass Class
-" hi link LspEnum LspCxxHlGroupEnumConstant
-" hi link LspInterface
-" hi link LspStruct
-" hi link LspTypeParameter DraculaOrangeItalic
-" hi link LspParameter DraculaOrange
-" hi link LspVariable
-hi LspProperty guifg=#e8d7ff
-hi link LspEnumMember DraculaPurple
-" hi link LspEvent
-hi link LspFunction Function
-hi link LspMethod Function
-" hi link LspMacro
-" hi link LspKeyword
-" hi link LspModifier
-" hi link LspComment
-" hi link LspString
-" hi link LspNumber
-" hi link LspRegexp
-" hi link LspOperator
-" hi LspMember guifg=#f092dd
-"
-" hi LspDeclaration gui=bold
-" hi LspDefinition gui=bold
-hi link LspReadonly DraculaPurple
-" hi link LspStatic
-hi LspDeprecated gui=strikethrough
-" hi link LspAbstract
-hi LspAsync gui=italic
-" hi link LspModification
-" hi link LspDocumentation DraculaOrange
-hi LspDefaultLibrary guifg=#ff9999
+hi link @lsp.type.member @lsp.type.function
+hi link @lsp.type.method @lsp.type.function
+hi link @lsp.type.interface @lsp.type.type
+hi @lsp.type.property guifg=#e8d7ff
+hi link @lsp.type.enumMember DraculaPurple
 
-hi link @member @function
-hi link @method @function
-hi link @interface @type
-hi @property guifg=#e8d7ff
-hi link @enumMember DraculaPurple
-
-hi link @readonly DraculaPurple
-" hi @readonly gui=bold
-hi @deprecated gui=strikethrough
-hi @async gui=underdotted
-" hi @defaultLibrary guifg=#ff9999
-hi @defaultLibrary gui=italic
-" hi @declaration gui=underdotted
+hi link @lsp.mod.readonly DraculaPurple
+hi link @lsp.typemod.function.readonly @lsp.type.function
+" hi @lsp.mod.readonly gui=bold
+hi @lsp.mod.deprecated gui=strikethrough
+hi @lsp.mod.async gui=underdotted
+" hi @lsp.mod.defaultLibrary guifg=#ff9999
+hi @lsp.mod.defaultLibrary gui=italic
+" hi @lsp.mod.declaration gui=underdotted
