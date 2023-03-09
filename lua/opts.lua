@@ -4,6 +4,7 @@ vim.opt.hidden = true
 vim.opt.swapfile = false
 vim.opt.undofile = true
 vim.opt.foldenable = false
+vim.opt.updatetime = 100
 
 vim.opt.smartindent = true
 vim.opt.expandtab = true
