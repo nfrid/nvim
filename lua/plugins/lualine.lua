@@ -3,15 +3,12 @@ local M = {
   'hoob3rt/lualine.nvim',
   dependencies = {
     'nvim-tree/nvim-web-devicons',
-    'SmiteshP/nvim-navic',
     'kosayoda/nvim-lightbulb',
   },
   lazy = false,
 }
 
 M.config = function()
-  local navic = require('nvim-navic')
-
   local function diff()
     local gitsigns = vim.b.gitsigns_status_dict
     if gitsigns then
@@ -21,16 +18,6 @@ M.config = function()
         removed = gitsigns.removed,
       }
     end
-  end
-
-  local function get_context()
-    if navic and navic.is_available() then
-      local loc = navic.get_location()
-      if loc ~= '' then
-        return loc
-      end
-    end
-    return ''
   end
 
   local function keymap()
@@ -91,8 +78,6 @@ M.config = function()
     },
   }
 
-  local noice = require('noice').api.status
-
   require('lualine').setup({
     options = {
       theme = 'dracula',
@@ -106,10 +91,7 @@ M.config = function()
     sections = {
       lualine_a = { 'mode', keymap },
       lualine_b = { filename },
-      lualine_c = {
-        get_context,
-        action_available,
-      },
+      lualine_c = { action_available },
       lualine_x = {
         {
           'diagnostics',
@@ -124,30 +106,25 @@ M.config = function()
         { 'diff', source = diff },
         { 'b:gitsigns_head', icon = '' },
       },
-      lualine_y = {
-        {
-          noice.search.get,
-          cond = noice.search.has,
-        },
-      },
-      lualine_z = {},
-    },
-    winbar = {
-      lualine_a = { filename_path },
-      lualine_b = {},
-      lualine_c = {},
-      lualine_x = { 'filetype' },
       lualine_y = { 'progress' },
       lualine_z = { 'location' },
     },
-    inactive_winbar = {
-      lualine_a = {},
-      lualine_b = {},
-      lualine_c = { filename_path },
-      lualine_x = { 'filetype', 'progress', 'location' },
-      lualine_y = {},
-      lualine_z = {},
-    },
+    -- winbar = {
+    --   lualine_a = { filename_path },
+    --   lualine_b = {},
+    --   lualine_c = {},
+    --   lualine_x = { 'filetype' },
+    --   lualine_y = { 'progress' },
+    --   lualine_z = { 'location' },
+    -- },
+    -- inactive_winbar = {
+    --   lualine_a = {},
+    --   lualine_b = {},
+    --   lualine_c = { filename_path },
+    --   lualine_x = { 'filetype', 'progress', 'location' },
+    --   lualine_y = {},
+    --   lualine_z = {},
+    -- },
   })
 end
 
