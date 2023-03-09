@@ -1,7 +1,11 @@
 ---@type LazySpec
 local M = {
   'neovim/nvim-lspconfig',
-  dependencies = { 'hrsh7th/cmp-nvim-lsp', 'SmiteshP/nvim-navic' },
+  dependencies = {
+    'hrsh7th/cmp-nvim-lsp',
+    'SmiteshP/nvim-navic',
+    'mrshmllow/document-color.nvim',
+  },
   event = { 'BufReadPre' },
 }
 
@@ -16,7 +20,8 @@ M.config = function()
       navic.attach(client, bufnr)
     end
 
-    if caps.colorProvider and require('document-color') then
+    if client.server_capabilities.colorProvider then
+      -- Attach document colour support
       require('document-color').buf_attach(bufnr)
     end
 
@@ -35,7 +40,12 @@ M.config = function()
       buf.definition()
     end, 'buffer', 'To Definition')
     -- mx.nnoremap('K', buf.hover, 'buffer', 'Describe on Point')
-    mx.nnoremap('K', '<cmd>Lspsaga hover_doc<cr>', 'buffer', 'Describe on Point')
+    mx.nnoremap(
+      'K',
+      '<cmd>Lspsaga hover_doc<cr>',
+      'buffer',
+      'Describe on Point'
+    )
     mx.nnoremap('gi', function()
       buf.implementation()
     end, 'buffer', 'To Implementation')
@@ -63,26 +73,46 @@ M.config = function()
     mx.nnoremap('<F2>', '<cmd>Lspsaga rename<cr>', 'buffer', 'Rename')
     mx.nnoremap('<leader>cr', '<cmd>Lspsaga rename<cr>', 'buffer', 'Rename')
     mx.nnoremap('gj', '<cmd>Lspsaga lsp_finder<cr>', 'buffer', 'References')
-    mx.nnoremap('gp', '<cmd>Lspsaga peek_definition<cr>', 'buffer', 'References')
+    mx.nnoremap(
+      'gp',
+      '<cmd>Lspsaga peek_definition<cr>',
+      'buffer',
+      'References'
+    )
     -- mx.nnoremap('<leader>a', function() buf.code_action() end, 'buffer',
     --             'Code Actions')
-    mx.nnoremap('<leader>a', '<cmd>CodeActionMenu<cr>', 'buffer', 'Code Actions')
-    vim.g.code_action_menu_show_details = false
+    mx.nnoremap(
+      '<leader>a',
+      '<cmd>Lspsaga code_action<cr>',
+      'buffer',
+      'Code Actions'
+    )
 
     -- local d = vim.diagnostic
-    local d = require('lspsaga.diagnostic')
-    mx.nnoremap('<leader>e', function()
-      d.show_line_diagnostics()
-    end, 'buffer', 'Diagnostics on Line')
-    mx.nnoremap('<leader>E', function()
-      d.show_cursor_diagnostics()
-    end, 'buffer', 'Diagnostics on Point')
-    mx.nnoremap(']d', function()
-      d.goto_next()
-    end, 'buffer', 'Next Diagnostic')
-    mx.nnoremap('[d', function()
-      d.goto_prev()
-    end, 'buffer', 'Prev Diagnostic')
+    mx.nnoremap(
+      '<leader>e',
+      '<cmd>Lspsaga show_line_diagnostics<cr>',
+      'buffer',
+      'Diagnostics on Line'
+    )
+    mx.nnoremap(
+      '<leader>E',
+      '<cmd>Lspsaga show_cursor_diagnostics<cr>',
+      'buffer',
+      'Diagnostics on Point'
+    )
+    mx.nnoremap(
+      ']d',
+      '<cmd>Lspsaga diagnostic_jump_next<cr>',
+      'buffer',
+      'Next Diagnostic'
+    )
+    mx.nnoremap(
+      '[d',
+      '<cmd>Lspsaga diagnostic_jump_prev<cr>',
+      'buffer',
+      'Prev Diagnostic'
+    )
 
     ---@diagnostic disable-next-line: missing-parameter
     mx.nnoremap('<leader>lf', function()
@@ -97,11 +127,12 @@ M.config = function()
     if client.name == 'tsserver' then
       caps.documentFormattingProvider = false
       caps.documentRangeFormattingProvider = false
+      require('twoslash-queries').attach(client, bufnr)
     end
 
     if caps.documentFormattingProvider then
       local au_format =
-      vim.api.nvim_create_augroup('format_on_save', { clear = true })
+          vim.api.nvim_create_augroup('format_on_save', { clear = true })
       vim.api.nvim_create_autocmd('BufWritePre', {
         pattern = '*',
         callback = function()
@@ -130,7 +161,7 @@ M.config = function()
     'eslint',
     'ccls',
     'texlab',
-    'sumneko_lua',
+    'lua_ls',
     'marksman',
     'tailwindcss',
     'cssmodules_ls',
@@ -141,7 +172,7 @@ M.config = function()
 
   configs.eslint = {
     settings = {
-      coneActionOnSave = {
+      codeActionOnSave = {
         enable = true,
       },
     },
@@ -204,7 +235,7 @@ M.config = function()
   colorCapabilities.textDocument.colorProvider = { dynamicRegistration = true }
 
   local capabilities =
-  require('cmp_nvim_lsp').default_capabilities(colorCapabilities)
+      require('cmp_nvim_lsp').default_capabilities(colorCapabilities)
 
   for _, lsp in ipairs(servers) do
     local config = {}
@@ -218,7 +249,7 @@ M.config = function()
 
   vim.diagnostic.config({
     virtual_text = { prefix = '●' },
-    update_in_insert = true,
+    -- update_in_insert = true,
     float = {
       source = 'always', -- Or "if_many"
     },

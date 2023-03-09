@@ -1,8 +1,17 @@
----@type LazySpec[]
+---@type LazySpec
 local M = {
-  { 'tpope/vim-abolish', lazy = false },
+  'antoinemadec/FixCursorHold.nvim',
 
-  { 'martinda/Jenkinsfile-vim-syntax', ft = { 'Jenkinsfile' } },
+  {
+    'mrshmllow/document-color.nvim',
+    config = true,
+  },
+
+  { 'marilari88/twoslash-queries.nvim', setup = true },
+
+  { 'tpope/vim-abolish',                lazy = false },
+
+  { 'martinda/Jenkinsfile-vim-syntax',  ft = { 'Jenkinsfile' } },
 
   {
     'nfrid/media.nvim',
@@ -20,12 +29,12 @@ local M = {
     ft = { 'markdown' },
   },
 
-  { 'andrewferrier/wrapping.nvim', config = true, lazy = false },
+  { 'andrewferrier/wrapping.nvim',    config = true,            lazy = false },
 
   {
     'nvim-zh/colorful-winsep.nvim',
     lazy = false,
-    config = {
+    opts = {
       highlight = {
         fg = '#ff79c6',
       },
@@ -67,20 +76,22 @@ local M = {
 
   {
     'lukas-reineke/indent-blankline.nvim',
-    config = {
+    opts = {
       char = '▏',
+      context_char = '▏',
       char_highlight_list = { 'IndentLine' },
       -- show_first_indent_level = false,
       use_treesitter = true,
       filetype_exclude = { 'markdown', 'tex', 'startify' },
       show_current_context = true,
+      show_current_context_start = true,
     },
     lazy = false,
   },
 
   {
     'lewis6991/satellite.nvim',
-    config = {
+    opts = {
       winblend = 0,
     },
     lazy = false,
@@ -95,29 +106,26 @@ local M = {
   },
 
   { 'kevinhwang91/nvim-hlslens', config = true, lazy = false },
-
   { 'NvChad/nvim-colorizer.lua', config = true, lazy = false },
-
-  { 'mrshmllow/document-color.nvim', config = true },
 
   {
     'mrjones2014/legendary.nvim',
     dependencies = { 'folke/which-key.nvim' },
     cmd = { 'Legendary' },
     disabled = true,
-    config = {
+    opts = {
       which_key = {
         auto_register = true,
       },
     },
   },
 
-  { 'nfrid/due.nvim', config = true, ft = { 'markdown' } },
+  { 'nfrid/due.nvim',         config = true, ft = { 'markdown' } },
 
   {
     'gaoDean/autolist.nvim',
     ft = { 'markdown' },
-    config = {
+    opts = {
       invert = {
         mapping = '<a-r>',
       },
@@ -130,7 +138,7 @@ local M = {
   --   ft = { 'markdown' },
   -- },
 
-  { 'lervag/vimtex', ft = { 'tex' } },
+  { 'lervag/vimtex',          ft = { 'tex' } },
 
   { 'stevearc/dressing.nvim', lazy = false },
 
@@ -148,7 +156,7 @@ local M = {
 
   { 'kylechui/nvim-surround', config = true, lazy = false },
 
-  { 'kana/vim-repeat', lazy = false },
+  { 'kana/vim-repeat',        lazy = false },
 
   {
     'anuvyklack/pretty-fold.nvim',
@@ -165,19 +173,19 @@ local M = {
 
   {
     'chentoast/marks.nvim',
-    config = { mappings = { annotate = 'm<leader>' } },
+    opts = { mappings = { annotate = 'm<leader>' } },
     lazy = false,
   },
 
-  { 'ron-rs/ron.vim', ft = { 'ron' } },
+  { 'ron-rs/ron.vim',      ft = { 'ron' } },
 
-  { 'zah/nim.vim', ft = { 'nim' } },
+  { 'zah/nim.vim',         ft = { 'nim' } },
 
   { 'iloginow/vim-stylus', ft = { 'stylus' } },
 
   {
     'rktjmp/paperplanes.nvim',
-    config = {
+    opts = {
       register = '+',
       provider = 'paste.rs',
       provider_options = { insecure = true },
@@ -193,7 +201,7 @@ local M = {
     keys = { '<leader>gy' },
   },
 
-  { 'kevinhwang91/nvim-bqf', ft = { 'qf' } },
+  { 'kevinhwang91/nvim-bqf',            ft = { 'qf' } },
 
   {
     'onsails/lspkind-nvim',
@@ -203,8 +211,6 @@ local M = {
   },
 
   'folke/lua-dev.nvim',
-
-  { 'weilbith/nvim-code-action-menu', cmd = { 'CodeActionMenu' } },
 
   {
     'narutoxy/dim.lua',
@@ -218,17 +224,15 @@ local M = {
   {
     'folke/trouble.nvim',
     config = true,
-    init = function()
-      local mx = require('mapx')
-      mx.nnoremap('<leader>d', '<cmd>TroubleToggle<cr>', 'Toggle Trouble')
-    end,
+    keys = {
+      { '<leader>d', '<cmd>TroubleToggle<cr>', desc = 'Toggle Trouble' },
+    },
     cmd = { 'Trouble', 'TroubleToggle' },
   },
 
   {
     'andrewferrier/textobj-diagnostic.nvim',
     config = true,
-    ---@diagnostic disable-next-line: assign-type-mismatch
     keys = { { 'ig', ']g', '[g', mode = { 'x', 'o' } } },
   },
 
@@ -264,7 +268,7 @@ local M = {
   {
     'ahmedkhalf/project.nvim',
     name = 'project_nvim',
-    config = {
+    opts = {
       ignore_lsp = { 'copilot' },
       show_hidden = true,
     },
@@ -275,27 +279,28 @@ local M = {
 
   {
     'cshuaimin/ssr.nvim',
-    init = function()
-      local mx = require('mapx')
-      mx.nnoremap('<leader>cc', function()
-        require('ssr').open()
-      end, 'Advanced Replace')
-      mx.vnoremap('<leader>cc', function()
-        require('ssr').open()
-      end, 'Advanced Replace')
-    end,
+    keys = {
+      {
+        '<leader>cc',
+        function()
+          require('ssr').open()
+        end,
+        mode = { 'n', 'v' },
+        desc = 'Advanced Replace',
+      },
+    },
   },
 
   {
     'm-demare/hlargs.nvim',
-    config = { color = '#ffb86c' },
+    opts = { color = '#ffb86c' },
     event = { 'BufReadPost' },
   },
 
   {
     'folke/todo-comments.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
-    config = {
+    opts = {
       signs = false,
       keywords = {
         FIX = {
