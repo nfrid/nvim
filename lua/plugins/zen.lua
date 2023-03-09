@@ -2,7 +2,7 @@
 local M = {
   'folke/zen-mode.nvim',
   dependencies = { 'andrewferrier/wrapping.nvim' },
-  config = {
+  opts = {
     window = {
       width = 80,
     },

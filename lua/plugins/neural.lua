@@ -8,9 +8,9 @@ f:close()
 local M = {
   'dense-analysis/neural',
   lazy = false,
-  config = {
+  opts = {
     mappings = {
-      swift = '<A-n>',
+      swift = '<A-f>',
       prompt = '<A-s>',
     },
     open_ai = {

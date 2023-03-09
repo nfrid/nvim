@@ -1,7 +1,7 @@
 ---@type LazySpec
 local M = {
   'folke/which-key.nvim',
-  config = {
+  opts = {
     plugins = {
       spelling = {
         enabled = true,
