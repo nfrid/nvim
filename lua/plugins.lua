@@ -1,6 +1,43 @@
 ---@type LazySpec
 local M = {
   'antoinemadec/FixCursorHold.nvim',
+  {
+    'VidocqH/lsp-lens.nvim',
+    config = true,
+    event = { 'LspAttach' },
+  },
+
+  {
+    "ecthelionvi/NeoComposer.nvim",
+    dependencies = { "kkharji/sqlite.lua" },
+    opts = {
+      keymaps = {
+        play_macro = '<C-Enter>',
+      },
+    },
+    lazy = false,
+    disabled = true,
+  },
+
+  -- {
+  --   'chrisgrieser/nvim-spider',
+  --   init = function()
+  --     vim.keymap.set({ 'n', 'o', 'x' }, 'w', function()
+  --       require('spider').motion('w')
+  --     end, { desc = 'Spider-w' })
+  --     vim.keymap.set({ 'n', 'o', 'x' }, 'e', function()
+  --       require('spider').motion('e')
+  --     end, { desc = 'Spider-e' })
+  --     vim.keymap.set({ 'n', 'o', 'x' }, 'b', function()
+  --       require('spider').motion('b')
+  --     end, { desc = 'Spider-b' })
+  --     vim.keymap.set({ 'n', 'o', 'x' }, 'ge', function()
+  --       require('spider').motion('ge')
+  --     end, { desc = 'Spider-ge' })
+  --   end,
+  -- },
+
+  { 'cpea2506/relative-toggle.nvim',    config = true,         lazy = false },
 
   {
     'mrshmllow/document-color.nvim',
@@ -19,7 +56,7 @@ local M = {
     ft = { 'png', 'jpg', 'gif', 'mp4', 'webm', 'pdf' },
   },
 
-  'nfrid/treesitter-utils',
+  { 'nfrid/treesitter-utils',      dev = true },
 
   {
     'iamcco/markdown-preview.nvim',
@@ -29,7 +66,7 @@ local M = {
     ft = { 'markdown' },
   },
 
-  { 'andrewferrier/wrapping.nvim',    config = true,            lazy = false },
+  { 'andrewferrier/wrapping.nvim', config = true, lazy = false },
 
   {
     'nvim-zh/colorful-winsep.nvim',
@@ -105,8 +142,8 @@ local M = {
     lazy = false,
   },
 
-  { 'kevinhwang91/nvim-hlslens', config = true, lazy = false },
-  { 'NvChad/nvim-colorizer.lua', config = true, lazy = false },
+  { 'kevinhwang91/nvim-hlslens',      config = true,            lazy = false },
+  { 'NvChad/nvim-colorizer.lua',      config = true,            lazy = false },
 
   {
     'mrjones2014/legendary.nvim',
@@ -197,7 +234,13 @@ local M = {
   {
     'ruifm/gitlinker.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
-    config = true,
+    config = function()
+      require('gitlinker').setup({
+        callbacks = {
+          ['mygig.gitlab.yandexcloud.net'] = require('gitlinker.hosts').get_gitlab_type_url,
+        },
+      })
+    end,
     keys = { '<leader>gy' },
   },
 
@@ -211,15 +254,6 @@ local M = {
   },
 
   'folke/lua-dev.nvim',
-
-  {
-    'narutoxy/dim.lua',
-    dependencies = {
-      'neovim/nvim-lspconfig',
-    },
-    config = true,
-    event = { 'LspAttach' },
-  },
 
   {
     'folke/trouble.nvim',

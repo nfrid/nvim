@@ -15,6 +15,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.runtimepath:prepend(lazypath)
 
+vim.loader.enable()
+
 require('lazy').setup('plugins', {
   concurrency = 16,
   install = { colorscheme = { 'dracula', 'habamax' } },

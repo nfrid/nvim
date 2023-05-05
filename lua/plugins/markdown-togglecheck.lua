@@ -1,6 +1,7 @@
 ---@type LazySpec
 local M = {
   'nfrid/markdown-togglecheck',
+  dev = true,
   ft = { 'markdown' },
 }
 

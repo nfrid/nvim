@@ -10,3 +10,12 @@ for _, ft in pairs(media_fts) do
     end
   })
 end
+
+local filetype_aliases = vim.api.nvim_create_augroup('filetype_aliases', {})
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  group = filetype_aliases,
+  pattern = '*.*xaml',
+  callback = function()
+    vim.cmd('setl ft=xml')
+  end
+})

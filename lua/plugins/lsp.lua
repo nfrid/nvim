@@ -130,6 +130,11 @@ M.config = function()
       require('twoslash-queries').attach(client, bufnr)
     end
 
+    if client.name == 'csharp_ls' then
+      caps.documentFormattingProvider = false
+      caps.documentRangeFormattingProvider = false
+    end
+
     if caps.documentFormattingProvider then
       local au_format =
           vim.api.nvim_create_augroup('format_on_save', { clear = true })
@@ -166,9 +171,19 @@ M.config = function()
     'tailwindcss',
     'cssmodules_ls',
     'rust_analyzer',
+    'typst_lsp',
+    'csharp_ls',
   }
 
   local configs = {}
+
+  configs.yamlls = {
+    settings = {
+      yaml = {
+        keyOrdering = false,
+      }
+    }
+  }
 
   configs.eslint = {
     settings = {
