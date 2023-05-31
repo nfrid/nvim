@@ -39,7 +39,7 @@ M.config = function()
 
     local formatCmd = formatCmds[vim.bo.filetype] or 'sed -i -e "s/\\s\\+$//"'
     local f =
-    io.popen(formatCmd .. ' "' .. vim.api.nvim_buf_get_name(0) .. '" 2>&1')
+        io.popen(formatCmd .. ' "' .. vim.api.nvim_buf_get_name(0) .. '" 2>&1')
     if not f then
       return
     end

@@ -8,6 +8,46 @@ local M = {
   },
 
   {
+    'ckolkey/ts-node-action',
+    dependencies = { 'nvim-treesitter' },
+    lazy = false,
+    config = function()
+      vim.keymap.set({ 'n' }, '<leader>s', function()
+        require('ts-node-action').node_action()
+      end)
+    end,
+  },
+
+  {
+    'AckslD/muren.nvim',
+    config = true,
+    cmd = {
+      'MurenToggle',
+      'MurenOpen',
+      'MurenClose',
+      'MurenFresh',
+      'MurenUnique',
+    },
+  },
+
+  {
+    'bennypowers/template-literal-comments.nvim',
+    config = true,
+    ft = {
+      'javascript',
+      'typescript',
+      'javascriptreact',
+      'typescriptreact',
+    }
+  },
+
+  {
+    'dmmulroy/tsc.nvim',
+    config = true,
+    cmd = { 'TSC' },
+  },
+
+  {
     "ecthelionvi/NeoComposer.nvim",
     dependencies = { "kkharji/sqlite.lua" },
     opts = {

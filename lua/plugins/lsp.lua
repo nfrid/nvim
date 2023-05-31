@@ -135,6 +135,10 @@ M.config = function()
       caps.documentRangeFormattingProvider = false
     end
 
+    if client.name == 'cssmodules_ls' then
+      caps.definitionProvider = false
+    end
+
     if caps.documentFormattingProvider then
       local au_format =
           vim.api.nvim_create_augroup('format_on_save', { clear = true })

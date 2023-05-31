@@ -54,8 +54,8 @@ M.config = function()
       move = {
         enable = true,
         set_jumps = true,
-        goto_next_start = { [']f'] = '@function.outer',[']c'] = '@class.outer' },
-        goto_next_end = { [']F'] = '@function.outer',[']C'] = '@class.outer' },
+        goto_next_start = { [']f'] = '@function.outer', [']c'] = '@class.outer' },
+        goto_next_end = { [']F'] = '@function.outer', [']C'] = '@class.outer' },
         goto_previous_start = {
           ['[f'] = '@function.outer',
           ['[c'] = '@class.outer',
@@ -80,9 +80,7 @@ M.config = function()
   vim.opt.foldmethod = 'expr'
   vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 
-  local parser_mapping =
-      require('nvim-treesitter.parsers').filetype_to_parsername
-  parser_mapping.xml = 'html'
+  vim.treesitter.language.register('html', 'xml')
 
   -- vim.treesitter.parse_query('lua', [[
   --   (node) @query

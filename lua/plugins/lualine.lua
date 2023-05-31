@@ -103,7 +103,7 @@ M.config = function()
             hint = ' ',
           },
         },
-        { 'diff', source = diff },
+        { 'diff',            source = diff },
         { 'b:gitsigns_head', icon = '' },
       },
       lualine_y = { 'progress' },
