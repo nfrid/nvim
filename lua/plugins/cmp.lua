@@ -54,7 +54,7 @@ M.config = function()
       -- documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
-          ['<Tab>'] = cmp.mapping(function(fallback)
+      ['<Tab>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_next_item()
         elseif luasnip.expand_or_jumpable() then
@@ -65,7 +65,7 @@ M.config = function()
           fallback()
         end
       end, { 'i', 's' }),
-          ['<S-Tab>'] = cmp.mapping(function(fallback)
+      ['<S-Tab>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_prev_item()
         elseif luasnip.jumpable(-1) then
@@ -74,7 +74,7 @@ M.config = function()
           fallback()
         end
       end, { 'i', 's' }),
-          ['<C-n>'] = cmp.mapping(function(fallback)
+      ['<C-n>'] = cmp.mapping(function(fallback)
         if luasnip.expand_or_jumpable() then
           luasnip.expand_or_jump()
         elseif cmp.visible() then
@@ -85,7 +85,7 @@ M.config = function()
           fallback()
         end
       end, { 'i', 's' }),
-          ['<C-p>'] = cmp.mapping(function(fallback)
+      ['<C-p>'] = cmp.mapping(function(fallback)
         if luasnip.jumpable(-1) then
           luasnip.jump(-1)
         elseif cmp.visible() then
@@ -94,16 +94,16 @@ M.config = function()
           fallback()
         end
       end, { 'i', 's' }),
-          ['<PageDown>'] = cmp.mapping.scroll_docs(-4),
-          ['<PageUp>'] = cmp.mapping.scroll_docs(4),
+      ['<PageDown>'] = cmp.mapping.scroll_docs(-4),
+      ['<PageUp>'] = cmp.mapping.scroll_docs(4),
       ---@diagnostic disable-next-line: missing-parameter
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<C-a>'] = cmp.mapping.abort(),
-          ['<C-e>'] = cmp.mapping.confirm({
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-a>'] = cmp.mapping.abort(),
+      ['<C-e>'] = cmp.mapping.confirm({
         behavior = types.cmp.ConfirmBehavior.Replace,
         select = true,
       }),
-          ['<CR>'] = cmp.mapping.confirm({
+      ['<CR>'] = cmp.mapping.confirm({
         behavior = types.cmp.ConfirmBehavior.Replace,
         select = false,
       }),
@@ -128,7 +128,7 @@ M.config = function()
         --   return vim_item
         -- end
         if entry.source.name == 'codeium' then
-          vim_item.kind = 'ﬥ'
+          vim_item.kind = '󰚩'
           vim_item.kind_hl_group = 'Title'
           return vim_item
         end
