@@ -17,7 +17,7 @@ M.config = function()
         vim.api.nvim_win_set_config(win, { border = 'none' })
       end
     end,
-    background_colour = 'NormalBg',
+    background_colour = 'Normal',
   })
 
   require('noice').setup({

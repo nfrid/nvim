@@ -6,11 +6,20 @@ local M = {
 }
 
 M.config = function()
-  local p = require('markdown-togglecheck')
-  local mx = require('mapx')
+  local function toggle()
+    vim.go.operatorfunc = "v:lua.require'markdown-togglecheck'.toggle"
+    return 'g@l'
+  end
 
-  mx.nnoremap('<leader>nn', p.toggle, 'Toggle Checkmark')
-  mx.nnoremap('<leader>nN', p.toggle_box, 'Toggle Checkmark')
+  local function toggle_box()
+    vim.go.operatorfunc = "v:lua.require'markdown-togglecheck'.toggle_box"
+    return 'g@l'
+  end
+
+  vim.keymap.set('n', '<leader>nn', toggle, { expr = true, desc = 'Toggle Checkmark' })
+  vim.keymap.set('n', '<leader>nN', toggle_box, { expr = true, desc = 'Toggle Checkbox' })
+  vim.keymap.set('v', '<leader>nn', ":'<,'>norm 1 nn<cr>", { desc = 'Toggle Checkmark' })
+  vim.keymap.set('v', '<leader>nN', ":'<,'>norm 1 nN<cr>", { desc = 'Toggle Checkbox' })
 end
 
 return M

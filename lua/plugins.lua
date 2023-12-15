@@ -1,10 +1,113 @@
 ---@type LazySpec
 local M = {
   'antoinemadec/FixCursorHold.nvim',
+
+  {
+    'mateuszwieloch/automkdir.nvim',
+    lazy = false,
+  },
+
+  {
+    'nvimdev/guard.nvim',
+    dependencies = {
+      'nvimdev/guard-collection',
+    },
+    lazy = false,
+    config = function()
+      local ft = require('guard.filetype')
+
+      -- ft('typescript,javascript,typescriptreact,javascriptreact')
+      --   :fmt('prettier')
+      --   :lint('eslint_d')
+
+      ft('json,css,scss,html,markdown,yaml,toml'):fmt('prettier')
+
+      ft('lua'):fmt('lsp'):append('stylua')
+
+      ft('sh,bash'):fmt('shfmt'):lint('shellcheck')
+
+      ft('python'):fmt('black')
+
+      ft('go'):fmt('gofmt')
+
+      ft('c,cpp'):fmt('clang-format'):lint('clang-tidy')
+
+      ft('cmake'):fmt({
+        cmd = 'cmake-format',
+        args = { '-i' },
+      })
+
+      require('guard').setup({
+        fmt_on_save = true,
+        lsp_as_default_formatter = false,
+      })
+    end,
+  },
+
+  {
+    'michaelb/sniprun',
+    branch = 'master',
+    cmd = { 'SnipRun', 'SnipLive', 'SnipRunOperator' },
+    build = 'sh install.sh',
+    dependencies = { 'rcarriga/nvim-notify' },
+    opts = {
+      display = { 'NvimNotify' },
+      display_options = {
+        notification_timeout = 60, -- in seconds
+      },
+      live_mode_toggle = 'enable',
+      live_display = { 'NvimNotify', 'TerminalOk' },
+    },
+  },
+
+  {
+    'tadmccorkle/markdown.nvim',
+    event = 'VeryLazy',
+    opts = {},
+    ft = { 'markdown' },
+  },
+
+  {
+    'lukas-reineke/headlines.nvim',
+    dependencies = 'nvim-treesitter/nvim-treesitter',
+    config = true,
+    ft = { 'markdown', 'rmd', 'org', 'norg' },
+  },
+
+  {
+    'gsuuon/tshjkl.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    opts = {
+      marks = {
+        parent = {
+          hl_group = 'DraculaBgLight',
+        },
+      },
+    },
+    lazy = false,
+  },
+
+  {
+    'hinell/lsp-timeout.nvim',
+    dependencies = { 'neovim/nvim-lspconfig' },
+  },
+
   {
     'VidocqH/lsp-lens.nvim',
+    event = 'LspAttach',
     config = true,
-    event = { 'LspAttach' },
+  },
+
+  {
+    'mikesmithgh/kitty-scrollback.nvim',
+    cmd = { 'KittyScrollbackGenerateKittens', 'KittyScrollbackCheckHealth' },
+    config = true,
+  },
+
+  {
+    'ashfinal/qfview.nvim',
+    config = true,
+    lazy = false,
   },
 
   {
@@ -38,7 +141,7 @@ local M = {
       'typescript',
       'javascriptreact',
       'typescriptreact',
-    }
+    },
   },
 
   {
@@ -48,8 +151,8 @@ local M = {
   },
 
   {
-    "ecthelionvi/NeoComposer.nvim",
-    dependencies = { "kkharji/sqlite.lua" },
+    'ecthelionvi/NeoComposer.nvim',
+    dependencies = { 'kkharji/sqlite.lua' },
     opts = {
       keymaps = {
         play_macro = '<C-Enter>',
@@ -77,7 +180,11 @@ local M = {
   --   end,
   -- },
 
-  { 'cpea2506/relative-toggle.nvim',    config = true,         lazy = false },
+  {
+    'cpea2506/relative-toggle.nvim',
+    config = true,
+    lazy = false,
+  },
 
   {
     'mrshmllow/document-color.nvim',
@@ -90,13 +197,13 @@ local M = {
 
   { 'martinda/Jenkinsfile-vim-syntax',  ft = { 'Jenkinsfile' } },
 
-  {
-    'nfrid/media.nvim',
-    config = true,
-    ft = { 'png', 'jpg', 'gif', 'mp4', 'webm', 'pdf' },
-  },
+  -- {
+  --   'nfrid/media.nvim',
+  --   config = true,
+  --   ft = { 'png', 'jpg', 'gif', 'mp4', 'webm', 'pdf' },
+  -- },
 
-  { 'nfrid/treesitter-utils',      dev = true },
+  { 'nfrid/treesitter-utils',           dev = true },
 
   {
     'iamcco/markdown-preview.nvim',
@@ -106,7 +213,7 @@ local M = {
     ft = { 'markdown' },
   },
 
-  { 'andrewferrier/wrapping.nvim', config = true, lazy = false },
+  { 'andrewferrier/wrapping.nvim',    config = true,            lazy = false },
 
   {
     'nvim-zh/colorful-winsep.nvim',
@@ -153,24 +260,35 @@ local M = {
 
   {
     'lukas-reineke/indent-blankline.nvim',
-    opts = {
-      char = '▏',
-      context_char = '▏',
-      char_highlight_list = { 'IndentLine' },
-      -- show_first_indent_level = false,
-      use_treesitter = true,
-      filetype_exclude = { 'markdown', 'tex', 'startify' },
-      show_current_context = true,
-      show_current_context_start = true,
-    },
+    config = function()
+      local hooks = require('ibl.hooks')
+      hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+        vim.api.nvim_set_hl(0, 'IndentChar', { fg = '#44475a' })
+        vim.api.nvim_set_hl(0, 'IndentScope', { fg = '#ee99ff' })
+      end)
+      require('ibl').setup({
+        indent = {
+          char = '▏',
+          highlight = 'IndentChar',
+        },
+        scope = {
+          show_start = false,
+          highlight = 'IndentScope',
+          include = {
+            node_type = { ['*'] = { '*' } },
+          },
+        },
+        exclude = {
+          filetypes = { 'markdown', 'tex', 'startify' },
+        },
+      })
+    end,
     lazy = false,
   },
 
   {
     'lewis6991/satellite.nvim',
-    opts = {
-      winblend = 0,
-    },
+    opts = true,
     lazy = false,
   },
 
@@ -182,8 +300,8 @@ local M = {
     lazy = false,
   },
 
-  { 'kevinhwang91/nvim-hlslens',      config = true,            lazy = false },
-  { 'NvChad/nvim-colorizer.lua',      config = true,            lazy = false },
+  { 'kevinhwang91/nvim-hlslens', config = true, lazy = false },
+  { 'NvChad/nvim-colorizer.lua', config = true, lazy = false },
 
   {
     'mrjones2014/legendary.nvim',
@@ -211,7 +329,7 @@ local M = {
 
   -- {
   --   'edluffy/hologram.nvim',
-  --   config = { auto_display = true },
+  --   opts = { auto_display = true },
   --   ft = { 'markdown' },
   -- },
 

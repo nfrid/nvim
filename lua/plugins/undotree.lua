@@ -5,8 +5,7 @@ local M = {
 }
 
 M.init = function()
-  local mx = require('mapx')
-  mx.nnoremap('<leader>u', '<cmd>UndotreeToggle<cr>')
+  vim.keymap.set('n', '<leader>u', '<cmd>UndotreeToggle<cr>', { desc = 'Toggle Undotree' })
 end
 
 return M

@@ -8,6 +8,7 @@ local M = {
     'smartpde/telescope-recent-files',
     'folke/todo-comments.nvim',
     'ahmedkhalf/project.nvim',
+    'fdschmidt93/telescope-egrepify.nvim',
   },
   cmd = { "Telescope" },
 }
@@ -19,6 +20,7 @@ M.setup = function()
   t.load_extension('recent_files')
   t.load_extension('projects')
   t.load_extension('todo-comments')
+  t.load_extension('egrepify')
 end
 
 M.init = function()
@@ -58,7 +60,8 @@ M.init = function()
     end, label)
   end
 
-  map('T', ts.live_grep, 'Live Grep')
+  -- map('T', ts.live_grep, 'Live Grep')
+  map('T', tsx.egrepify.egrepify, 'Live Grep')
   map('ff', ts.fd, 'Find File')
   map('fg', ts.git_files, 'Git Files')
   map('b', ts.buffers, 'Find Buffer')

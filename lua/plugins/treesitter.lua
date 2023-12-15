@@ -3,7 +3,7 @@ local M = {
   'nvim-treesitter/nvim-treesitter',
   dependencies = {
     'nvim-treesitter/playground',
-    'p00f/nvim-ts-rainbow',
+    'HiPhish/rainbow-delimiters.nvim',
     'JoosepAlviste/nvim-ts-context-commentstring',
     'windwp/nvim-ts-autotag',
     'nvim-treesitter/nvim-treesitter-textobjects',
@@ -17,19 +17,48 @@ local M = {
 }
 
 M.config = function()
+  local rainbow_delimiters = require 'rainbow-delimiters'
+
+  vim.g.rainbow_delimiters = {
+    strategy = {
+      [''] = rainbow_delimiters.strategy['global'],
+      vim = rainbow_delimiters.strategy['local'],
+    },
+    query = {
+      [''] = 'rainbow-delimiters',
+      lua = 'rainbow-blocks',
+      latex = 'rainbow-blocks',
+      javascript = 'rainbow-parens',
+      typescript = 'rainbow-parens',
+      tsx = 'rainbow-parens',
+      python = 'rainbow-delimiters',
+      html = 'rainbow-delimiters',
+    },
+    highlight = {
+      'rainbow1',
+      'rainbow2',
+      'rainbow3',
+      'rainbow4',
+      'rainbow5',
+      'rainbow6',
+      'rainbow7',
+      'rainbow8',
+      'rainbow9',
+    },
+  }
+
   local treesitter = require('nvim-treesitter.configs')
 
   treesitter.setup({
+    modules = {},
+    ensure_installed = {},
+    sync_install = false,
+    auto_install = true,
+    ignore_install = {},
     highlight = { enable = true },
     indent = { enable = true },
     playground = { enable = true },
-    rainbow = { enable = true, colors = { '#ee99ff', '#00ffd9', '#ffd700' } },
     endwise = { enable = true },
-    context_commentstring = {
-      enable = true,
-      enable_autocmd = false,
-      config = { fish = '# %s' },
-    },
     autotag = { enable = true },
     textobjects = {
       select = {

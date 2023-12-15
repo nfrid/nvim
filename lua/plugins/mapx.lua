@@ -13,47 +13,6 @@ M.config = function()
   mx.nnoremap('<leader>Pc', '<cmd>PackerCompile<cr>', 'Recompile Plugins')
   mx.nnoremap('<leader>PP', '<cmd>PackerSync<cr>', 'Sync Plugins')
 
-  Format = function()
-    vim.cmd(':w')
-
-    local formatCmds = {
-      lua = 'stylua -s',
-      sh = 'shfmt -s -i 2 -w',
-      bash = 'shfmt -s -i 2 -w',
-      go = 'gofmt -w',
-      javascript = 'prettier -w --loglevel error',
-      typescript = 'prettier -w --loglevel error',
-      javascriptreact = 'prettier -w --loglevel error',
-      typescriptreact = 'prettier -w --loglevel error',
-      json = 'prettier -w --loglevel error',
-      css = 'prettier -w --loglevel error',
-      scss = 'prettier -w --loglevel error',
-      html = 'prettier -w --loglevel error',
-      cmake = 'cmake-format -i',
-      c = 'clang-format -style=file -i',
-      cpp = 'clang-format -style=file -i',
-      markdown = 'prettier -w --loglevel error',
-      python = 'black -q',
-      haskell = 'stylish-haskell -i',
-    }
-
-    local formatCmd = formatCmds[vim.bo.filetype] or 'sed -i -e "s/\\s\\+$//"'
-    local f =
-        io.popen(formatCmd .. ' "' .. vim.api.nvim_buf_get_name(0) .. '" 2>&1')
-    if not f then
-      return
-    end
-
-    print(f:read('*all'))
-    f:close()
-    vim.cmd('let tmp = winsaveview()')
-    vim.cmd('e!')
-    vim.cmd('call winrestview(tmp)')
-    vim.cmd('IndentBlanklineRefresh')
-  end
-
-  mx.nnoremap('<leader>F', Format, 'Format')
-
   ToggleConceal = function()
     if vim.wo.conceallevel == 2 then
       vim.wo.conceallevel = 0

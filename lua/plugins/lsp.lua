@@ -3,121 +3,114 @@ local M = {
   'neovim/nvim-lspconfig',
   dependencies = {
     'hrsh7th/cmp-nvim-lsp',
-    'SmiteshP/nvim-navic',
     'mrshmllow/document-color.nvim',
   },
   event = { 'BufReadPre' },
 }
 
+--- @param mode string|table
+--- @param lhs string
+--- @param rhs string|function
+--- @param desc string
+--- @param opts table|nil
+local function mapbuf(mode, lhs, rhs, desc, opts)
+  local options = { rhs, desc, noremap = true, buffer = 0 }
+  if opts then
+    options = vim.tbl_extend('force', options, opts)
+  end
+  -- vim.keymap.set(mode, lhs, rhs, options)
+  require('which-key').register({ [lhs] = options })
+end
+
 M.config = function()
   local nvim_lsp = require('lspconfig')
-  local navic = require('nvim-navic')
-  local mx = require('mapx')
+
+  mapbuf('n', '<leader>li', function()
+    vim.lsp.inlay_hint(0)
+  end, 'Toggle Inlay Hints')
 
   local on_attach = function(client, bufnr)
     local caps = client.server_capabilities
-    if caps.documentSymbolProvider then
-      navic.attach(client, bufnr)
-    end
 
     if client.server_capabilities.colorProvider then
       -- Attach document colour support
       require('document-color').buf_attach(bufnr)
     end
 
-    local function buf_set(...)
-      vim.api.nvim_buf_set_option(bufnr, ...)
+    --- @param name string
+    --- @param value string
+    local function buf_set(name, value)
+      vim.api.nvim_set_option_value(name, value, { buf = bufnr })
     end
 
     buf_set('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
+    vim.lsp.inlay_hint(bufnr, true)
+
     -- Mappings
     local buf = vim.lsp.buf
-    mx.nnoremap('gD', function()
+    mapbuf('n', 'gD', function()
       buf.declaration()
-    end, 'buffer', 'To Declaration')
-    mx.nnoremap('gd', function()
+    end, 'To Declaration')
+    mapbuf('n', 'gd', function()
       buf.definition()
-    end, 'buffer', 'To Definition')
-    -- mx.nnoremap('K', buf.hover, 'buffer', 'Describe on Point')
-    mx.nnoremap(
-      'K',
-      '<cmd>Lspsaga hover_doc<cr>',
-      'buffer',
-      'Describe on Point'
-    )
-    mx.nnoremap('gi', function()
+    end, 'To Definition')
+    -- map('n', 'K', buf.hover, 'Describe on Point')
+    mapbuf('n', 'K', '<cmd>Lspsaga hover_doc<cr>', 'Describe on Point')
+    mapbuf('n', 'gi', function()
       buf.implementation()
-    end, 'buffer', 'To Implementation')
-    mx.nnoremap('<C-A-k>', buf.signature_help, 'buffer', 'Signature on Point')
+    end, 'To Implementation')
+    mapbuf('n', '<C-A-k>', buf.signature_help, 'Signature on Point')
 
-    mx.nname('<leader>l', 'LSP')
-    mx.nnoremap('<leader>la', function()
+    require('which-key').register({
+      ['<leader>l'] = '+LSP'
+    })
+    mapbuf('n', '<leader>la', function()
       buf.add_workspace_folder()
-    end, 'buffer', 'Workspace Add')
-    mx.nnoremap('<leader>lr', function()
+    end, 'Workspace Add')
+    mapbuf('n', '<leader>lr', function()
       buf.remove_workspace_folder()
-    end, 'buffer', 'Workspace Remove')
-    mx.nnoremap('<leader>ld', function()
+    end, 'Workspace Remove')
+    mapbuf('n', '<leader>ld', function()
       print(vim.inspect(buf.list_workspace_folders()))
-    end, 'buffer', 'List Workspaces')
-    mx.nnoremap('<leader>ll', '<cmd>LspRestart<CR>', 'buffer', 'Restart Server')
+    end, 'List Workspaces')
+    mapbuf('n', '<leader>ll', '<cmd>LspRestart<CR>', 'Restart Server')
 
-    mx.nnoremap('<leader>D', function()
+    mapbuf('n', '<leader>D', function()
       buf.type_definition()
-    end, 'buffer', 'Type Definition')
-    mx.nnoremap('gr', function()
+    end, 'Type Definition')
+    mapbuf('n', 'gr', function()
       ---@diagnostic disable-next-line: missing-parameter
       buf.references()
-    end, 'buffer', 'References')
-    mx.nnoremap('<F2>', '<cmd>Lspsaga rename<cr>', 'buffer', 'Rename')
-    mx.nnoremap('<leader>cr', '<cmd>Lspsaga rename<cr>', 'buffer', 'Rename')
-    mx.nnoremap('gj', '<cmd>Lspsaga lsp_finder<cr>', 'buffer', 'References')
-    mx.nnoremap(
-      'gp',
-      '<cmd>Lspsaga peek_definition<cr>',
-      'buffer',
-      'References'
-    )
-    -- mx.nnoremap('<leader>a', function() buf.code_action() end, 'buffer',
+    end, 'References')
+    mapbuf('n', '<F2>', '<cmd>Lspsaga rename<cr>', 'Rename')
+    mapbuf('n', '<leader>cr', '<cmd>Lspsaga rename<cr>', 'Rename')
+    mapbuf('n', 'gj', '<cmd>Lspsaga finder<cr>', 'References')
+    mapbuf('n', 'gp', '<cmd>Lspsaga peek_definition<cr>', 'References')
+    -- map('n', '<leader>a', function() buf.code_action() end,
     --             'Code Actions')
-    mx.nnoremap(
-      '<leader>a',
-      '<cmd>Lspsaga code_action<cr>',
-      'buffer',
-      'Code Actions'
-    )
+    mapbuf('n', '<leader>a', '<cmd>Lspsaga code_action<cr>', 'Code Actions')
 
     -- local d = vim.diagnostic
-    mx.nnoremap(
+    mapbuf(
+      'n',
       '<leader>e',
       '<cmd>Lspsaga show_line_diagnostics<cr>',
-      'buffer',
       'Diagnostics on Line'
     )
-    mx.nnoremap(
+    mapbuf(
+      'n',
       '<leader>E',
       '<cmd>Lspsaga show_cursor_diagnostics<cr>',
-      'buffer',
       'Diagnostics on Point'
     )
-    mx.nnoremap(
-      ']d',
-      '<cmd>Lspsaga diagnostic_jump_next<cr>',
-      'buffer',
-      'Next Diagnostic'
-    )
-    mx.nnoremap(
-      '[d',
-      '<cmd>Lspsaga diagnostic_jump_prev<cr>',
-      'buffer',
-      'Prev Diagnostic'
-    )
+    mapbuf('n', ']d', '<cmd>Lspsaga diagnostic_jump_next<cr>', 'Next Diagnostic')
+    mapbuf('n', '[d', '<cmd>Lspsaga diagnostic_jump_prev<cr>', 'Prev Diagnostic')
 
     ---@diagnostic disable-next-line: missing-parameter
-    mx.nnoremap('<leader>lf', function()
+    mapbuf('n', '<leader>lf', function()
       buf.format({ async = true })
-    end, 'buffer', 'Format')
+    end, 'Format')
 
     if client.name == 'eslint' then
       caps.documentFormattingProvider = true
@@ -156,6 +149,7 @@ M.config = function()
     'bashls',
     'vimls',
     'pyright',
+    'ruff_lsp',
     'tsserver',
     'vuels',
     'yamlls',
@@ -185,8 +179,8 @@ M.config = function()
     settings = {
       yaml = {
         keyOrdering = false,
-      }
-    }
+      },
+    },
   }
 
   configs.eslint = {
@@ -222,30 +216,22 @@ M.config = function()
 
   require('neodev').setup({})
 
+  local tssettings = {
+    inlayHints = {
+      includeInlayParameterNameHints = 'literals',
+      includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+      includeInlayFunctionParameterTypeHints = true,
+      includeInlayVariableTypeHints = false,
+      includeInlayPropertyDeclarationTypeHints = true,
+      includeInlayFunctionLikeReturnTypeHints = true,
+      includeInlayEnumMemberValueHints = true,
+    },
+  }
+
   configs.tsserver = {
     settings = {
-      typescript = {
-        inlayHints = {
-          includeInlayParameterNameHints = 'all',
-          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-          includeInlayFunctionParameterTypeHints = true,
-          includeInlayVariableTypeHints = true,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayEnumMemberValueHints = true,
-        },
-      },
-      javascript = {
-        inlayHints = {
-          includeInlayParameterNameHints = 'all',
-          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-          includeInlayFunctionParameterTypeHints = true,
-          includeInlayVariableTypeHints = true,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayEnumMemberValueHints = true,
-        },
-      },
+      typescript = tssettings,
+      javascript = tssettings,
     },
   }
 

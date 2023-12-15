@@ -1,10 +1,7 @@
 ---@type LazySpec
 local M = {
-  'glepnir/lspsaga.nvim',
+  'nvimdev/lspsaga.nvim',
   dependencies = { 'neovim/nvim-lspconfig' },
-  config = function()
-    require('pluginss.lspsaga')
-  end,
   event = { 'LspAttach' },
   cmd = { 'Lspsaga' },
 }
@@ -47,8 +44,10 @@ M.config = function()
       }
     },
     finder = {
-      quit = { 'q', '<Esc>', '<Tab>' },
-      open = { 'o', '<CR>' },
+      keys = {
+        quit = { 'q', '<Esc>', '<Tab>' },
+        open = { 'o', '<CR>' },
+      },
     },
     symbol_in_winbar = {
       -- enable = false,

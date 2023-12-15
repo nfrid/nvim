@@ -1,6 +1,6 @@
 ---@type LazySpec
 local M = {
-  'phaazon/hop.nvim',
+  'smoka7/hop.nvim',
   name = 'hop',
 }
 
