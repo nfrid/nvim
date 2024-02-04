@@ -7,7 +7,7 @@ for _, ft in pairs(media_fts) do
     pattern = '*.' .. ft,
     callback = function()
       vim.cmd('setl ft=' .. ft)
-    end
+    end,
   })
 end
 
@@ -17,5 +17,19 @@ vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
   pattern = '*.*xaml',
   callback = function()
     vim.cmd('setl ft=xml')
-  end
+  end,
+})
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  group = filetype_aliases,
+  pattern = '.swcrc',
+  callback = function()
+    vim.cmd('setl ft=json')
+  end,
+})
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  group = filetype_aliases,
+  pattern = '*.d2',
+  callback = function()
+    vim.cmd('setl ft=d2')
+  end,
 })

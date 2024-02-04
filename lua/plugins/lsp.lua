@@ -26,7 +26,7 @@ M.config = function()
   local nvim_lsp = require('lspconfig')
 
   mapbuf('n', '<leader>li', function()
-    vim.lsp.inlay_hint(0)
+    vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
   end, 'Toggle Inlay Hints')
 
   local on_attach = function(client, bufnr)
@@ -45,7 +45,7 @@ M.config = function()
 
     buf_set('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-    vim.lsp.inlay_hint(bufnr, true)
+    vim.lsp.inlay_hint.enable(0, true)
 
     -- Mappings
     local buf = vim.lsp.buf
@@ -63,7 +63,7 @@ M.config = function()
     mapbuf('n', '<C-A-k>', buf.signature_help, 'Signature on Point')
 
     require('which-key').register({
-      ['<leader>l'] = '+LSP'
+      ['<leader>l'] = '+LSP',
     })
     mapbuf('n', '<leader>la', function()
       buf.add_workspace_folder()
@@ -104,8 +104,18 @@ M.config = function()
       '<cmd>Lspsaga show_cursor_diagnostics<cr>',
       'Diagnostics on Point'
     )
-    mapbuf('n', ']d', '<cmd>Lspsaga diagnostic_jump_next<cr>', 'Next Diagnostic')
-    mapbuf('n', '[d', '<cmd>Lspsaga diagnostic_jump_prev<cr>', 'Prev Diagnostic')
+    mapbuf(
+      'n',
+      ']d',
+      '<cmd>Lspsaga diagnostic_jump_next<cr>',
+      'Next Diagnostic'
+    )
+    mapbuf(
+      'n',
+      '[d',
+      '<cmd>Lspsaga diagnostic_jump_prev<cr>',
+      'Prev Diagnostic'
+    )
 
     ---@diagnostic disable-next-line: missing-parameter
     mapbuf('n', '<leader>lf', function()

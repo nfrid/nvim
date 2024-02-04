@@ -10,7 +10,7 @@ local M = {
     'ahmedkhalf/project.nvim',
     'fdschmidt93/telescope-egrepify.nvim',
   },
-  cmd = { "Telescope" },
+  cmd = { 'Telescope' },
 }
 
 M.setup = function()
@@ -73,6 +73,7 @@ M.init = function()
   map('o', tsx.recent_files.pick, 'Find Recent Files')
   map({ 'gs' }, ts.spell_suggest, 'Spell suggest')
   map('pp', tsx.projects.projects, 'Project')
+  map('gf', ts.git_bcommits, 'Todos')
   map('pt', tsx['todo-comments'].todo, 'Todos')
 
   mx.nnoremap('<F1>', '<cmd>Cheatsheet<cr>', 'Find Commands')

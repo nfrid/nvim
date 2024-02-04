@@ -3,6 +3,301 @@ local M = {
   'antoinemadec/FixCursorHold.nvim',
 
   {
+    '3rd/image.nvim',
+    ft = { 'markdown' },
+    opts = {
+      integrations = {
+        markdown = {
+          only_render_image_at_cursor = true,
+        },
+        neorg = {
+          enabled = false,
+        },
+      },
+    },
+    rocks = { 'magick' },
+  },
+
+  {
+    'epwalsh/obsidian.nvim',
+    version = '*',
+    ft = { 'markdown' },
+    -- event = {
+    --   'BufReadPre ' .. vim.fn.expand '~' .. '/Documents/Notes/**.md',
+    --   'BufNewFile ' .. vim.fn.expand '~' .. '/Documents/Notes/**.md',
+    -- },
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    opts = {
+      disable_frontmatter = true,
+      notes_subdir = 'inbox',
+      note_id_func = function(title)
+        if title ~= nil then
+          return title:gsub(' ', '-'):gsub('[^A-Za-z0-9-]', ''):lower()
+        end
+
+        return tostring(os.date('%Y-%m-%d-%a'))
+      end,
+      templates = {
+        subdir = 'templates',
+        date_format = '%Y-%m-%d-%a',
+        time_format = '%H:%M',
+      },
+      attachments = {
+        img_folder = 'attachments',
+      },
+      mappings = {
+        -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
+        ['gf'] = {
+          action = function()
+            return require('obsidian').util.gf_passthrough()
+          end,
+          opts = { noremap = false, expr = true, buffer = true },
+        },
+      },
+      ui = {
+        -- enable = false,
+        checkboxes = {
+          [' '] = { char = '󰄱', hl_group = 'Question' },
+          ['/'] = { char = '󰡖', hl_group = 'Added' },
+          ['x'] = { char = '󰧖', hl_group = 'Title' },
+          ['%-'] = { char = '󰛲', hl_group = 'Comment' },
+          ['!'] = { char = '󰩳', hl_group = 'Error' },
+          ['%?'] = { char = '󰞋', hl_group = 'String' },
+        },
+      },
+      workspaces = {
+        {
+          name = 'personal',
+          path = '~/Documents/Notes',
+        },
+      },
+    },
+    keys = {
+      {
+        '<leader>nn',
+        '<Cmd>ObsidianNew<CR>',
+        mode = { 'n' },
+        desc = 'New',
+      },
+      {
+        '<leader>nt',
+        '<Cmd>ObsidianTemplate<CR>',
+        mode = { 'n' },
+        desc = 'New from template',
+      },
+      {
+        '<leader>no',
+        '<Cmd>ObsidianQuickSwitch<CR>',
+        mode = { 'n' },
+        desc = 'Open',
+      },
+      {
+        '<leader>ns',
+        '<Cmd>ObsidianSearch<CR>',
+        mode = { 'n' },
+        desc = 'Search',
+      },
+      {
+        '<leader>nr',
+        '<Cmd>ObsidianRename<CR>',
+        mode = { 'n' },
+        desc = 'Rename',
+      },
+      {
+        '<leader>nb',
+        '<Cmd>ObsidianBacklinks<CR>',
+        mode = { 'n' },
+        desc = 'Backlinks',
+      },
+      {
+        '<leader>np',
+        '<Cmd>ObsidianOpen<CR>',
+        mode = { 'n' },
+        desc = 'Open in Obsidian',
+      },
+    },
+  },
+
+  -- {
+  --   'zk-org/zk-nvim',
+  --   config = function()
+  --     require('zk').setup({
+  --       picker = 'telescope',
+  --       lsp = {
+  --         config = {
+  --           cmd = { 'zk', 'lsp' },
+  --           name = 'zk',
+  --         },
+  --         auto_attach = {
+  --           enabled = true,
+  --           filetypes = { 'markdown' },
+  --         },
+  --       },
+  --     })
+  --   end,
+  --   keys = {
+  --     {
+  --       '<leader>zz',
+  --       '<Cmd>ZkCd<CR>',
+  --       mode = { 'n' },
+  --       desc = 'cd',
+  --     },
+  --     {
+  --       '<leader>zn',
+  --       '<Cmd>ZkNew { title = vim.fn.input("Title: ") }<CR>',
+  --       mode = { 'n' },
+  --       desc = 'new',
+  --     },
+  --     {
+  --       '<leader>zo',
+  --       '<Cmd>ZkNotes { sort = { "modified" } }<CR>',
+  --       mode = { 'n' },
+  --       desc = 'notes',
+  --     },
+  --     {
+  --       '<leader>zt',
+  --       '<Cmd>ZkTags<CR>',
+  --       mode = { 'n' },
+  --       desc = 'tags',
+  --     },
+  --     {
+  --       '<leader>zf',
+  --       ":'<,'>ZkMatch<CR>",
+  --       mode = { 'v' },
+  --       desc = 'find (match selection)',
+  --     },
+  --   },
+  --   cmd = {
+  --     'ZkIndex',
+  --     'ZkNew',
+  --     'ZkNewFromTitleSelection',
+  --     'ZkNewFromContentSelection',
+  --     'ZkCd',
+  --     'ZkNotes',
+  --     'ZkBacklinks',
+  --     'ZkLinks',
+  --     'ZkInsertLink',
+  --     'ZkInsertLinkAtSelection',
+  --     'ZkMatch',
+  --     'ZkTags',
+  --   },
+  -- },
+
+  {
+    'otavioschwanck/arrow.nvim',
+    opts = {
+      show_icons = true,
+      leader_key = ';', -- Recommended to be a single key
+      index_keys = 'afgwrtzxcbjklzbm,.uiony123456789',
+    },
+    keys = {
+      {
+        '<leader><leader>',
+        '<cmd>lua require("arrow.persist").toggle()<cr>',
+        mode = { 'n' },
+        desc = 'Arrow Toggle',
+      },
+      {
+        '<C-h>',
+        '<cmd>lua require("arrow.persist").previous()<cr>',
+        mode = { 'n' },
+        desc = 'Arrow Prev',
+      },
+      {
+        '<C-l>',
+        '<cmd>lua require("arrow.persist").next()<cr>',
+        mode = { 'n' },
+        desc = 'Arrow Next',
+      },
+    },
+    lazy = false,
+  },
+
+  {
+    'chrisgrieser/nvim-various-textobjs',
+    lazy = false,
+    opts = {
+      useDefaultKeymaps = true,
+      disabledKeymaps = { 'gc' },
+    },
+    config = function()
+      local to = require('various-textobjs')
+      vim.keymap.set({ 'o', 'x' }, 'C', function()
+        to.multiCommentedLines()
+      end, { desc = 'multiCommentedLines textobj' })
+    end,
+  },
+
+  {
+    'tris203/hawtkeys.nvim',
+    config = true,
+    cmd = { 'Hawtkeys', 'HawtkeysAll', 'HawtkeysDupes' },
+  },
+
+  {
+    'luckasRanarison/tree-sitter-hyprlang',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    lazy = false,
+  },
+
+  {
+    'nvimtools/none-ls.nvim',
+    enabled = false,
+    config = function()
+      local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
+      local null_ls = require('null-ls')
+      null_ls.setup({
+        on_attach = function(client, bufnr)
+          if client.supports_method('textDocument/formatting') then
+            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+            vim.api.nvim_create_autocmd('BufWritePre', {
+              group = augroup,
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format({ async = false })
+              end,
+            })
+          end
+        end,
+        sources = {
+          null_ls.builtins.formatting.eslint_d,
+          null_ls.builtins.diagnostics.eslint_d.with({
+            config = {
+              settings = {
+                codeActionOnSave = {
+                  enable = true,
+                },
+              },
+            },
+          }),
+          null_ls.builtins.code_actions.eslint_d,
+        },
+      })
+    end,
+    ft = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+  },
+
+  {
+    'johmsalas/text-case.nvim',
+    dependencies = { 'nvim-telescope/telescope.nvim' },
+    lazy = false,
+    config = function()
+      require('textcase').setup({})
+      require('telescope').load_extension('textcase')
+    end,
+    keys = {
+      {
+        'ga.',
+        '<cmd>TextCaseOpenTelescope<CR>',
+        mode = { 'n', 'v' },
+        desc = 'Telescope',
+      },
+    },
+  },
+
+  {
     'mateuszwieloch/automkdir.nvim',
     lazy = false,
   },
@@ -16,15 +311,20 @@ local M = {
     config = function()
       local ft = require('guard.filetype')
 
-      -- ft('typescript,javascript,typescriptreact,javascriptreact')
-      --   :fmt('prettier')
+      ft('typescript,javascript,typescriptreact,javascriptreact'):fmt(
+        'prettier'
+      )
       --   :lint('eslint_d')
 
       ft('json,css,scss,html,markdown,yaml,toml'):fmt('prettier')
 
       ft('lua'):fmt('lsp'):append('stylua')
 
-      ft('sh,bash'):fmt('shfmt'):lint('shellcheck')
+      ft('sh,bash'):fmt({
+        cmd = 'shfmt',
+        stdin = true,
+        args = { '-i', '2' },
+      }):lint('shellcheck')
 
       ft('python'):fmt('black')
 
@@ -288,7 +588,7 @@ local M = {
 
   {
     'lewis6991/satellite.nvim',
-    opts = true,
+    config = true,
     lazy = false,
   },
 
@@ -390,16 +690,57 @@ local M = {
   },
 
   {
-    'ruifm/gitlinker.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    'linrongbin16/gitlinker.nvim',
     config = function()
       require('gitlinker').setup({
-        callbacks = {
-          ['mygig.gitlab.yandexcloud.net'] = require('gitlinker.hosts').get_gitlab_type_url,
+        message = false,
+        highlight_duration = 0,
+        router = {
+          browse = {
+            ['^github%.com'] = 'https://github.com/'
+                .. '{_A.ORG}/'
+                .. '{_A.REPO}/blob/'
+                .. '{_A.CURRENT_BRANCH}/' -- always current branch
+                .. '{_A.FILE}?plain=1'    -- '?plain=1'
+                .. '#L{_A.LSTART}'
+                .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
+            ['^mygig%.gitlab%.yandexcloud%.net'] = 'https://mygig.gitlab.yandexcloud.net/'
+                .. '{_A.ORG}/'
+                .. '{_A.REPO}/blob/'
+                .. '{_A.CURRENT_BRANCH}/' -- always current branch
+                .. '{_A.FILE}?plain=1'    -- '?plain=1'
+                .. '#L{_A.LSTART}'
+                .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
+          },
+          blame = {
+            ['^github%.com'] = 'https://github.com/'
+                .. '{_A.ORG}/'
+                .. '{_A.REPO}/blame/'
+                .. '{_A.CURRENT_BRANCH}/' -- always current branch
+                .. '{_A.FILE}?plain=1'    -- '?plain=1'
+                .. '#L{_A.LSTART}'
+                .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
+            ['^mygig%.gitlab%.yandexcloud%.net'] = 'https://mygig.gitlab.yandexcloud.net/'
+                .. '{_A.ORG}/'
+                .. '{_A.REPO}/blame/'
+                .. '{_A.CURRENT_BRANCH}/' -- always current branch
+                .. '{_A.FILE}?plain=1'    -- '?plain=1'
+                .. '#L{_A.LSTART}'
+                .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
+          },
         },
       })
     end,
-    keys = { '<leader>gy' },
+
+    keys = {
+      {
+        '<leader>gy',
+        '<cmd>GitLink<cr>',
+        mode = { 'n', 'v' },
+        desc = 'Copy git link to clipboard',
+      },
+    },
+    cmd = { 'GitLink' },
   },
 
   { 'kevinhwang91/nvim-bqf',            ft = { 'qf' } },

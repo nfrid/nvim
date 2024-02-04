@@ -114,7 +114,7 @@ M.config = function()
       -- { name = 'copilot' },
       { name = 'codeium' },
       -- { name = 'cmp_tabnine' },
-      { name = 'nvim_lsp' },
+      { name = 'nvim_lsp', trigger_characters = { '-' } },
       { name = 'neorg' },
       { name = 'luasnip' },
       { name = 'path' },

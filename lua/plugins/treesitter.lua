@@ -17,7 +17,7 @@ local M = {
 }
 
 M.config = function()
-  local rainbow_delimiters = require 'rainbow-delimiters'
+  local rainbow_delimiters = require('rainbow-delimiters')
 
   vim.g.rainbow_delimiters = {
     strategy = {
@@ -83,7 +83,10 @@ M.config = function()
       move = {
         enable = true,
         set_jumps = true,
-        goto_next_start = { [']f'] = '@function.outer', [']c'] = '@class.outer' },
+        goto_next_start = {
+          [']f'] = '@function.outer',
+          [']c'] = '@class.outer',
+        },
         goto_next_end = { [']F'] = '@function.outer', [']C'] = '@class.outer' },
         goto_previous_start = {
           ['[f'] = '@function.outer',
@@ -114,6 +117,15 @@ M.config = function()
   -- vim.treesitter.parse_query('lua', [[
   --   (node) @query
   -- ]])
+
+  local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+  parser_config.d2 = {
+    install_info = {
+      url = 'https://git.pleshevski.ru/pleshevskiy/tree-sitter-d2',
+      revision = 'main',
+      files = { 'src/parser.c', 'src/scanner.cc' },
+    },
+  }
 end
 
 return M

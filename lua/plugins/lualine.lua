@@ -4,6 +4,7 @@ local M = {
   dependencies = {
     'nvim-tree/nvim-web-devicons',
     'kosayoda/nvim-lightbulb',
+    'otavioschwanck/arrow.nvim',
   },
   lazy = false,
 }
@@ -26,6 +27,11 @@ M.config = function()
     else
       return [[ru]]
     end
+  end
+
+  local function arrow()
+    return require('arrow.statusline').text_for_statusline() ~= '' and ''
+      or ''
   end
 
   local function action_available()
@@ -90,7 +96,7 @@ M.config = function()
     extensions = { no_winbar_ext },
     sections = {
       lualine_a = { 'mode', keymap },
-      lualine_b = { filename },
+      lualine_b = { arrow, filename },
       lualine_c = { action_available },
       lualine_x = {
         {
@@ -103,7 +109,7 @@ M.config = function()
             hint = ' ',
           },
         },
-        { 'diff',            source = diff },
+        { 'diff', source = diff },
         { 'b:gitsigns_head', icon = '' },
       },
       lualine_y = { 'progress' },

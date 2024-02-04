@@ -41,12 +41,12 @@ M.config = function()
       auto_refresh = true,
       keys = {
         quit = { 'q', '<Esc>' },
-      }
+      },
     },
     finder = {
       keys = {
         quit = { 'q', '<Esc>', '<Tab>' },
-        open = { 'o', '<CR>' },
+        edit = { 'o', '<CR>' },
       },
     },
     symbol_in_winbar = {

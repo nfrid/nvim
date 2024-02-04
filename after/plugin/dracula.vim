@@ -1,3 +1,7 @@
+hi NormalFloat guibg=none
+hi WinBar guibg=none
+hi WinBarNC guibg=none
+
 hi! Cursor gui=reverse
 
 hi! CursorLine guibg=#21222C
@@ -16,13 +20,28 @@ hi DraculaInfoLine guifg=NONE guibg=NONE
 hi DraculaWinSeparator guibg=#282A36
 hi NvimSeparator guifg=#ff79c6
 
-hi! link @text.strong DraculaOrangeBold
-hi! @text.strike gui=strikethrough
-hi! link @text.emphasis DraculaYellowItalic
-hi! link @text.title DraculaPurpleBold
-hi! link @text.literal DraculaYellow
-hi! link @text.reference DraculaPurple
-hi! link @text.uri DraculaCyan
+hi DraculaPinkBold guifg=#ff79c6 gui=bold
+hi DraculaCyanBold guifg=#8be9fd gui=bold
+
+hi link @markup.heading.1.marker.markdown DraculaComment
+hi link @markup.heading.2.marker.markdown DraculaComment
+hi link @markup.heading.3.marker.markdown DraculaComment
+hi link @markup.heading.4.marker.markdown DraculaComment
+hi link @markup.heading.5.marker.markdown DraculaComment
+hi link @markup.heading.6.marker.markdown DraculaComment
+
+hi link @markup.heading.1.markdown DraculaPurpleBold
+hi link @markup.heading.2.markdown DraculaOrangeBold
+hi link @markup.heading.3.markdown DraculaPinkBold
+hi link @markup.heading.4.markdown DraculaGreenBold
+hi link @markup.heading.5.markdown DraculaCyanBold
+hi link @markup.heading.6.markdown DraculaComment
+
+hi link @markup.strong.markdown_inline DraculaOrangeBold
+hi link @markup.italic.markdown_inline DraculaYellowItalic
+hi link @markup.link.url.markdown_inline DraculaCyan
+hi link @markup.link.label.markdown_inline DraculaPink
+hi link @markup.link.markdown_inline DraculaPurple
 
 " Semantic tokens
 

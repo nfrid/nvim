@@ -1,39 +1,33 @@
 ---@type LazySpec
 local M = {
   'ThePrimeagen/harpoon',
+  branch = 'harpoon2',
+  requires = { { 'nvim-lua/plenary.nvim' } },
   lazy = false,
+  enabled = false,
 }
 
 M.config = function()
-  local mark = require('harpoon.mark')
-  local ui = require('harpoon.ui')
-  local mx = require('mapx')
+  local h = require('harpoon')
+  h:setup({
+    settings = {
+      save_on_toggle = true,
+      -- sync_on_ui_close = true,
+    },
+  })
 
-  local leader = '<leader>'
-  -- mx.nname(leader, 'harpoon')
-
-  local function map(key, cmd, label)
-    local lhs
-    if type(key) == 'table' then
-      lhs = key[1]
-    else
-      lhs = leader .. key
-    end
-    local rhs
-    if type(cmd) == 'string' then
-      rhs = cmd
-    else
-      rhs = function()
-        cmd()
-      end
-    end
-    mx.nnoremap(lhs, rhs, label)
-  end
-
-  map('<leader>', ui.toggle_quick_menu, 'Harpoon Menu')
-  map('h', mark.add_file, 'Harpoon File')
-  map({ '<C-h>' }, ui.nav_prev, 'Prev Harpoon File')
-  map({ '<C-l>' }, ui.nav_next, 'Next Harpoon File')
+  vim.keymap.set('n', '<leader><leader>', function()
+    h.ui:toggle_quick_menu(h:list())
+  end, { desc = 'Harpoon Menu' })
+  vim.keymap.set('n', '<leader>h', function()
+    h:list():append()
+  end, { desc = 'Harpoon Append' })
+  vim.keymap.set('n', '<C-h>', function()
+    h:list():prev()
+  end, { desc = 'Harpoon Prev' })
+  vim.keymap.set('n', '<C-l>', function()
+    h:list():next()
+  end, { desc = 'Harpoon Next' })
 end
 
 return M

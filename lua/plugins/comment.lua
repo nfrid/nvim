@@ -12,6 +12,7 @@ M.config = function()
   local ft = require('Comment.ft')
 
   ft.set('stylus', { '//%s', '/*%s*/' })
+  ft.set('hyprlang', { '#%s' })
 end
 
 return M

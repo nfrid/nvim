@@ -57,6 +57,13 @@ M.config = function()
         opts = { skip = true },
       },
       {
+        filter = {
+          event = 'notify',
+          find = 'tsserver: 1: <semantic> TypeScript Server',
+        },
+        opts = { skip = true },
+      },
+      {
         view = 'mini',
         filter = { event = 'notify' },
       },
