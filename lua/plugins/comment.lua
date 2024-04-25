@@ -13,6 +13,7 @@ M.config = function()
 
   ft.set('stylus', { '//%s', '/*%s*/' })
   ft.set('hyprlang', { '#%s' })
+  ft.set('kdl', { '//%s' })
 end
 
 return M

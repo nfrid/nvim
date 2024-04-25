@@ -2,6 +2,7 @@
 local M = {
   'akinsho/toggleterm.nvim',
   cmd = { 'ToggleTerm' },
+  enabled = false,
 }
 
 M.init = function()

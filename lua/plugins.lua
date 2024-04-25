@@ -2,6 +2,34 @@
 local M = {
   'antoinemadec/FixCursorHold.nvim',
 
+  -- {
+  --   'anuvyklack/windows.nvim',
+  --   dependencies = { 'anuvyklack/middleclass' },
+  --   opts = {},
+  --   lazy = false,
+  -- },
+
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    lazy = false,
+    -- Optional dependencies
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
+
+  {
+    'zeioth/garbage-day.nvim',
+    dependencies = 'neovim/nvim-lspconfig',
+    event = 'VeryLazy',
+    opts = {},
+  },
+
+  {
+    'moyiz/git-dev.nvim',
+    event = 'VeryLazy',
+    opts = {},
+  },
+
   {
     '3rd/image.nvim',
     ft = { 'markdown' },
@@ -30,7 +58,7 @@ local M = {
       'nvim-lua/plenary.nvim',
     },
     opts = {
-      disable_frontmatter = true,
+      -- disable_frontmatter = true,
       notes_subdir = 'inbox',
       note_id_func = function(title)
         if title ~= nil then
@@ -39,9 +67,47 @@ local M = {
 
         return tostring(os.date('%Y-%m-%d-%a'))
       end,
+      note_frontmatter_func = function(note)
+        local function inTable(tbl, item)
+          for key, value in pairs(tbl) do
+            if value == item then
+              return key, value
+            end
+          end
+          return false, false
+        end
+        local title_alias = 'linter-yaml-title-alias'
+
+        -- This is equivalent to the default frontmatter function.
+        local out = { aliases = note.aliases, [title_alias] = note.title }
+
+        local prev_title = note.metadata and note.metadata[title_alias] or false
+        local prev_title_alias_id = inTable(note.aliases, prev_title)
+        local cur_title_alias_id = inTable(note.aliases, note.title)
+        if prev_title and note.title ~= prev_title and prev_title_alias_id then
+          out.aliases[prev_title_alias_id] = note.title
+          if cur_title_alias_id then
+            table.remove(out.aliases, cur_title_alias_id)
+          end
+        end
+        -- `note.metadata` contains any manually added fields in the frontmatter.
+        -- So here we just make sure those fields are kept in the frontmatter.
+        if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+          for k, v in pairs(note.metadata) do
+            if k ~= title_alias then
+              out[k] = v
+            end
+          end
+        end
+        return out
+      end,
+      follow_url_func = function(url)
+        -- Open the URL in the default web browser.
+        vim.fn.jobstart({ 'xdg-open', url })
+      end,
       templates = {
         subdir = 'templates',
-        date_format = '%Y-%m-%d-%a',
+        date_format = '%Y-%m-%d',
         time_format = '%H:%M',
       },
       attachments = {
@@ -58,6 +124,9 @@ local M = {
       },
       ui = {
         -- enable = false,
+        reference_text = { hl_group = 'Class' },
+        highlight_text = { hl_group = 'Todo' },
+        external_link_icon = { char = '', hl_group = 'DraculaCyan' },
         checkboxes = {
           [' '] = { char = '󰄱', hl_group = 'Question' },
           ['/'] = { char = '󰡖', hl_group = 'Added' },
@@ -118,6 +187,7 @@ local M = {
         desc = 'Open in Obsidian',
       },
     },
+    cmd = { 'ObsidianQuickSwitch' },
   },
 
   -- {
@@ -280,12 +350,16 @@ local M = {
   },
 
   {
+    'dmmulroy/tsc.nvim',
+    cmd = { 'TSC' },
+  },
+
+  {
     'johmsalas/text-case.nvim',
     dependencies = { 'nvim-telescope/telescope.nvim' },
-    lazy = false,
     config = function()
       require('textcase').setup({})
-      require('telescope').load_extension('textcase')
+      -- require('telescope').load_extension('textcase')
     end,
     keys = {
       {
@@ -310,11 +384,6 @@ local M = {
     lazy = false,
     config = function()
       local ft = require('guard.filetype')
-
-      ft('typescript,javascript,typescriptreact,javascriptreact'):fmt(
-        'prettier'
-      )
-      --   :lint('eslint_d')
 
       ft('json,css,scss,html,markdown,yaml,toml'):fmt('prettier')
 
@@ -395,7 +464,22 @@ local M = {
   {
     'VidocqH/lsp-lens.nvim',
     event = 'LspAttach',
-    config = true,
+    opts = {
+      sections = {
+        definition = function(count)
+          return 'D: ' .. count
+        end,
+        references = function(count)
+          return 'R: ' .. count
+        end,
+        implements = false,
+        git_authors = function(latest_author, count)
+          return ' '
+              .. latest_author
+              .. (count - 1 == 0 and '' or (' + ' .. count - 1))
+        end,
+      },
+    },
   },
 
   {
@@ -546,6 +630,7 @@ local M = {
     },
     config = function()
       vim.cmd('colorscheme dracula')
+      vim.cmd('echo " "') -- fix black screen flicker
       vim.api.nvim_create_autocmd('User', {
         pattern = 'LazyDone',
         once = true,
@@ -564,7 +649,10 @@ local M = {
       local hooks = require('ibl.hooks')
       hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
         vim.api.nvim_set_hl(0, 'IndentChar', { fg = '#44475a' })
-        vim.api.nvim_set_hl(0, 'IndentScope', { fg = '#ee99ff' })
+        -- vim.api.nvim_set_hl(0, 'IndentScope', { fg = '#ee99ff' })
+        vim.api.nvim_set_hl(0, 'rainbow1', { fg = '#ee99ff' })
+        vim.api.nvim_set_hl(0, 'rainbow2', { fg = '#00ffd9' })
+        vim.api.nvim_set_hl(0, 'rainbow3', { fg = '#ffd700' })
       end)
       require('ibl').setup({
         indent = {
@@ -573,7 +661,12 @@ local M = {
         },
         scope = {
           show_start = false,
-          highlight = 'IndentScope',
+          -- highlight = 'IndentScope',
+          highlight = {
+            'rainbow1',
+            'rainbow2',
+            'rainbow3',
+          },
           include = {
             node_type = { ['*'] = { '*' } },
           },
@@ -582,9 +675,40 @@ local M = {
           filetypes = { 'markdown', 'tex', 'startify' },
         },
       })
+      hooks.register(
+        hooks.type.SCOPE_HIGHLIGHT,
+        hooks.builtin.scope_highlight_from_extmark
+      )
     end,
     lazy = false,
   },
+
+  -- {
+  --   'shellRaining/hlchunk.nvim',
+  --   event = { 'UIEnter' },
+  --   opts = {
+  --     indent = {
+  --       enable = false,
+  --       -- use_treesitter = true,
+  --       chars = { '▏' },
+  --       style = { '#44475a' },
+  --     },
+  --     chunk = {
+  --       style = {
+  --         { fg = '#ee99ff' },
+  --         { fg = '#ff5555' },
+  --       },
+  --     },
+  --     line_num = {
+  --       enable = false,
+  --       use_treesitter = false,
+  --       style = '#9861a3',
+  --     },
+  --     blank = {
+  --       enable = false,
+  --     },
+  --   },
+  -- },
 
   {
     'lewis6991/satellite.nvim',
@@ -653,18 +777,18 @@ local M = {
 
   { 'kana/vim-repeat',        lazy = false },
 
-  {
-    'anuvyklack/pretty-fold.nvim',
-    dependencies = {
-      'anuvyklack/nvim-keymap-amend',
-      'anuvyklack/fold-preview.nvim',
-    },
-    config = function()
-      require('pretty-fold').setup({})
-      require('fold-preview').setup({})
-    end,
-    lazy = false,
-  },
+  -- {
+  --   'anuvyklack/pretty-fold.nvim',
+  --   dependencies = {
+  --     'anuvyklack/nvim-keymap-amend',
+  --     'anuvyklack/fold-preview.nvim',
+  --   },
+  --   config = function()
+  --     require('pretty-fold').setup({})
+  --     require('fold-preview').setup({})
+  --   end,
+  --   lazy = false,
+  -- },
 
   {
     'chentoast/marks.nvim',
@@ -798,6 +922,7 @@ local M = {
   --   end,
   -- },
 
+  -- NOTE: unmaintained
   {
     'ahmedkhalf/project.nvim',
     name = 'project_nvim',
@@ -807,6 +932,28 @@ local M = {
     },
     event = { 'LspAttach' },
   },
+
+  -- {
+  --   'coffebar/neovim-project',
+  --   opts = {
+  --     projects = { -- define project roots
+  --       '~/job/*',
+  --       '~/github/*',
+  --       '~/.config/*',
+  --     },
+  --   },
+  --   init = function()
+  --     -- enable saving the state of plugins in the session
+  --     vim.opt.sessionoptions:append('globals') -- save global variables that start with an uppercase letter and contain at least one lowercase letter.
+  --   end,
+  --   dependencies = {
+  --     { 'nvim-lua/plenary.nvim' },
+  --     { 'nvim-telescope/telescope.nvim' },
+  --     { 'Shatur/neovim-session-manager' },
+  --   },
+  --   lazy = false,
+  --   priority = 100,
+  -- },
 
   { 'jackguo380/vim-lsp-cxx-highlight', ft = { 'c', 'cpp', 'h', 'hpp' } },
 

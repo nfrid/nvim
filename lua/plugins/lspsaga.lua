@@ -8,9 +8,6 @@ local M = {
 
 M.config = function()
   local saga = require('lspsaga')
-  local mx = require('mapx')
-
-  mx.nnoremap('<leader>;', '<cmd>Lspsaga outline<cr>', 'Outline (Saga)')
 
   saga.setup({
     ui = {
@@ -38,6 +35,7 @@ M.config = function()
       },
     },
     outline = {
+      enable = false,
       auto_refresh = true,
       keys = {
         quit = { 'q', '<Esc>' },

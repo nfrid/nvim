@@ -4,6 +4,7 @@ vim.opt.hidden = true
 vim.opt.swapfile = false
 vim.opt.undofile = true
 vim.opt.foldenable = false
+vim.opt.foldmethod = 'manual'
 vim.opt.updatetime = 100
 
 vim.opt.smartindent = true
@@ -31,7 +32,7 @@ vim.g.clipboard = {
 
 vim.opt.spell = true
 vim.opt.spelllang = 'en_us,ru_yo'
-vim.opt.keymap = 'russian-jcukenwin'
+vim.opt.keymap = 'russian'
 vim.opt.iminsert = 0
 vim.opt.imsearch = -1
 
@@ -52,3 +53,5 @@ vim.g.vimsyn_embed = 'l'
 
 vim.mapleader = ' '
 vim.g.mapleader = ' '
+
+-- vim.opt.autochdir = true

@@ -28,9 +28,9 @@ M.config = function()
       [''] = 'rainbow-delimiters',
       lua = 'rainbow-blocks',
       latex = 'rainbow-blocks',
-      javascript = 'rainbow-parens',
-      typescript = 'rainbow-parens',
-      tsx = 'rainbow-parens',
+      javascript = 'rainbow-delimiters-react',
+      typescript = 'rainbow-delimiters',
+      tsx = 'rainbow-delimiters',
       python = 'rainbow-delimiters',
       html = 'rainbow-delimiters',
     },
@@ -38,12 +38,6 @@ M.config = function()
       'rainbow1',
       'rainbow2',
       'rainbow3',
-      'rainbow4',
-      'rainbow5',
-      'rainbow6',
-      'rainbow7',
-      'rainbow8',
-      'rainbow9',
     },
   }
 
@@ -109,8 +103,8 @@ M.config = function()
     },
   })
 
-  vim.opt.foldmethod = 'expr'
-  vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+  -- vim.opt.foldmethod = 'expr'
+  -- vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 
   vim.treesitter.language.register('html', 'xml')
 

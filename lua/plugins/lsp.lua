@@ -4,6 +4,18 @@ local M = {
   dependencies = {
     'hrsh7th/cmp-nvim-lsp',
     'mrshmllow/document-color.nvim',
+    'creativenull/efmls-configs-nvim',
+    {
+      "SmiteshP/nvim-navbuddy",
+      dependencies = {
+        "SmiteshP/nvim-navic",
+        "MunifTanjim/nui.nvim"
+      },
+      opts = { lsp = { auto_attach = true } },
+      keys = {
+        { '<leader>;', '<cmd>Navbuddy<cr>', desc = 'Navbuddy' },
+      },
+    }
   },
   event = { 'BufReadPre' },
 }
@@ -26,7 +38,7 @@ M.config = function()
   local nvim_lsp = require('lspconfig')
 
   mapbuf('n', '<leader>li', function()
-    vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
   end, 'Toggle Inlay Hints')
 
   local on_attach = function(client, bufnr)
@@ -45,7 +57,7 @@ M.config = function()
 
     buf_set('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-    vim.lsp.inlay_hint.enable(0, true)
+    vim.lsp.inlay_hint.enable(true)
 
     -- Mappings
     local buf = vim.lsp.buf
@@ -156,9 +168,10 @@ M.config = function()
   end
 
   local servers = {
+    'efm',
     'bashls',
     'vimls',
-    'pyright',
+    'basedpyright',
     'ruff_lsp',
     'tsserver',
     'vuels',
@@ -227,11 +240,15 @@ M.config = function()
   require('neodev').setup({})
 
   local tssettings = {
+    referencesCodeLens = {
+      showOnAllFunctions = true,
+    },
     inlayHints = {
       includeInlayParameterNameHints = 'literals',
       includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-      includeInlayFunctionParameterTypeHints = true,
       includeInlayVariableTypeHints = false,
+      includeInlayFunctionParameterTypeHints = true,
+      includeInlayVariableTypeHintsWhenTypeMatchesName = true,
       includeInlayPropertyDeclarationTypeHints = true,
       includeInlayFunctionLikeReturnTypeHints = true,
       includeInlayEnumMemberValueHints = true,
@@ -242,6 +259,26 @@ M.config = function()
     settings = {
       typescript = tssettings,
       javascript = tssettings,
+    },
+  }
+
+  local prettierd = require('efmls-configs.formatters.prettier_d')
+  local languages = {
+    javascript = { prettierd },
+    javascriptreact = { prettierd },
+    typescript = { prettierd },
+    typescriptreact = { prettierd },
+  }
+
+  configs.efm = {
+    filetypes = vim.tbl_keys(languages),
+    settings = {
+      rootMarkers = { '.git/' },
+      languages = languages,
+    },
+    init_options = {
+      documentFormatting = true,
+      documentRangeFormatting = true,
     },
   }
 

@@ -9,10 +9,6 @@ M.config = function()
 
   mx.setup({ whichkey = true })
 
-  mx.name('<leader>P', 'packer')
-  mx.nnoremap('<leader>Pc', '<cmd>PackerCompile<cr>', 'Recompile Plugins')
-  mx.nnoremap('<leader>PP', '<cmd>PackerSync<cr>', 'Sync Plugins')
-
   ToggleConceal = function()
     if vim.wo.conceallevel == 2 then
       vim.wo.conceallevel = 0

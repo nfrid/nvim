@@ -4,23 +4,14 @@ local M = {
   event = { 'VimEnter' },
   dependencies = {
     'MunifTanjim/nui.nvim',
-    'rcarriga/nvim-notify',
+    {
+      'rcarriga/nvim-notify',
+      opts = {
+        render = 'wrapped-compact',
+      },
+    },
   },
-}
-
-M.config = function()
-  require('notify').setup({
-    -- render = 'minimal',
-    -- top_down = false,
-    on_open = function(win)
-      if vim.api.nvim_win_is_valid(win) then
-        vim.api.nvim_win_set_config(win, { border = 'none' })
-      end
-    end,
-    background_colour = 'Normal',
-  })
-
-  require('noice').setup({
+  opts = {
     messages = {
       enabled = false,
     },
@@ -59,30 +50,33 @@ M.config = function()
       {
         filter = {
           event = 'notify',
-          find = 'tsserver: 1: <semantic> TypeScript Server',
+          find = 'No information available',
         },
         opts = { skip = true },
       },
       {
-        view = 'mini',
-        filter = { event = 'notify' },
+        filter = {
+          event = 'notify',
+          find = 'tsserver: 1: <semantic> TypeScript Server',
+        },
+        opts = { skip = true },
       },
     },
     views = {
       mini = {
         view = 'mini',
         position = {
-          row = -2,
+          row = -1,
         },
       },
       cmdline = {
         view = 'cmdline',
         position = {
-          row = -2,
+          row = -1,
         },
       },
     },
-  })
-end
+  },
+}
 
 return M

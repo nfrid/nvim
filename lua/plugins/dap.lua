@@ -2,7 +2,10 @@
 local M = {
   'mfussenegger/nvim-dap',
   dependencies = {
-    'rcarriga/nvim-dap-ui', -- 'Pocco81/dap-buddy.nvim'
+    {
+      'rcarriga/nvim-dap-ui',
+      dependencies = { 'nvim-neotest/nvim-nio' },
+    }, -- 'Pocco81/dap-buddy.nvim'
     { 'Pocco81/dap-buddy.nvim', branch = 'dev' },
     'jbyuki/one-small-step-for-vimkind',
     {
@@ -11,7 +14,7 @@ local M = {
         {
           'microsoft/vscode-js-debug',
           lazy = true,
-          build = 'pnpm i && pnpm run compile',
+          build = 'pnpm i && pnpx gulp vsDebugServerBundle && mv dist out',
         },
       },
     },
@@ -32,7 +35,9 @@ M.config = function()
   mx.nname(p, 'dap')
 
   local function nm(key, func, desc)
-    mx.nnoremap(p .. key, function() func() end, desc)
+    mx.nnoremap(p .. key, function()
+      func()
+    end, desc)
   end
 
   nm('b', dap.toggle_breakpoint, 'Breakpoint')
@@ -47,11 +52,13 @@ M.config = function()
   nm('g', dap.goto_, 'Goto current line')
   nm('t', dap.run_to_cursor, 'Continue to cursor')
   nm('B', function()
-    dap.set_breakpoint(vim.fn.input('Condition: '),
+    dap.set_breakpoint(
+      vim.fn.input('Condition: '),
       vim.fn.input('Hit condition: '),
-      vim.fn.input('Log message: '))
+      vim.fn.input('Log message: ')
+    )
   end, 'Advanced breakpoint')
-  nm('d', dap.repl.toggle, 'REPL')
+  -- nm('d', dap.repl.toggle, 'REPL')
   nm('.', dap.run_last, 'Rerun')
   nm('q', dap.terminate, 'Terminate')
 
@@ -59,7 +66,12 @@ M.config = function()
   dapui.setup()
 
   nm('e', dapui.eval, 'Eval')
-  nm(p, dapui.toggle, 'Toggle UI')
+  nm(p, function()
+    dapui.toggle({ layout = 1 })
+  end, 'Toggle UI')
+  nm('d', function()
+    dapui.toggle({ layout = 2 })
+  end, 'Toggle Bottom UI')
 
   dap.listeners.after.event_initialized['dapui_config'] = function()
     ---@diagnostic disable-next-line: missing-parameter
@@ -90,33 +102,71 @@ M.config = function()
       name = 'Attach to running Neovim instance',
       host = function()
         local value = vim.fn.input('Host [127.0.0.1]: ')
-        if value ~= '' then return value end
+        if value ~= '' then
+          return value
+        end
         return '127.0.0.1'
       end,
       port = function()
         local val = tonumber(vim.fn.input('Port: '))
         assert(val, 'Please provide a port number')
         return val
-      end
-    }
+      end,
+    },
   }
 
   dap.adapters.nlua = function(callback, config)
+    ---@diagnostic disable-next-line: undefined-field
     callback({ type = 'server', host = config.host, port = config.port })
   end
 
+  ---@diagnostic disable-next-line: missing-fields
   require('dap-vscode-js').setup({
+    debugger_path = vim.fn.stdpath('data') .. '/lazy/vscode-js-debug',
     adapters = {
-      'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost'
-    }
+      'pwa-node',
+      'pwa-chrome',
+      'pwa-msedge',
+      'node-terminal',
+      'pwa-extensionHost',
+    },
   })
 
-  for _, lang in ipairs({ 'typescript', 'javascript' }) do
+  for _, lang in ipairs({
+    'typescript',
+    'javascript',
+    'typescriptreact',
+    'javascriptreact',
+  }) do
     dap.configurations[lang] = {
+      {
+        type = 'pwa-chrome',
+        request = 'launch',
+        name = 'Launch & Debug Chrome',
+        url = function()
+          local co = coroutine.running()
+          return coroutine.create(function()
+            vim.ui.input({
+              prompt = 'Enter URL: ',
+              default = 'http://localhost:',
+            }, function(url)
+              if url == nil or url == '' then
+                return
+              else
+                coroutine.resume(co, url)
+              end
+            end)
+          end)
+        end,
+        webRoot = vim.fn.getcwd(),
+        protocol = 'inspector',
+        sourceMaps = true,
+        userDataDir = false,
+      },
       {
         type = 'pwa-node',
         request = 'launch',
-        name = 'Launch file',
+        name = 'Launch file (Node)',
         program = '${file}',
         cwd = '${workspaceFolder}',
         skipFiles = { '<node_internals>/**' },
@@ -124,40 +174,23 @@ M.config = function()
         console = 'integratedTerminal',
         sourceMaps = true,
         resolveSourceMapLocations = { '${workspaceFolder}/dist/**/*.js' },
-        runtimeExecutable = 'ts-node'
-      }, {
+        runtimeExecutable = 'ts-node',
+      },
+      {
         type = 'pwa-node',
         request = 'attach',
-        name = 'Attach',
-        processId = require 'dap.utils'.pick_process,
+        name = 'Attach (Node)',
+        processId = require('dap.utils').pick_process,
         cwd = '${workspaceFolder}',
         skipFiles = { '<node_internals>/**' },
         protocol = 'inspector',
         console = 'integratedTerminal',
         sourceMaps = true,
         resolveSourceMapLocations = { '${workspaceFolder}/dist/**/*.js' },
-        runtimeExecutable = 'ts-node'
-      }
+        runtimeExecutable = 'ts-node',
+      },
     }
   end
-
-  -- for _, lang in ipairs({ 'typescriptreact', 'javascriptreact' }) do
-  --   dap.configurations[lang] = {
-  --     {
-  --       type = 'pwa-chrome',
-  --       request = 'launch',
-  --       name = 'Launch file',
-  --       program = '${file}',
-  --       cwd = '${workspaceFolder}',
-  --     }, {
-  --       type = 'pwa-chrome',
-  --       request = 'attach',
-  --       name = 'Attach',
-  --       processId = require'dap.utils'.pick_process,
-  --       cwd = '${workspaceFolder}',
-  --     }
-  --   }
-  -- end
 end
 
 return M
