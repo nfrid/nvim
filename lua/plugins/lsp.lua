@@ -5,17 +5,19 @@ local M = {
     'hrsh7th/cmp-nvim-lsp',
     'mrshmllow/document-color.nvim',
     'creativenull/efmls-configs-nvim',
+    -- NOTE: too slow :(
+    -- 'artemave/workspace-diagnostics.nvim',
     {
-      "SmiteshP/nvim-navbuddy",
+      'SmiteshP/nvim-navbuddy',
       dependencies = {
-        "SmiteshP/nvim-navic",
-        "MunifTanjim/nui.nvim"
+        'SmiteshP/nvim-navic',
+        'MunifTanjim/nui.nvim',
       },
       opts = { lsp = { auto_attach = true } },
       keys = {
         { '<leader>;', '<cmd>Navbuddy<cr>', desc = 'Navbuddy' },
       },
-    }
+    },
   },
   event = { 'BufReadPre' },
 }
@@ -42,6 +44,11 @@ M.config = function()
   end, 'Toggle Inlay Hints')
 
   local on_attach = function(client, bufnr)
+    -- require('workspace-diagnostics').populate_workspace_diagnostics(
+    --   client,
+    --   bufnr
+    -- )
+
     local caps = client.server_capabilities
 
     if client.server_capabilities.colorProvider then

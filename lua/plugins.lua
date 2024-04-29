@@ -2,6 +2,99 @@
 local M = {
   'antoinemadec/FixCursorHold.nvim',
 
+  {
+    'ckolkey/ts-node-action',
+    dependencies = { 'nvim-treesitter' },
+    config = function()
+      local p = require('ts-node-action')
+      p.setup({
+        tsx = require('ts-node-action').node_actions.typescriptreact,
+      })
+    end,
+    keys = {
+      {
+        '<leader>s',
+        function()
+          require('ts-node-action').node_action()
+        end,
+        desc = 'Node Action',
+      },
+    },
+  },
+
+  {
+    'mcauley-penney/visual-whitespace.nvim',
+    opts = {
+      highlight = {
+        fg = '#6272A4',
+        bg = '#44475A',
+      },
+    },
+    lazy = false,
+    enabled = false,
+  },
+
+  {
+    'icholy/lsplinks.nvim',
+    opts = {},
+    keys = {
+      {
+        'gx',
+        function()
+          require('lsplinks').gx()
+        end,
+        desc = 'Open link',
+      },
+    },
+  },
+
+  {
+    'altermo/iedit.nvim',
+    keys = {
+      {
+        '<leader>ii',
+        function()
+          require('iedit').toggle()
+        end,
+        desc = 'Toggle Iedit',
+      },
+      {
+        '<leader>I',
+        function()
+          require('iedit').select_all()
+        end,
+        desc = 'Iedit ALL',
+      },
+    },
+  },
+
+  {
+    'dwrdx/mywords.nvim',
+    keys = {
+      {
+        '<leader>hw',
+        function()
+          require('mywords').hl_toggle()
+        end,
+        desc = 'Toggle Highlight Word',
+      },
+      {
+        '<leader>hW',
+        function()
+          require('mywords').uhl_all()
+        end,
+        desc = 'Reset Highlight Word',
+      },
+    },
+  },
+
+  {
+    'dmmulroy/ts-error-translator.nvim',
+    ft = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+    opts = {},
+    enabled = false,
+  },
+
   -- {
   --   'anuvyklack/windows.nvim',
   --   dependencies = { 'anuvyklack/middleclass' },
@@ -22,6 +115,7 @@ local M = {
     dependencies = 'neovim/nvim-lspconfig',
     event = 'VeryLazy',
     opts = {},
+    enabled = false,
   },
 
   {
@@ -260,7 +354,7 @@ local M = {
     opts = {
       show_icons = true,
       leader_key = ';', -- Recommended to be a single key
-      index_keys = 'afgwrtzxcbjklzbm,.uiony123456789',
+      index_keys = 'gwrtzxcbjklm,.uiony123456789',
     },
     keys = {
       {
@@ -359,9 +453,12 @@ local M = {
     dependencies = { 'nvim-telescope/telescope.nvim' },
     config = function()
       require('textcase').setup({})
-      -- require('telescope').load_extension('textcase')
+      require('telescope').load_extension('textcase')
     end,
     keys = {
+      {
+        'ga',
+      },
       {
         'ga.',
         '<cmd>TextCaseOpenTelescope<CR>',
@@ -495,17 +592,6 @@ local M = {
   },
 
   {
-    'ckolkey/ts-node-action',
-    dependencies = { 'nvim-treesitter' },
-    lazy = false,
-    config = function()
-      vim.keymap.set({ 'n' }, '<leader>s', function()
-        require('ts-node-action').node_action()
-      end)
-    end,
-  },
-
-  {
     'AckslD/muren.nvim',
     config = true,
     cmd = {
@@ -577,7 +663,11 @@ local M = {
 
   { 'marilari88/twoslash-queries.nvim', setup = true },
 
-  { 'tpope/vim-abolish',                lazy = false },
+  {
+    'tpope/vim-abolish',
+    lazy = false,
+    enabled = false,
+  },
 
   { 'martinda/Jenkinsfile-vim-syntax',  ft = { 'Jenkinsfile' } },
 
@@ -825,14 +915,14 @@ local M = {
                 .. '{_A.ORG}/'
                 .. '{_A.REPO}/blob/'
                 .. '{_A.CURRENT_BRANCH}/' -- always current branch
-                .. '{_A.FILE}?plain=1'    -- '?plain=1'
+                .. '{_A.FILE}?plain=1'  -- '?plain=1'
                 .. '#L{_A.LSTART}'
                 .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
             ['^mygig%.gitlab%.yandexcloud%.net'] = 'https://mygig.gitlab.yandexcloud.net/'
                 .. '{_A.ORG}/'
                 .. '{_A.REPO}/blob/'
                 .. '{_A.CURRENT_BRANCH}/' -- always current branch
-                .. '{_A.FILE}?plain=1'    -- '?plain=1'
+                .. '{_A.FILE}?plain=1'  -- '?plain=1'
                 .. '#L{_A.LSTART}'
                 .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
           },
@@ -841,14 +931,14 @@ local M = {
                 .. '{_A.ORG}/'
                 .. '{_A.REPO}/blame/'
                 .. '{_A.CURRENT_BRANCH}/' -- always current branch
-                .. '{_A.FILE}?plain=1'    -- '?plain=1'
+                .. '{_A.FILE}?plain=1'  -- '?plain=1'
                 .. '#L{_A.LSTART}'
                 .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
             ['^mygig%.gitlab%.yandexcloud%.net'] = 'https://mygig.gitlab.yandexcloud.net/'
                 .. '{_A.ORG}/'
                 .. '{_A.REPO}/blame/'
                 .. '{_A.CURRENT_BRANCH}/' -- always current branch
-                .. '{_A.FILE}?plain=1'    -- '?plain=1'
+                .. '{_A.FILE}?plain=1'  -- '?plain=1'
                 .. '#L{_A.LSTART}'
                 .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
           },

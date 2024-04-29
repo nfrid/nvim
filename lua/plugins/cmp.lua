@@ -17,6 +17,10 @@ local M = {
     'David-Kunz/cmp-npm',
     'rcarriga/cmp-dap',
     'jcdickinson/codeium.nvim',
+    {
+      'jdrupal-dev/css-vars.nvim',
+      opts = {},
+    },
   },
 }
 
@@ -29,10 +33,10 @@ M.config = function()
   local has_words_before = function()
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
     return col ~= 0
-      and vim.api
-          .nvim_buf_get_lines(0, line - 1, line, true)[1]
-          :sub(col, col)
-          :match('%s')
+        and vim.api
+        .nvim_buf_get_lines(0, line - 1, line, true)[1]
+        :sub(col, col)
+        :match('%s')
         == nil
   end
 
@@ -45,7 +49,7 @@ M.config = function()
     },
     enabled = function()
       return vim.api.nvim_get_option_value('buftype', { buf = 0 }) ~= 'prompt'
-        or require('cmp_dap').is_dap_buffer()
+          or require('cmp_dap').is_dap_buffer()
     end,
     snippet = {
       expand = function(args)
@@ -115,12 +119,13 @@ M.config = function()
       { name = 'codeium' },
       -- { name = 'cmp_tabnine' },
       { name = 'nvim_lsp', trigger_characters = { '-' } },
+      { name = 'css_vars' },
       { name = 'neorg' },
       { name = 'luasnip' },
       { name = 'path' },
       { name = 'tmux' },
       -- { name = 'rg' },
-      { name = 'npm', keyword_length = 4 },
+      { name = 'npm',      keyword_length = 4 },
     }, { { name = 'buffer' } }),
     formatting = {
       format = function(entry, vim_item)
