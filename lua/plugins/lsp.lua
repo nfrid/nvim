@@ -28,7 +28,7 @@ local M = {
 --- @param desc string
 --- @param opts table|nil
 local function mapbuf(mode, lhs, rhs, desc, opts)
-  local options = { rhs, desc, noremap = true, buffer = 0 }
+  local options = { rhs, desc, noremap = true, buffer = 0, mode = mode }
   if opts then
     options = vim.tbl_extend('force', options, opts)
   end
@@ -40,7 +40,7 @@ M.config = function()
   local nvim_lsp = require('lspconfig')
 
   mapbuf('n', '<leader>li', function()
-    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
   end, 'Toggle Inlay Hints')
 
   local on_attach = function(client, bufnr)
@@ -179,7 +179,8 @@ M.config = function()
     'bashls',
     'vimls',
     'basedpyright',
-    'ruff_lsp',
+    -- 'pyright',
+    -- 'ruff_lsp',
     'tsserver',
     'vuels',
     'yamlls',
@@ -244,8 +245,6 @@ M.config = function()
     },
   }
 
-  require('neodev').setup({})
-
   local tssettings = {
     referencesCodeLens = {
       showOnAllFunctions = true,
@@ -308,9 +307,10 @@ M.config = function()
 
   vim.diagnostic.config({
     virtual_text = { prefix = '●' },
+    -- virtual_text = false,
     -- update_in_insert = true,
     float = {
-      source = 'always', -- Or "if_many"
+      source = 'if_many', -- Or "if_many"
     },
   })
 end

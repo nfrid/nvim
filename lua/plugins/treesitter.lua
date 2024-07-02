@@ -5,10 +5,20 @@ local M = {
     'nvim-treesitter/playground',
     'HiPhish/rainbow-delimiters.nvim',
     'JoosepAlviste/nvim-ts-context-commentstring',
-    'windwp/nvim-ts-autotag',
+    {
+      'windwp/nvim-ts-autotag',
+      opts = {},
+    },
     'nvim-treesitter/nvim-treesitter-textobjects',
     'RRethy/nvim-treesitter-textsubjects',
     'RRethy/nvim-treesitter-endwise',
+    {
+      'nvim-treesitter/nvim-treesitter-context',
+      opts = {
+        mode = 'topline',
+      },
+      enabled = false,
+    },
   },
   build = function()
     vim.cmd('TSUpdate')
@@ -53,7 +63,6 @@ M.config = function()
     indent = { enable = true },
     playground = { enable = true },
     endwise = { enable = true },
-    autotag = { enable = true },
     textobjects = {
       select = {
         enable = true,
@@ -103,8 +112,9 @@ M.config = function()
     },
   })
 
-  -- vim.opt.foldmethod = 'expr'
-  -- vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+  vim.opt.foldmethod = 'expr'
+  vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+  vim.opt.foldtext = ''
 
   vim.treesitter.language.register('html', 'xml')
 

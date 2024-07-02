@@ -75,10 +75,10 @@ M.config = function()
   mx.nnoremap('<leader>fs', ':w!<CR>', 'Save buffer')
   mx.nnoremap(
     '<Leader>v/',
-    '<CMD>lua vim.opt.hls = not vim.api.nvim_get_option(\'hls\')<CR>',
+    "<CMD>lua vim.opt.hls = not vim.api.nvim_get_option('hls')<CR>",
     'Search highlighting'
   )
-  mx.nnoremap('<Leader>/', ':nohlsearch<CR>', 'Clear search highlighting')
+  mx.nnoremap('<leader>/', ':nohlsearch<CR>', 'Clear search highlighting')
   mx.nnoremap('Q', ':bd<CR>')
   mx.nnoremap('<leader>cd', ':cd %:h<CR>', 'cd to the buffer')
   mx.nnoremap('<leader>cp', ':let @+ = expand("%:p:h")<CR>', 'Copy buffer path')
@@ -95,6 +95,9 @@ M.config = function()
   mx.tnoremap('<A-Esc>', '<C-\\><C-n>')
 
   mx.nnoremap('\\\\', '<Esc>/<++><Enter>"_c4l', 'Replace next <++>')
+
+  mx.nnoremap('zz', 'za', 'Toggle fold')
+  mx.nnoremap('za', 'zz', 'Center')
 
   -- mx.inoremap('<C-j>', [[pumvisible() ? "\\<C-n>" : "\\<C-j>"]], 'expr')
   -- mx.inoremap('<C-k>', [[pumvisible() ? "\\<C-p>" : "\\<C-k>"]], 'expr')

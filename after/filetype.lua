@@ -33,3 +33,10 @@ vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
     vim.cmd('setl ft=d2')
   end,
 })
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  group = filetype_aliases,
+  pattern = 'lfrc',
+  callback = function()
+    vim.cmd('setl ft=lf')
+  end,
+})

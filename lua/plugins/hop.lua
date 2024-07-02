@@ -2,6 +2,7 @@
 local M = {
   'smoka7/hop.nvim',
   name = 'hop',
+  enabled = false,
 }
 
 M.config = function()

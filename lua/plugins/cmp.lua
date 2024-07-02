@@ -21,6 +21,7 @@ local M = {
       'jdrupal-dev/css-vars.nvim',
       opts = {},
     },
+    -- { 'tzachar/cmp-ai' },
   },
 }
 
@@ -42,10 +43,24 @@ M.config = function()
 
   vim.o.pumheight = 10
 
+  -- require('cmp_ai.config'):setup({
+  --   max_lines = 100,
+  --   provider = 'Ollama',
+  --   provider_options = {
+  --     model = 'codellama:7b-code',
+  --   },
+  --   run_on_every_keystroke = false,
+  --   ignored_file_types = {
+  --     -- default is not to ignore
+  --     -- uncomment to ignore in lua:
+  --     -- lua = true
+  --   },
+  -- })
+
   ---@diagnostic disable-next-line: missing-fields
   cmp.setup({
     experimental = {
-      ghost_text = true,
+      -- ghost_text = true,
     },
     enabled = function()
       return vim.api.nvim_get_option_value('buftype', { buf = 0 }) ~= 'prompt'
@@ -61,6 +76,16 @@ M.config = function()
     --   documentation = cmp.config.window.bordered(),
     -- },
     mapping = cmp.mapping.preset.insert({
+      -- ['<C-x>'] = cmp.mapping(
+      --   cmp.mapping.complete({
+      --     config = {
+      --       sources = cmp.config.sources({
+      --         { name = 'cmp_ai' },
+      --       }),
+      --     },
+      --   }),
+      --   { 'i' }
+      -- ),
       ['<Tab>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_next_item()
@@ -116,11 +141,9 @@ M.config = function()
     }),
     sources = cmp.config.sources({
       -- { name = 'copilot' },
-      { name = 'codeium' },
-      -- { name = 'cmp_tabnine' },
+      -- { name = 'codeium' },
       { name = 'nvim_lsp', trigger_characters = { '-' } },
       { name = 'css_vars' },
-      { name = 'neorg' },
       { name = 'luasnip' },
       { name = 'path' },
       { name = 'tmux' },
@@ -129,14 +152,14 @@ M.config = function()
     }, { { name = 'buffer' } }),
     formatting = {
       format = function(entry, vim_item)
-        -- if entry.source.name == 'copilot' then
-        --   vim_item.kind = ''
-        --   vim_item.kind_hl_group = 'Title'
-        --   return vim_item
-        -- end
         if entry.source.name == 'codeium' then
           vim_item.kind = '󰚩'
           vim_item.kind_hl_group = 'Title'
+          return vim_item
+        end
+        if entry.source.name == 'cmp_ai' then
+          vim_item.kind = '󰚩'
+          vim_item.kind_hl_group = 'Keyword'
           return vim_item
         end
         return lspkind.cmp_format({ with_text = false, maxwidth = 50 })(

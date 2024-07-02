@@ -14,7 +14,7 @@ local M = {
         {
           'microsoft/vscode-js-debug',
           lazy = true,
-          build = 'pnpm i && pnpx gulp vsDebugServerBundle && mv dist out',
+          build = 'pnpm i && pnpx gulp vsDebugServerBundle && mv -f dist out',
         },
       },
     },

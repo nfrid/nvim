@@ -1,7 +1,7 @@
 ---@type LazySpec
 local M = {
   'windwp/nvim-autopairs',
-  lazy = false,
+  event = "InsertEnter",
 }
 
 M.config = function()

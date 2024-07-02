@@ -7,6 +7,8 @@ vim.opt.foldenable = false
 vim.opt.foldmethod = 'manual'
 vim.opt.updatetime = 100
 
+vim.opt.conceallevel = 3
+
 vim.opt.smartindent = true
 vim.opt.expandtab = true
 vim.opt.tabstop = 2

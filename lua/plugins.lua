@@ -3,6 +3,97 @@ local M = {
   'antoinemadec/FixCursorHold.nvim',
 
   {
+    'rachartier/tiny-inline-diagnostic.nvim',
+    event = 'VeryLazy',
+    opts = {},
+  },
+
+  {
+    'chrisgrieser/nvim-rip-substitute',
+    keys = {
+      {
+        '<leader>?',
+        function()
+          require('rip-substitute').sub()
+        end,
+        mode = { 'n', 'x' },
+      },
+    },
+  },
+
+  {
+    'sindrets/diffview.nvim',
+    cmd = { 'DiffviewOpen', 'DiffviewClose' },
+  },
+
+  {
+    'axelvc/template-string.nvim',
+    opts = {
+      remove_template_string = true,
+    },
+    ft = {
+      'typescript',
+      'typescriptreact',
+      'javascript',
+      'javascriptreact',
+      'html',
+      'vue',
+      'svelte',
+      'python',
+    },
+  },
+
+  {
+    'tzachar/highlight-undo.nvim',
+    config = true,
+    lazy = false,
+  },
+
+  {
+    'supermaven-inc/supermaven-nvim',
+    opts = {
+      keymaps = {
+        accept_suggestion = '<C-l>',
+        clear_suggestion = '<C-h>',
+        accept_word = '<C-j>',
+      },
+      ignore_filetypes = {
+        TelescopePrompt = true,
+        ['rip-substitute'] = true,
+      },
+    },
+    event = 'VeryLazy',
+  },
+
+  {
+    'folke/ts-comments.nvim',
+    opts = {},
+    event = 'VeryLazy',
+  },
+
+  {
+    'rachartier/tiny-devicons-auto-colors.nvim',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+    event = 'VeryLazy',
+    opts = {},
+  },
+
+  {
+    'David-Kunz/gen.nvim',
+    cmd = { 'Gen' },
+    opts = {
+      model = 'mistral:7b',
+    },
+  },
+
+  {
+    'VebbNix/lf-vim',
+    ft = { 'lf' },
+  },
+
+  {
     'ckolkey/ts-node-action',
     dependencies = { 'nvim-treesitter' },
     config = function()
@@ -496,7 +587,7 @@ local M = {
 
       ft('go'):fmt('gofmt')
 
-      ft('c,cpp'):fmt('clang-format'):lint('clang-tidy')
+      ft('c,cpp'):fmt('clang-format') --:lint('clang-tidy')
 
       ft('cmake'):fmt({
         cmd = 'cmake-format',
@@ -966,7 +1057,18 @@ local M = {
     end,
   },
 
-  'folke/lua-dev.nvim',
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua', -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+      },
+    },
+    dependencies = { 'Bilal2453/luvit-meta' },
+  },
 
   {
     'folke/trouble.nvim',

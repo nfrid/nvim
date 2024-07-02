@@ -69,3 +69,6 @@ hi rainbow6 guifg=#ffd700
 hi rainbow7 guifg=#ee99ff
 hi rainbow8 guifg=#00ffd9
 hi rainbow9 guifg=#ffd700
+
+hi TreesitterContextBottom gui=underline guisp=#6272a4
+hi TreesitterContextLineNumberBottom gui=underline guisp=#6272a4
