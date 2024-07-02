@@ -13,9 +13,7 @@ local function telescope_flash(prompt_bufnr)
     },
     action = function(match)
       local picker =
-          require('telescope.actions.state').get_current_picker(
-            prompt_bufnr
-          )
+          require('telescope.actions.state').get_current_picker(prompt_bufnr)
       picker:set_selection(match.pos[1] - 1)
     end,
   })
@@ -38,7 +36,17 @@ local M = {
       end,
     },
   },
-  opts = {},
+  opts = {
+    labels = 'asdfghjklqwertyuiopzxcvbnm;()?_$^*/',
+    label = {
+      uppercase = false,
+      current = false,
+      rainbow = {
+        enabled = true,
+        shade = 4,
+      },
+    },
+  },
   keys = {
     {
       's',

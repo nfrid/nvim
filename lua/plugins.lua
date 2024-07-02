@@ -3,6 +3,37 @@ local M = {
   'antoinemadec/FixCursorHold.nvim',
 
   {
+    'mistweaverco/kulala.nvim',
+    ft = { 'http' },
+    keys = {
+      {
+        '<CR>',
+        function()
+          require('kulala').run()
+        end,
+      },
+      {
+        '<S-CR>',
+        function()
+          require('kulala').toggle_view()
+        end,
+      },
+      {
+        '<C-j>',
+        function()
+          require('kulala').jump_next()
+        end,
+      },
+      {
+        '<C-k>',
+        function()
+          require('kulala').jump_prev()
+        end,
+      },
+    },
+  },
+
+  {
     'rachartier/tiny-inline-diagnostic.nvim',
     event = 'VeryLazy',
     opts = {},
@@ -1006,14 +1037,14 @@ local M = {
                 .. '{_A.ORG}/'
                 .. '{_A.REPO}/blob/'
                 .. '{_A.CURRENT_BRANCH}/' -- always current branch
-                .. '{_A.FILE}?plain=1'  -- '?plain=1'
+                .. '{_A.FILE}?plain=1'    -- '?plain=1'
                 .. '#L{_A.LSTART}'
                 .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
             ['^mygig%.gitlab%.yandexcloud%.net'] = 'https://mygig.gitlab.yandexcloud.net/'
                 .. '{_A.ORG}/'
                 .. '{_A.REPO}/blob/'
                 .. '{_A.CURRENT_BRANCH}/' -- always current branch
-                .. '{_A.FILE}?plain=1'  -- '?plain=1'
+                .. '{_A.FILE}?plain=1'    -- '?plain=1'
                 .. '#L{_A.LSTART}'
                 .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
           },
@@ -1022,14 +1053,14 @@ local M = {
                 .. '{_A.ORG}/'
                 .. '{_A.REPO}/blame/'
                 .. '{_A.CURRENT_BRANCH}/' -- always current branch
-                .. '{_A.FILE}?plain=1'  -- '?plain=1'
+                .. '{_A.FILE}?plain=1'    -- '?plain=1'
                 .. '#L{_A.LSTART}'
                 .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
             ['^mygig%.gitlab%.yandexcloud%.net'] = 'https://mygig.gitlab.yandexcloud.net/'
                 .. '{_A.ORG}/'
                 .. '{_A.REPO}/blame/'
                 .. '{_A.CURRENT_BRANCH}/' -- always current branch
-                .. '{_A.FILE}?plain=1'  -- '?plain=1'
+                .. '{_A.FILE}?plain=1'    -- '?plain=1'
                 .. '#L{_A.LSTART}'
                 .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
           },

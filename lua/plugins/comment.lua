@@ -15,6 +15,7 @@ M.config = function()
   ft.set('stylus', { '//%s', '/*%s*/' })
   ft.set('hyprlang', { '#%s' })
   ft.set('kdl', { '//%s' })
+  ft.set('http', { '#%s' })
 end
 
 return M
