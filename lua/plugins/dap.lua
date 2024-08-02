@@ -14,7 +14,7 @@ local M = {
         {
           'microsoft/vscode-js-debug',
           lazy = true,
-          build = 'pnpm i && pnpx gulp vsDebugServerBundle && mv -f dist out',
+          build = 'pnpm i && pnpx gulp vsDebugServerBundle && rm -rf out && mv -f dist out',
         },
       },
     },
@@ -30,14 +30,12 @@ local M = {
 M.config = function()
   local dap = require('dap')
 
-  local mx = require('mapx')
   local p = '<M-d>'
-  mx.nname(p, 'dap')
 
   local function nm(key, func, desc)
-    mx.nnoremap(p .. key, function()
+    vim.keymap.set('n', p .. key, function()
       func()
-    end, desc)
+    end, { desc = desc })
   end
 
   nm('b', dap.toggle_breakpoint, 'Breakpoint')

@@ -6,7 +6,6 @@ local M = {
 
 M.config = function()
   local p = require('git-conflict')
-  local mx = require('mapx')
 
   p.setup({
     default_mappings = false,
@@ -17,15 +16,44 @@ M.config = function()
     },
   })
 
-  mx.nnoremap(']x', '<Plug>(git-conflict-next-conflict)', 'Next conflict')
-  mx.nnoremap('[x', '<Plug>(git-conflict-prev-conflict)', 'Previous conflict')
+  vim.keymap.set(
+    'n',
+    ']x',
+    '<Plug>(git-conflict-next-conflict)',
+    { desc = 'Next conflict' }
+  )
+  vim.keymap.set(
+    'n',
+    '[x',
+    '<Plug>(git-conflict-prev-conflict)',
+    { desc = 'Previous conflict' }
+  )
 
   local s = '<leader>g'
-  mx.nname(s, 'select')
-  mx.nnoremap(s .. 'h', '<Plug>(git-conflict-ours)', 'Select ours')
-  mx.nnoremap(s .. 'l', '<Plug>(git-conflict-theirs)', 'Select theirs')
-  mx.nnoremap(s .. 'j', '<Plug>(git-conflict-both)', 'Select both')
-  mx.nnoremap(s .. 'k', '<Plug>(git-conflict-none)', 'Select none')
+  vim.keymap.set(
+    'n',
+    s .. 'h',
+    '<Plug>(git-conflict-ours)',
+    { desc = 'Select ours' }
+  )
+  vim.keymap.set(
+    'n',
+    s .. 'l',
+    '<Plug>(git-conflict-theirs)',
+    { desc = 'Select theirs' }
+  )
+  vim.keymap.set(
+    'n',
+    s .. 'j',
+    '<Plug>(git-conflict-both)',
+    { desc = 'Select both' }
+  )
+  vim.keymap.set(
+    'n',
+    s .. 'k',
+    '<Plug>(git-conflict-none)',
+    { desc = 'Select none' }
+  )
 end
 
 return M

@@ -2,18 +2,12 @@
 local M = {
   'monaqa/dial.nvim',
   lazy = false,
+  keys = {
+    { '<C-a>', '<Plug>(dial-increment)', 'Increment', mode = { 'n', 'x' } },
+    { '<C-x>', '<Plug>(dial-decrement)', 'Decrement', mode = { 'n', 'x' } },
+    { 'g<C-a>', 'g<Plug>(dial-increment)', 'Increment', mode = { 'n', 'x' } },
+    { 'g<C-x>', 'g<Plug>(dial-decrement)', 'Decrement', mode = { 'n', 'x' } },
+  },
 }
-
-M.config = function()
-  local mx = require('mapx')
-  local m = require('dial.map')
-
-  mx.nnoremap('<C-a>', m.inc_normal(), 'Increment')
-  mx.nnoremap('<C-x>', m.dec_normal(), 'Decrement')
-  mx.vnoremap('<C-a>', m.inc_visual(), 'Increment')
-  mx.vnoremap('<C-x>', m.dec_visual(), 'Decrement')
-  mx.vnoremap('g<C-a>', m.inc_gvisual(), 'Increment')
-  mx.vnoremap('g<C-x>', m.dec_gvisual(), 'Decrement')
-end
 
 return M

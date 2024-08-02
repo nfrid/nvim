@@ -55,13 +55,12 @@ local M = {
     local t = require('telescope')
     t.load_extension('dap')
     t.load_extension('recent_files')
-    -- t.load_extension('projects')
+    t.load_extension('projects')
     t.load_extension('todo-comments')
     t.load_extension('egrepify')
     t.load_extension('frecency')
   end,
   init = function()
-    local mx = require('mapx')
     local ts = require('telescope.builtin')
     local tsx = require('telescope').extensions
 
@@ -83,21 +82,26 @@ local M = {
       if type(key) == 'string' then
         key = '<leader>' .. key
       else
-        key = key[0]
+        key = key[1]
       end
 
-      mx.nnoremap(key, function()
-        fn(opts)
-      end, label)
+      if not key then
+        vim.notify('Telescope: Invalid key for ' .. label, vim.log.levels.ERROR)
+        return
+      end
 
-      mx.vnoremap(key, function()
+      vim.keymap.set('n', key, function()
+        fn(opts)
+      end, { desc = label })
+
+      vim.keymap.set('v', key, function()
         local selected = get_visual_selection()
         local def_text = selected or opts.default_text
         fn({ opts, default_text = def_text })
-      end, label)
+      end, { desc = label })
     end
 
-    map('tt', ts.resume, 'Resume')
+    map('t<leader>', ts.resume, 'Resume')
 
     -- map('T', ts.live_grep, 'Live Grep')
     map('T', tsx.egrepify.egrepify, 'Live Grep')
@@ -112,15 +116,20 @@ local M = {
     map('o', tsx.recent_files.pick, 'Find Recent Files')
     -- map('o', tsx.frecency.frecency, 'Find Frecent Files')
     map({ 'gs' }, ts.spell_suggest, 'Spell suggest')
-    -- map('pp', tsx.projects.projects, 'Project')
+    map('pp', tsx.projects.projects, 'Project')
     map('gf', ts.git_bcommits, 'Todos')
     map('pt', tsx['todo-comments'].todo, 'Todos')
 
-    mx.nnoremap('<F1>', '<cmd>Cheatsheet<cr>', 'Find Commands')
+    vim.keymap.set(
+      'n',
+      '<F1>',
+      '<cmd>Cheatsheet<cr>',
+      { desc = 'Find Commands' }
+    )
 
-    mx.nnoremap('<leader>yr', function()
+    vim.keymap.set('n', '<leader>yr', function()
       ts.lsp_workspace_symbols({ query = vim.fn.getreg('*') })
-    end, 'Find Yanked Workspace Symbol')
+    end, { desc = 'Find Yanked Workspace Symbol' })
   end,
 }
 

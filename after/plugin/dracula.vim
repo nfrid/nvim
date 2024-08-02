@@ -75,3 +75,5 @@ hi TreesitterContextLineNumberBottom gui=underline guisp=#6272a4
 
 hi link FlashCurrent CurSearch
 hi FlashLabel gui=bold guifg=#282a36 guibg=#ffb86c
+
+hi! FoldLine guifg=#44475a guibg=none

@@ -2,12 +2,15 @@
 local M = {
   'RRethy/vim-illuminate',
   lazy = false,
+  keys = {
+    {
+      '<leader>vi',
+      function()
+        require('illuminate').toggle()
+      end,
+      'Illuminate',
+    },
+  },
 }
-
-M.config = function()
-  local mx = require('mapx')
-  local illuminate = require('illuminate')
-  mx.nnoremap('<leader>vi', illuminate.toggle, 'Illuminate')
-end
 
 return M

@@ -3,6 +3,20 @@ local M = {
   'antoinemadec/FixCursorHold.nvim',
 
   {
+    'iamyoki/buffer-reopen.nvim',
+    opts = {},
+    lazy = false,
+  },
+
+  {
+    'psjay/buffer-closer.nvim',
+    opts = {
+      close_key = '<leader>q',
+    },
+    lazy = false,
+  },
+
+  {
     'mistweaverco/kulala.nvim',
     ft = { 'http' },
     keys = {
@@ -37,6 +51,7 @@ local M = {
     'rachartier/tiny-inline-diagnostic.nvim',
     event = 'VeryLazy',
     opts = {},
+    enabled = false,
   },
 
   {
@@ -230,6 +245,9 @@ local M = {
     lazy = false,
     -- Optional dependencies
     dependencies = { 'nvim-tree/nvim-web-devicons' },
+    keys = {
+      { '-', '<CMD>Oil<CR>' },
+    },
   },
 
   {
@@ -604,7 +622,8 @@ local M = {
     config = function()
       local ft = require('guard.filetype')
 
-      ft('json,css,scss,html,markdown,yaml,toml'):fmt('prettier')
+      ft('json,css,scss,html,markdown,yaml'):fmt('prettier')
+      ft('toml'):fmt('taplo')
 
       ft('lua'):fmt('lsp'):append('stylua')
 
@@ -694,8 +713,8 @@ local M = {
         implements = false,
         git_authors = function(latest_author, count)
           return ' '
-              .. latest_author
-              .. (count - 1 == 0 and '' or (' + ' .. count - 1))
+            .. latest_author
+            .. (count - 1 == 0 and '' or (' + ' .. count - 1))
         end,
       },
     },
@@ -791,7 +810,7 @@ local M = {
     enabled = false,
   },
 
-  { 'martinda/Jenkinsfile-vim-syntax',  ft = { 'Jenkinsfile' } },
+  { 'martinda/Jenkinsfile-vim-syntax', ft = { 'Jenkinsfile' } },
 
   -- {
   --   'nfrid/media.nvim',
@@ -799,7 +818,7 @@ local M = {
   --   ft = { 'png', 'jpg', 'gif', 'mp4', 'webm', 'pdf' },
   -- },
 
-  { 'nfrid/treesitter-utils',           dev = true },
+  { 'nfrid/treesitter-utils', dev = true },
 
   {
     'iamcco/markdown-preview.nvim',
@@ -809,7 +828,7 @@ local M = {
     ft = { 'markdown' },
   },
 
-  { 'andrewferrier/wrapping.nvim',    config = true,            lazy = false },
+  { 'andrewferrier/wrapping.nvim', config = true, lazy = false },
 
   {
     'nvim-zh/colorful-winsep.nvim',
@@ -929,6 +948,21 @@ local M = {
   },
 
   {
+    'Isrothy/neominimap.nvim',
+    enabled = true,
+    lazy = false, -- WARN: NO NEED to Lazy load
+    init = function()
+      vim.opt.wrap = false -- Recommended
+      vim.opt.sidescrolloff = 36 -- It's recommended to set a large value
+      vim.g.neominimap = {
+        auto_enable = true,
+        minimap_width = 10,
+        window_border = 'none',
+      }
+    end,
+  },
+
+  {
     'machakann/vim-highlightedyank',
     config = function()
       vim.g.highlightedyank_highlight_duration = 250
@@ -951,7 +985,7 @@ local M = {
     },
   },
 
-  { 'nfrid/due.nvim',         config = true, ft = { 'markdown' } },
+  { 'nfrid/due.nvim', config = true, ft = { 'markdown' } },
 
   {
     'gaoDean/autolist.nvim',
@@ -969,7 +1003,7 @@ local M = {
   --   ft = { 'markdown' },
   -- },
 
-  { 'lervag/vimtex',          ft = { 'tex' } },
+  { 'lervag/vimtex', ft = { 'tex' } },
 
   { 'stevearc/dressing.nvim', lazy = false },
 
@@ -987,7 +1021,7 @@ local M = {
 
   { 'kylechui/nvim-surround', config = true, lazy = false },
 
-  { 'kana/vim-repeat',        lazy = false },
+  { 'kana/vim-repeat', lazy = false },
 
   -- {
   --   'anuvyklack/pretty-fold.nvim',
@@ -1008,9 +1042,9 @@ local M = {
     lazy = false,
   },
 
-  { 'ron-rs/ron.vim',      ft = { 'ron' } },
+  { 'ron-rs/ron.vim', ft = { 'ron' } },
 
-  { 'zah/nim.vim',         ft = { 'nim' } },
+  { 'zah/nim.vim', ft = { 'nim' } },
 
   { 'iloginow/vim-stylus', ft = { 'stylus' } },
 
@@ -1034,35 +1068,35 @@ local M = {
         router = {
           browse = {
             ['^github%.com'] = 'https://github.com/'
-                .. '{_A.ORG}/'
-                .. '{_A.REPO}/blob/'
-                .. '{_A.CURRENT_BRANCH}/' -- always current branch
-                .. '{_A.FILE}?plain=1'    -- '?plain=1'
-                .. '#L{_A.LSTART}'
-                .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
+              .. '{_A.ORG}/'
+              .. '{_A.REPO}/blob/'
+              .. '{_A.CURRENT_BRANCH}/' -- always current branch
+              .. '{_A.FILE}?plain=1' -- '?plain=1'
+              .. '#L{_A.LSTART}'
+              .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
             ['^mygig%.gitlab%.yandexcloud%.net'] = 'https://mygig.gitlab.yandexcloud.net/'
-                .. '{_A.ORG}/'
-                .. '{_A.REPO}/blob/'
-                .. '{_A.CURRENT_BRANCH}/' -- always current branch
-                .. '{_A.FILE}?plain=1'    -- '?plain=1'
-                .. '#L{_A.LSTART}'
-                .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
+              .. '{_A.ORG}/'
+              .. '{_A.REPO}/blob/'
+              .. '{_A.CURRENT_BRANCH}/' -- always current branch
+              .. '{_A.FILE}?plain=1' -- '?plain=1'
+              .. '#L{_A.LSTART}'
+              .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
           },
           blame = {
             ['^github%.com'] = 'https://github.com/'
-                .. '{_A.ORG}/'
-                .. '{_A.REPO}/blame/'
-                .. '{_A.CURRENT_BRANCH}/' -- always current branch
-                .. '{_A.FILE}?plain=1'    -- '?plain=1'
-                .. '#L{_A.LSTART}'
-                .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
+              .. '{_A.ORG}/'
+              .. '{_A.REPO}/blame/'
+              .. '{_A.CURRENT_BRANCH}/' -- always current branch
+              .. '{_A.FILE}?plain=1' -- '?plain=1'
+              .. '#L{_A.LSTART}'
+              .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
             ['^mygig%.gitlab%.yandexcloud%.net'] = 'https://mygig.gitlab.yandexcloud.net/'
-                .. '{_A.ORG}/'
-                .. '{_A.REPO}/blame/'
-                .. '{_A.CURRENT_BRANCH}/' -- always current branch
-                .. '{_A.FILE}?plain=1'    -- '?plain=1'
-                .. '#L{_A.LSTART}'
-                .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
+              .. '{_A.ORG}/'
+              .. '{_A.REPO}/blame/'
+              .. '{_A.CURRENT_BRANCH}/' -- always current branch
+              .. '{_A.FILE}?plain=1' -- '?plain=1'
+              .. '#L{_A.LSTART}'
+              .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
           },
         },
       })
@@ -1079,7 +1113,7 @@ local M = {
     cmd = { 'GitLink' },
   },
 
-  { 'kevinhwang91/nvim-bqf',            ft = { 'qf' } },
+  { 'kevinhwang91/nvim-bqf', ft = { 'qf' } },
 
   {
     'onsails/lspkind-nvim',
@@ -1103,11 +1137,56 @@ local M = {
 
   {
     'folke/trouble.nvim',
-    config = true,
-    keys = {
-      { '<leader>d', '<cmd>TroubleToggle<cr>', desc = 'Toggle Trouble' },
+    opts = {
+      modes = {
+        diag = {
+          mode = 'diagnostics',
+          filter = {
+            ['not'] = {
+              severity = vim.diagnostic.severity.HINT,
+            },
+          },
+        },
+      },
     },
-    cmd = { 'Trouble', 'TroubleToggle' },
+    cmd = 'Trouble',
+    keys = {
+      {
+        '<leader>xx',
+        '<cmd>Trouble diag toggle<cr>',
+        desc = 'Diagnostics (Trouble)',
+      },
+      {
+        '<leader>xX',
+        '<cmd>Trouble diag toggle filter.buf=0<cr>',
+        desc = 'Buffer Diagnostics (Trouble)',
+      },
+      {
+        '<leader>xh',
+        '<cmd>Trouble diagnostics toggle<cr>',
+        desc = 'Diagnostics w/ HINTs (Trouble)',
+      },
+      {
+        '<leader>cs',
+        '<cmd>Trouble symbols toggle focus=false<cr>',
+        desc = 'Symbols (Trouble)',
+      },
+      {
+        '<leader>cl',
+        '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
+        desc = 'LSP Definitions / references / ... (Trouble)',
+      },
+      {
+        '<leader>xL',
+        '<cmd>Trouble loclist toggle<cr>',
+        desc = 'Location List (Trouble)',
+      },
+      {
+        '<leader>xQ',
+        '<cmd>Trouble qflist toggle<cr>',
+        desc = 'Quickfix List (Trouble)',
+      },
+    },
   },
 
   {

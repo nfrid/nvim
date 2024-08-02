@@ -1,15 +1,23 @@
 ---@type LazySpec
 local M = {
   'kdheepak/lazygit.nvim',
-  cmd = { 'LazyGit', 'LazyGitFilter', 'LazyGitFilterCurrentFile' }
+  cmd = { 'LazyGit', 'LazyGitFilter', 'LazyGitFilterCurrentFile' },
 }
 
 M.init = function()
-  local mx = require('mapx')
-
-  mx.nnoremap('<leader>gg', '<cmd>LazyGit<cr>', 'LazyGit')
-  mx.nnoremap('<leader>gc', '<cmd>LazyGitFilter<cr>', 'Project Commits')
-  -- mx.nnoremap('<leader>gf', '<cmd>LazyGitFilterCurrentFile<cr>', 'Current File Commits')
+  vim.keymap.set('n', '<leader>gg', '<cmd>LazyGit<cr>', { desc = 'LazyGit' })
+  vim.keymap.set(
+    'n',
+    '<leader>gc',
+    '<cmd>LazyGitFilter<cr>',
+    { desc = 'Project Commits' }
+  )
+  -- vim.keymap.set(
+  --   'n',
+  --   '<leader>gf',
+  --   '<cmd>LazyGitFilterCurrentFile<cr>',
+  --   { desc = 'Current File Commits' }
+  -- )
 
   vim.cmd([[
     if has('nvim') && executable('nvr')

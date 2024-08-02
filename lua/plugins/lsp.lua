@@ -146,13 +146,13 @@ M.config = function()
       caps.documentRangeFormattingProvider = true
     end
 
-    if client.name == 'tsserver' then
+    if client.name == 'tsserver' or client.name == 'vtsls' then
       caps.documentFormattingProvider = false
       caps.documentRangeFormattingProvider = false
       require('twoslash-queries').attach(client, bufnr)
     end
 
-    if client.name == 'csharp_ls' then
+    if client.name == 'csharp_ls' or client.name == 'cssls' then
       caps.documentFormattingProvider = false
       caps.documentRangeFormattingProvider = false
     end
@@ -182,6 +182,7 @@ M.config = function()
     -- 'pyright',
     -- 'ruff_lsp',
     'tsserver',
+    -- 'vtsls',
     'vuels',
     'yamlls',
     'jsonls',
@@ -265,6 +266,57 @@ M.config = function()
     settings = {
       typescript = tssettings,
       javascript = tssettings,
+    },
+  }
+
+  local vtssettings = {
+    referencesCodeLens = {
+      enabled = true,
+      showOnAllFunctions = true,
+    },
+    inlayHints = {
+      parameterNames = {
+        enabled = 'literals',
+      },
+      parameterTypes = {
+        enabled = true,
+      },
+      variableTypes = {
+        enabled = false,
+      },
+      propertyDeclarationTypes = {
+        enabled = true,
+      },
+      functionLikeReturnTypes = {
+        enabled = true,
+      },
+      enumMemberValues = {
+        enabled = true,
+      },
+    },
+    preferences = {
+      preferTypeOnlyAutoImports = true,
+    },
+    tsserver = {
+      experimental = {
+        enableProjectDiagnostics = true,
+      },
+    },
+  }
+
+  configs.vtsls = {
+    settings = {
+      typescript = vtssettings,
+      javascript = vtssettings,
+      vtsls = {
+        autoUseWorkspaceTsdk = true,
+        experimental = {
+          completion = {
+            enableServerSideFuzzyMatch = true,
+          },
+          maxInlayHintLength = 50,
+        },
+      },
     },
   }
 

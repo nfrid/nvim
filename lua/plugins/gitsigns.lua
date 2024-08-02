@@ -6,103 +6,93 @@ local M = {
 
 M.config = function()
   local gs = require('gitsigns')
-  local mx = require('mapx')
 
   vim.wo.signcolumn = 'yes'
 
-  mx.nnoremap('<C-j>', ']c')
-  mx.nnoremap('<C-k>', '[c')
+  vim.keymap.set('n', '<C-j>', ']c')
+  vim.keymap.set('n', '<C-k>', '[c')
 
   gs.setup({
     on_attach = function(bufnr)
       vim.cmd('hi! link GitSignsDelete Error')
 
       local p = '<leader>g'
-      mx.name(p, 'git', { buffer = bufnr })
 
       -- Navigation
-      mx.nnoremap('<C-j>', function()
+      vim.keymap.set('n', '<C-j>', function()
         gs.next_hunk()
-      end, { buffer = bufnr }, 'Next hunk')
-
-      mx.nnoremap('<C-k>', function()
+      end, { buffer = bufnr, desc = 'Next hunk' })
+      vim.keymap.set('n', '<C-k>', function()
         gs.prev_hunk()
-      end, { buffer = bufnr }, 'Prev hunk')
+      end, { buffer = bufnr, desc = 'Prev hunk' })
 
       -- Actions
-      mx.nnoremap(
-        p .. 's',
-        ':Gitsigns stage_hunk<CR>',
-        { buffer = bufnr },
-        'Stage hunk'
+      vim.keymap.set({ 'n', 'v' }, p .. 's', ':Gitsigns stage_hunk<CR>', {
+        buffer = bufnr,
+        desc = 'Stage hunk',
+      })
+      vim.keymap.set({ 'n', 'v' }, p .. 'r', ':Gitsigns reset_hunk<CR>', {
+        buffer = bufnr,
+        desc = 'Reset hunk',
+      })
+      vim.keymap.set(
+        'n',
+        p .. 'S',
+        gs.stage_buffer,
+        { buffer = bufnr, desc = 'Stage buffer' }
       )
-      mx.vnoremap(
-        p .. 's',
-        ':Gitsigns stage_hunk<CR>',
-        { buffer = bufnr },
-        'Stage hunk'
-      )
-      mx.nnoremap(
-        p .. 'r',
-        ':Gitsigns reset_hunk<CR>',
-        { buffer = bufnr },
-        'Reset hunk'
-      )
-      mx.vnoremap(
-        p .. 'r',
-        ':Gitsigns reset_hunk<CR>',
-        { buffer = bufnr },
-        'Reset hunk'
-      )
-      mx.nnoremap(p .. 'S', gs.stage_buffer, { buffer = bufnr }, 'Stage buffer')
-      mx.nnoremap(
+      vim.keymap.set(
+        'n',
         p .. 'u',
         gs.undo_stage_hunk,
-        { buffer = bufnr },
-        'Unstage hunk'
+        { buffer = bufnr, desc = 'Unstage hunk' }
       )
-      mx.nnoremap(p .. 'R', gs.reset_buffer, { buffer = bufnr }, 'Reset buffer')
-      mx.nnoremap(p .. 'p', gs.preview_hunk, { buffer = bufnr }, 'Preview hunk')
-      mx.nnoremap(p .. 'b', function()
+      vim.keymap.set(
+        'n',
+        p .. 'R',
+        gs.reset_buffer,
+        { buffer = bufnr, desc = 'Reset buffer' }
+      )
+      vim.keymap.set(
+        'n',
+        p .. 'p',
+        gs.preview_hunk,
+        { buffer = bufnr, desc = 'Preview hunk' }
+      )
+      vim.keymap.set('n', p .. 'b', function()
         gs.blame_line({ full = true })
-      end, { buffer = bufnr }, 'Blame line')
-      mx.nnoremap(
+      end, { buffer = bufnr, desc = 'Blame line' })
+      vim.keymap.set(
+        'n',
         p .. 'B',
         gs.toggle_current_line_blame,
-        { buffer = bufnr },
-        'Toggle line blame'
+        { buffer = bufnr, desc = 'Toggle line blame' }
       )
-      mx.nnoremap(p .. 'd', function()
+      vim.keymap.set('n', p .. 'd', function()
         gs.diffthis()
-      end, { buffer = bufnr }, 'Diff this')
-      mx.nnoremap(p .. 'D', function()
+      end, { buffer = bufnr, desc = 'Diff this' })
+      vim.keymap.set('n', p .. 'D', function()
         gs.diffthis('~')
-      end, { buffer = bufnr }, 'Diff ~')
-      mx.nnoremap(p .. 'x', function()
+      end, { buffer = bufnr, desc = 'Diff ~' })
+      vim.keymap.set('n', p .. 'x', function()
         gs.toggle_deleted()
-      end, { buffer = bufnr }, 'Toggle deleted')
+      end, { buffer = bufnr, desc = 'Toggle deleted' })
 
       -- Text object
-      mx.onoremap(
+      vim.keymap.set(
+        { 'o', 'x' },
         'ih',
         ':<C-U>Gitsigns select_hunk<CR>',
-        { buffer = bufnr },
-        'in hunk'
-      )
-      mx.xnoremap(
-        'ih',
-        ':<C-U>Gitsigns select_hunk<CR>',
-        { buffer = bufnr },
-        'in hunk'
+        { buffer = bufnr, desc = 'in hunk' }
       )
     end,
 
     worktrees = {
       {
         toplevel = vim.env.HOME,
-        gitdir = vim.env.HOME .. '/.dot'
-      }
-    }
+        gitdir = vim.env.HOME .. '/.dot',
+      },
+    },
   })
 end
 

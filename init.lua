@@ -2,9 +2,16 @@ require('utils')
 require('opts')
 require('cmds')
 require('filetypes')
+require('keys')
 
-package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua;"
-package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?.lua;"
+package.path = package.path
+  .. ';'
+  .. vim.fn.expand('$HOME')
+  .. '/.luarocks/share/lua/5.1/?/init.lua;'
+package.path = package.path
+  .. ';'
+  .. vim.fn.expand('$HOME')
+  .. '/.luarocks/share/lua/5.1/?.lua;'
 
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
@@ -29,4 +36,4 @@ require('lazy').setup('plugins', {
   -- checker = { enabled = true, concurrency = 4 },
 })
 
-require('mapx').nnoremap('<leader>L', '<cmd>Lazy<cr>', 'Lazy')
+vim.keymap.set('n', '<leader>L', '<cmd>Lazy<cr>', { desc = 'Lazy' })
