@@ -5,8 +5,6 @@ local M = {
     'hrsh7th/cmp-nvim-lsp',
     'mrshmllow/document-color.nvim',
     'creativenull/efmls-configs-nvim',
-    -- NOTE: too slow :(
-    -- 'artemave/workspace-diagnostics.nvim',
     {
       'SmiteshP/nvim-navbuddy',
       dependencies = {
@@ -28,12 +26,11 @@ local M = {
 --- @param desc string
 --- @param opts table|nil
 local function mapbuf(mode, lhs, rhs, desc, opts)
-  local options = { rhs, desc, noremap = true, buffer = 0, mode = mode }
+  local options = { desc = desc, noremap = true, buffer = 0 }
   if opts then
     options = vim.tbl_extend('force', options, opts)
   end
-  -- vim.keymap.set(mode, lhs, rhs, options)
-  require('which-key').register({ [lhs] = options })
+  vim.keymap.set(mode, lhs, rhs, options)
 end
 
 M.config = function()
@@ -81,9 +78,6 @@ M.config = function()
     end, 'To Implementation')
     mapbuf('n', '<C-A-k>', buf.signature_help, 'Signature on Point')
 
-    require('which-key').register({
-      ['<leader>l'] = '+LSP',
-    })
     mapbuf('n', '<leader>la', function()
       buf.add_workspace_folder()
     end, 'Workspace Add')
@@ -163,7 +157,7 @@ M.config = function()
 
     if caps.documentFormattingProvider then
       local au_format =
-          vim.api.nvim_create_augroup('format_on_save', { clear = true })
+        vim.api.nvim_create_augroup('format_on_save', { clear = true })
       vim.api.nvim_create_autocmd('BufWritePre', {
         pattern = '*',
         callback = function()
@@ -345,7 +339,7 @@ M.config = function()
   colorCapabilities.textDocument.colorProvider = { dynamicRegistration = true }
 
   local capabilities =
-      require('cmp_nvim_lsp').default_capabilities(colorCapabilities)
+    require('cmp_nvim_lsp').default_capabilities(colorCapabilities)
 
   for _, lsp in ipairs(servers) do
     local config = {}

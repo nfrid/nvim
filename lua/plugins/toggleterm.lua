@@ -7,16 +7,19 @@ local M = {
       '<leader>tt',
       '<cmd>ToggleTerm<cr>',
       'ToggleTerm',
+      desc = 'Toggle Terminal',
     },
     {
       '<leader>ts',
       '<cmd>2ToggleTerm direction=horizontal<cr>',
       'ToggleTerm horizontal',
+      desc = 'Toggle Terminal (horizontal)',
     },
     {
       '<leader>tv',
       '<cmd>3ToggleTerm direction=vertical<cr>',
       'ToggleTerm vertical',
+      desc = 'Toggle Terminal (vertical)',
     },
   },
 }

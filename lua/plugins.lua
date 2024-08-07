@@ -3,6 +3,49 @@ local M = {
   'antoinemadec/FixCursorHold.nvim',
 
   {
+    'stevearc/quicker.nvim',
+    opts = {
+      keys = {
+        {
+          '>',
+          function()
+            require('quicker').expand({
+              before = 2,
+              after = 2,
+              add_to_existing = true,
+            })
+          end,
+          desc = 'Expand quickfix content',
+        },
+        {
+          '<',
+          function()
+            require('quicker').collapse()
+          end,
+          desc = 'Collapse quickfix context',
+        },
+      },
+    },
+    keys = {
+      {
+        '<leader>xx',
+        function()
+          require('quicker').toggle()
+        end,
+        { desc = 'Toggle quickfix' },
+      },
+      {
+        '<leader>xl',
+        function()
+          require('quicker').toggle({ loclist = true })
+        end,
+        { desc = 'Toggle loclist' },
+      },
+    },
+    lazy = false,
+  },
+
+  {
     'iamyoki/buffer-reopen.nvim',
     opts = {},
     lazy = false,
@@ -25,26 +68,31 @@ local M = {
         function()
           require('kulala').run()
         end,
+        ft = { 'http' },
       },
       {
         '<S-CR>',
         function()
           require('kulala').toggle_view()
         end,
+        ft = { 'http' },
       },
       {
         '<C-j>',
         function()
           require('kulala').jump_next()
         end,
+        ft = { 'http' },
       },
       {
         '<C-k>',
         function()
           require('kulala').jump_prev()
         end,
+        ft = { 'http' },
       },
     },
+    config = true,
   },
 
   {
@@ -63,6 +111,7 @@ local M = {
           require('rip-substitute').sub()
         end,
         mode = { 'n', 'x' },
+        desc = 'Rip Substitute',
       },
     },
   },
@@ -670,7 +719,26 @@ local M = {
   {
     'tadmccorkle/markdown.nvim',
     event = 'VeryLazy',
-    opts = {},
+    opts = {
+      on_attach = function(bufnr)
+        local map = vim.keymap.set
+        local opts = { buffer = bufnr }
+        local function toggle(key)
+          return "<Esc>gv<Cmd>lua require'markdown.inline'"
+            .. ".toggle_emphasis_visual'"
+            .. key
+            .. "'<CR>"
+        end
+
+        map('x', '<C-b>', toggle('b'), opts)
+        map('x', '<C-i>', toggle('i'), opts)
+
+        map('i', '<C-Enter>', '<Cmd>MDListItemBelow<CR>', opts)
+        map('i', '<C-S-Enter>', '<Cmd>MDListItemAbove<CR>', opts)
+        map('n', '<M-c>', '<Cmd>MDTaskToggle<CR>', opts)
+        map('x', '<M-c>', ':MDTaskToggle<CR>', opts)
+      end,
+    },
     ft = { 'markdown' },
   },
 
@@ -679,6 +747,20 @@ local M = {
     dependencies = 'nvim-treesitter/nvim-treesitter',
     config = true,
     ft = { 'markdown', 'rmd', 'org', 'norg' },
+  },
+
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    opts = {
+      heading = {
+        enabled = false,
+      },
+    },
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons',
+    },
+    ft = { 'markdown' },
   },
 
   {
