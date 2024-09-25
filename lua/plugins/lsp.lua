@@ -140,7 +140,7 @@ M.config = function()
       caps.documentRangeFormattingProvider = true
     end
 
-    if client.name == 'tsserver' or client.name == 'vtsls' then
+    if client.name == 'ts_ls' or client.name == 'vtsls' then
       caps.documentFormattingProvider = false
       caps.documentRangeFormattingProvider = false
       require('twoslash-queries').attach(client, bufnr)
@@ -157,7 +157,7 @@ M.config = function()
 
     if caps.documentFormattingProvider then
       local au_format =
-        vim.api.nvim_create_augroup('format_on_save', { clear = true })
+          vim.api.nvim_create_augroup('format_on_save', { clear = true })
       vim.api.nvim_create_autocmd('BufWritePre', {
         pattern = '*',
         callback = function()
@@ -175,7 +175,7 @@ M.config = function()
     'basedpyright',
     -- 'pyright',
     -- 'ruff_lsp',
-    'tsserver',
+    'ts_ls',
     -- 'vtsls',
     'vuels',
     'yamlls',
@@ -256,7 +256,7 @@ M.config = function()
     },
   }
 
-  configs.tsserver = {
+  configs.ts_ls = {
     settings = {
       typescript = tssettings,
       javascript = tssettings,
@@ -339,7 +339,7 @@ M.config = function()
   colorCapabilities.textDocument.colorProvider = { dynamicRegistration = true }
 
   local capabilities =
-    require('cmp_nvim_lsp').default_capabilities(colorCapabilities)
+      require('cmp_nvim_lsp').default_capabilities(colorCapabilities)
 
   for _, lsp in ipairs(servers) do
     local config = {}

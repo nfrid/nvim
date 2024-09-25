@@ -3,6 +3,34 @@ local M = {
   'antoinemadec/FixCursorHold.nvim',
 
   {
+    'rlychrisg/truncateline.nvim',
+    opts = {},
+    lazy = false,
+  },
+
+  {
+    'OXY2DEV/helpview.nvim',
+    ft = 'help',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter'
+    }
+  },
+
+  {
+    'IogaMaster/neocord',
+    event = 'VeryLazy',
+    opts = {
+      blacklist = { 'job/' },
+    },
+  },
+
+  {
+    'GustavEikaas/code-playground.nvim',
+    opts = {},
+    cmd = { 'Code' },
+  },
+
+  {
     'stevearc/quicker.nvim',
     opts = {
       keys = {
@@ -28,7 +56,7 @@ local M = {
     },
     keys = {
       {
-        '<leader>xx',
+        '<leader>xf',
         function()
           require('quicker').toggle()
         end,
@@ -406,7 +434,7 @@ local M = {
         },
       },
       ui = {
-        -- enable = false,
+        enable = false,
         reference_text = { hl_group = 'Class' },
         highlight_text = { hl_group = 'Todo' },
         external_link_icon = { char = '', hl_group = 'DraculaCyan' },
@@ -471,6 +499,35 @@ local M = {
       },
     },
     cmd = { 'ObsidianQuickSwitch' },
+  },
+
+  {
+    -- Make sure to set this up properly if you have lazy=true
+    'MeanderingProgrammer/render-markdown.nvim',
+    opts = {
+      file_types = { 'markdown', 'Avante' },
+      checkbox = {
+        unchecked = {
+          icon = '',
+          highlight = 'Question',
+        },
+        checked = {
+          icon = '󰧖',
+          highlight = 'Title',
+        },
+        custom = {
+          intermediate = { raw = '[.]', rendered = '󰡖', highlight = 'Directory' },
+          cancelled = { raw = '[-]', rendered = '󰛲', highlight = 'Comment' },
+          priority = { raw = '[!]', rendered = '󰩳', highlight = 'Error' },
+          idk = { raw = '[?]', rendered = '󰞋', highlight = 'String' },
+          star = { raw = '[*]', rendered = '󰎃', highlight = 'DraculaOrangeBold' },
+        },
+      },
+      heading = {
+        enabled = false,
+      },
+    },
+    ft = { 'markdown', 'Avante' },
   },
 
   -- {
@@ -542,7 +599,7 @@ local M = {
     'otavioschwanck/arrow.nvim',
     opts = {
       show_icons = true,
-      leader_key = ';', -- Recommended to be a single key
+      leader_key = '<A-;>', -- Recommended to be a single key
       index_keys = 'gwrtzxcbjklm,.uiony123456789',
     },
     keys = {
@@ -674,7 +731,7 @@ local M = {
       ft('json,css,scss,html,markdown,yaml'):fmt('prettier')
       ft('toml'):fmt('taplo')
 
-      ft('lua'):fmt('lsp'):append('stylua')
+      ft('lua'):fmt('lsp') --:append('stylua')
 
       ft('sh,bash'):fmt({
         cmd = 'shfmt',
@@ -725,9 +782,9 @@ local M = {
         local opts = { buffer = bufnr }
         local function toggle(key)
           return "<Esc>gv<Cmd>lua require'markdown.inline'"
-            .. ".toggle_emphasis_visual'"
-            .. key
-            .. "'<CR>"
+              .. ".toggle_emphasis_visual'"
+              .. key
+              .. "'<CR>"
         end
 
         map('x', '<C-b>', toggle('b'), opts)
@@ -746,21 +803,7 @@ local M = {
     'lukas-reineke/headlines.nvim',
     dependencies = 'nvim-treesitter/nvim-treesitter',
     config = true,
-    ft = { 'markdown', 'rmd', 'org', 'norg' },
-  },
-
-  {
-    'MeanderingProgrammer/render-markdown.nvim',
-    opts = {
-      heading = {
-        enabled = false,
-      },
-    },
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      'nvim-tree/nvim-web-devicons',
-    },
-    ft = { 'markdown' },
+    ft = { 'markdown', 'rmd', 'org', 'norg', 'Avante' },
   },
 
   {
@@ -795,8 +838,8 @@ local M = {
         implements = false,
         git_authors = function(latest_author, count)
           return ' '
-            .. latest_author
-            .. (count - 1 == 0 and '' or (' + ' .. count - 1))
+              .. latest_author
+              .. (count - 1 == 0 and '' or (' + ' .. count - 1))
         end,
       },
     },
@@ -892,7 +935,7 @@ local M = {
     enabled = false,
   },
 
-  { 'martinda/Jenkinsfile-vim-syntax', ft = { 'Jenkinsfile' } },
+  { 'martinda/Jenkinsfile-vim-syntax',  ft = { 'Jenkinsfile' } },
 
   -- {
   --   'nfrid/media.nvim',
@@ -900,7 +943,7 @@ local M = {
   --   ft = { 'png', 'jpg', 'gif', 'mp4', 'webm', 'pdf' },
   -- },
 
-  { 'nfrid/treesitter-utils', dev = true },
+  { 'nfrid/treesitter-utils',           dev = true },
 
   {
     'iamcco/markdown-preview.nvim',
@@ -910,7 +953,7 @@ local M = {
     ft = { 'markdown' },
   },
 
-  { 'andrewferrier/wrapping.nvim', config = true, lazy = false },
+  { 'andrewferrier/wrapping.nvim',    config = true,            lazy = false },
 
   {
     'nvim-zh/colorful-winsep.nvim',
@@ -931,7 +974,7 @@ local M = {
   {
     'AckslD/nvim-FeMaco.lua',
     config = true,
-    ft = { 'markdown' },
+    ft = { 'markdown', 'Avante' },
   },
 
   {
@@ -985,7 +1028,7 @@ local M = {
           },
         },
         exclude = {
-          filetypes = { 'markdown', 'tex', 'startify' },
+          filetypes = { 'markdown', 'tex', 'startify', 'Avante' },
         },
       })
       hooks.register(
@@ -1032,14 +1075,16 @@ local M = {
   {
     'Isrothy/neominimap.nvim',
     enabled = true,
-    lazy = false, -- WARN: NO NEED to Lazy load
+    lazy = false,
     init = function()
-      vim.opt.wrap = false -- Recommended
+      vim.opt.wrap = false       -- Recommended
       vim.opt.sidescrolloff = 36 -- It's recommended to set a large value
       vim.g.neominimap = {
         auto_enable = true,
-        minimap_width = 10,
-        window_border = 'none',
+        float = {
+          minimap_width = 10,
+          window_border = 'none',
+        },
       }
     end,
   },
@@ -1067,11 +1112,11 @@ local M = {
     },
   },
 
-  { 'nfrid/due.nvim', config = true, ft = { 'markdown' } },
+  { 'nfrid/due.nvim',         config = true, ft = { 'markdown' } },
 
   {
     'gaoDean/autolist.nvim',
-    ft = { 'markdown' },
+    ft = { 'markdown', 'Avante' },
     opts = {
       invert = {
         mapping = '<a-r>',
@@ -1085,7 +1130,7 @@ local M = {
   --   ft = { 'markdown' },
   -- },
 
-  { 'lervag/vimtex', ft = { 'tex' } },
+  { 'lervag/vimtex',          ft = { 'tex' } },
 
   { 'stevearc/dressing.nvim', lazy = false },
 
@@ -1103,20 +1148,23 @@ local M = {
 
   { 'kylechui/nvim-surround', config = true, lazy = false },
 
-  { 'kana/vim-repeat', lazy = false },
+  { 'kana/vim-repeat',        lazy = false },
 
-  -- {
-  --   'anuvyklack/pretty-fold.nvim',
-  --   dependencies = {
-  --     'anuvyklack/nvim-keymap-amend',
-  --     'anuvyklack/fold-preview.nvim',
-  --   },
-  --   config = function()
-  --     require('pretty-fold').setup({})
-  --     require('fold-preview').setup({})
-  --   end,
-  --   lazy = false,
-  -- },
+  {
+    'bbjornstad/pretty-fold.nvim',
+    opts = {
+      fill_char = '-',
+      sections = {
+        left = {
+          'content',
+          '• ',
+          'number_of_folded_lines',
+          ' ',
+        },
+      },
+    },
+    lazy = false,
+  },
 
   {
     'chentoast/marks.nvim',
@@ -1124,9 +1172,9 @@ local M = {
     lazy = false,
   },
 
-  { 'ron-rs/ron.vim', ft = { 'ron' } },
+  { 'ron-rs/ron.vim',      ft = { 'ron' } },
 
-  { 'zah/nim.vim', ft = { 'nim' } },
+  { 'zah/nim.vim',         ft = { 'nim' } },
 
   { 'iloginow/vim-stylus', ft = { 'stylus' } },
 
@@ -1150,35 +1198,35 @@ local M = {
         router = {
           browse = {
             ['^github%.com'] = 'https://github.com/'
-              .. '{_A.ORG}/'
-              .. '{_A.REPO}/blob/'
-              .. '{_A.CURRENT_BRANCH}/' -- always current branch
-              .. '{_A.FILE}?plain=1' -- '?plain=1'
-              .. '#L{_A.LSTART}'
-              .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
+                .. '{_A.ORG}/'
+                .. '{_A.REPO}/blob/'
+                .. '{_A.CURRENT_BRANCH}/' -- always current branch
+                .. '{_A.FILE}?plain=1'    -- '?plain=1'
+                .. '#L{_A.LSTART}'
+                .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
             ['^mygig%.gitlab%.yandexcloud%.net'] = 'https://mygig.gitlab.yandexcloud.net/'
-              .. '{_A.ORG}/'
-              .. '{_A.REPO}/blob/'
-              .. '{_A.CURRENT_BRANCH}/' -- always current branch
-              .. '{_A.FILE}?plain=1' -- '?plain=1'
-              .. '#L{_A.LSTART}'
-              .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
+                .. '{_A.ORG}/'
+                .. '{_A.REPO}/blob/'
+                .. '{_A.CURRENT_BRANCH}/' -- always current branch
+                .. '{_A.FILE}?plain=1'    -- '?plain=1'
+                .. '#L{_A.LSTART}'
+                .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
           },
           blame = {
             ['^github%.com'] = 'https://github.com/'
-              .. '{_A.ORG}/'
-              .. '{_A.REPO}/blame/'
-              .. '{_A.CURRENT_BRANCH}/' -- always current branch
-              .. '{_A.FILE}?plain=1' -- '?plain=1'
-              .. '#L{_A.LSTART}'
-              .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
+                .. '{_A.ORG}/'
+                .. '{_A.REPO}/blame/'
+                .. '{_A.CURRENT_BRANCH}/' -- always current branch
+                .. '{_A.FILE}?plain=1'    -- '?plain=1'
+                .. '#L{_A.LSTART}'
+                .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
             ['^mygig%.gitlab%.yandexcloud%.net'] = 'https://mygig.gitlab.yandexcloud.net/'
-              .. '{_A.ORG}/'
-              .. '{_A.REPO}/blame/'
-              .. '{_A.CURRENT_BRANCH}/' -- always current branch
-              .. '{_A.FILE}?plain=1' -- '?plain=1'
-              .. '#L{_A.LSTART}'
-              .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
+                .. '{_A.ORG}/'
+                .. '{_A.REPO}/blame/'
+                .. '{_A.CURRENT_BRANCH}/' -- always current branch
+                .. '{_A.FILE}?plain=1'    -- '?plain=1'
+                .. '#L{_A.LSTART}'
+                .. "{(_A.LEND > _A.LSTART and ('-L' .. _A.LEND) or '')}",
           },
         },
       })
@@ -1195,7 +1243,7 @@ local M = {
     cmd = { 'GitLink' },
   },
 
-  { 'kevinhwang91/nvim-bqf', ft = { 'qf' } },
+  { 'kevinhwang91/nvim-bqf',            ft = { 'qf' } },
 
   {
     'onsails/lspkind-nvim',

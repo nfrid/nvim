@@ -50,7 +50,7 @@ vim.keymap.set('n', '<leader>vr', ToggleRelNums, { desc = 'Relative numbers' })
 
 vim.keymap.set(
   'n',
-  '<leader>x',
+  '<leader>xi',
   '<cmd>Inspect<cr>',
   { desc = 'Inspect At Cursor' }
 )

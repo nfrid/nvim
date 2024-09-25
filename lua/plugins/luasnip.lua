@@ -15,6 +15,23 @@ local M = {
   },
 }
 
+math.randomseed(os.time())
+
+local charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+
+local chartable = {}
+for c in charset:gmatch('.') do
+  table.insert(chartable, c)
+end
+
+local function randstr(length)
+  local str = ''
+  for i = 1, length do
+    str = str .. chartable[math.random(1, #chartable)]
+  end
+  return str
+end
+
 M.config = function()
   require('luasnip.loaders.from_snipmate').lazy_load()
   local ls = require('luasnip')
@@ -41,6 +58,15 @@ M.config = function()
 
   ls.filetype_extend('javascriptreact', { 'javascript' })
   ls.filetype_extend('typescriptreact', { 'typescript' })
+
+  ls.add_snippets('all', {
+    s(
+      { trig = 'rand(%d+)', regTrig = true },
+      f(function(_, snip)
+        return randstr(tonumber(snip.captures[1]))
+      end, {})
+    ),
+  })
 end
 
 return M

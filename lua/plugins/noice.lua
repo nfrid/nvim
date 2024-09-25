@@ -57,7 +57,7 @@ local M = {
       {
         filter = {
           event = 'notify',
-          find = 'tsserver: 1: <semantic> TypeScript Server',
+          find = 'ts_ls: 1: <semantic> TypeScript Server',
         },
         opts = { skip = true },
       },

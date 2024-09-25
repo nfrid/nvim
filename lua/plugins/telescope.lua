@@ -12,14 +12,16 @@ local M = {
     -- 'nvim-telescope/telescope-frecency.nvim',
     {
       'polirritmico/telescope-lazy-plugins.nvim',
-      keys = {
-        {
-          '<leader>tl',
-          '<Cmd>Telescope lazy_plugins<CR>',
-          desc = 'Plugins Configs',
-        },
-      },
     },
+    {
+      'danielfalk/smart-open.nvim',
+      dependencies = {
+        'kkharji/sqlite.lua',
+        'nvim-telescope/telescope.nvim',
+        'nvim-tree/nvim-web-devicons',
+        'nvim-telescope/telescope-fzy-native.nvim',
+      },
+    }
   },
   opts = {
     defaults = {
@@ -30,6 +32,9 @@ local M = {
       },
     },
     extensions = {
+      lazy_plugins = {
+        lazy_config = vim.fn.stdpath('config') .. '/lua/plugins.lua',
+      },
       frecency = {
         ignore_patterns = {
           '*.git/*',
@@ -47,6 +52,11 @@ local M = {
           ['gh'] = '~/github',
           ['notes'] = '~/Documents/Notes',
         },
+        matcher = 'fuzzy',
+        ---@diagnostic disable-next-line: unused-local
+        scoring_function = function(recency, fzy_score)
+          return -recency
+        end
       },
     },
   },
@@ -58,11 +68,15 @@ local M = {
     t.load_extension('projects')
     t.load_extension('todo-comments')
     t.load_extension('egrepify')
-    t.load_extension('frecency')
+    -- t.load_extension('frecency')
+    t.load_extension('smart_open')
+    t.load_extension('lazy_plugins')
   end,
   init = function()
     local ts = require('telescope.builtin')
     local tsx = require('telescope').extensions
+
+    local ivy = require('telescope.themes').get_ivy
 
     -- get currently selected text
     local function get_visual_selection()
@@ -91,21 +105,24 @@ local M = {
       end
 
       vim.keymap.set('n', key, function()
-        fn(opts)
+        fn(ivy(opts))
       end, { desc = label })
 
       vim.keymap.set('v', key, function()
         local selected = get_visual_selection()
         local def_text = selected or opts.default_text
-        fn({ opts, default_text = def_text })
+        fn(ivy({ opts, default_text = def_text }))
       end, { desc = label })
     end
 
     map('t<leader>', ts.resume, 'Resume')
 
-    -- map('T', ts.live_grep, 'Live Grep')
-    map('T', tsx.egrepify.egrepify, 'Live Grep')
-    map('ff', ts.fd, 'Find File')
+    map('k', tsx.smart_open.smart_open, 'Smart Open')
+    -- map('F', ts.live_grep, 'Live Grep')
+    map('F', tsx.egrepify.egrepify, 'Live Grep')
+    map('ff', tsx.smart_open.smart_open, 'Smart Open')
+    -- map('ff', tsx.frecency.frecency, 'Find Frecent Files')
+    map('fF', ts.fd, 'Find File')
     map('fg', ts.git_files, 'Git Files')
     map('b', ts.buffers, 'Find Buffer')
     map('m', ts.marks, 'Find Mark')
@@ -119,6 +136,7 @@ local M = {
     map('pp', tsx.projects.projects, 'Project')
     map('gf', ts.git_bcommits, 'Todos')
     map('pt', tsx['todo-comments'].todo, 'Todos')
+    map('tl', tsx.lazy_plugins.lazy_plugins, 'Lazy Plugins')
 
     vim.keymap.set(
       'n',
